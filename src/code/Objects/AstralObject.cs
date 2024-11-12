@@ -1,12 +1,89 @@
-﻿using System.Numerics;
+﻿using Raylib_cs;
+using System.Numerics;
 
 namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="AstralObject"/>.</summary>
     public abstract class AstralObject
     {
+        // -----------------------------------------------------------
+        // Private instances
+        // -----------------------------------------------------------
+
         private long _mass;
         private long _radius;
+        private float _gravitationPull;
+        private Vector3 _rotation;
+        private Vector3 _velocity;
+
+        // -----------------------------------------------------------
+        // Public attributes
+        // -----------------------------------------------------------
+
+        public float RotationSpeed;
+        public float RotationPeriod; // On itslef
+        public float OrbitPeriod; // Around parent object
+
+        public Model Model;
+
+        /// <summary>Spatial position.</summary>
+        public Vector3 Position
+        {
+            get
+            {
+                return new Vector3(Model.Transform.M14, Model.Transform.M24, Model.Transform.M34);
+            }
+            set
+            {
+                Model.Transform.M14 = value.X;
+                Model.Transform.M24 = value.Y;
+                Model.Transform.M34 = value.Z;
+            }
+        }
+
+        /// <summary>Vectorial rotation of the object.</summary>
+        public Vector3 Rotation
+        {
+            get { return _rotation; }
+            set
+            {
+                _rotation = value;
+                UpdateRotation();
+            }
+        }
+
+        /// <summary>X axis rotation.</summary>
+        public float Pitch
+        {
+            get { return _rotation.X; }
+            set
+            {
+                _rotation.X = value;
+                UpdateRotation();
+            }
+        }
+
+        /// <summary>Y axis rotation.</summary>
+        public float Yaw
+        {
+            get { return _rotation.Y; }
+            set
+            {
+                _rotation.Y = value;
+                UpdateRotation();
+            }
+        }
+
+        /// <summary>Z axis rotation.</summary>
+        public float Roll
+        {
+            get { return _rotation.Z; }
+            set
+            {
+                _rotation.Z = value;
+                UpdateRotation();
+            }
+        }
 
         /// <summary>Radius of the object.</summary>
         public long Radius
@@ -18,7 +95,7 @@ namespace Astral_simulation
             set
             {
                 _radius = value;
-                GravitionPull = CalculateGravitation(_mass, _radius);
+                UpdateGravitationPull();
             }
         }
 
@@ -32,9 +109,18 @@ namespace Astral_simulation
             set 
             {
                 _mass = value;
-                GravitionPull = CalculateGravitation(_mass, _radius);
+                UpdateGravitationPull();
             } 
         }
+
+        /// <summary>Gets the volume of the object.</summary>
+        public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius, 3) / 3); } }
+
+        /// <summary>Vectorial speed of the object.</summary>
+        public Vector3 Velocity { get {  return _velocity; } }
+
+        /// <summary>Gravition pull</summary>
+        public float GravitationPull { get { return _gravitationPull; } }
 
         /// <summary>Creates an instance of <see cref="AstralObject"/>.</summary>
         /// <param name="mass">Mass of the object.</param>
@@ -49,19 +135,24 @@ namespace Astral_simulation
             RotationPeriod = rotationPeriod;
         }
 
-
-        public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius, 3) / 3); } }
-
-        public Vector2 Velocity;
-        public float RotationSpeed;
-        public float RotationPeriod; // On itslef
-        public float OrbitPeriod; // Around parent object
-
-        public float GravitionPull;
-
-        public float CalculateGravitation(long mass, long radius)
+        /// <summary>Updates the transform rotation of the object.</summary>
+        protected void UpdateRotation()
         {
-            return 0f;
+            Matrix4x4 nm = Raymath.MatrixRotateXYZ(_rotation / Raylib.RAD2DEG);
+            nm.M14 = Position.X;
+            nm.M24 = Position.Y; // Keep positions
+            nm.M34 = Position.Z;
+            Model.Transform = nm;
+        }
+
+        protected void UpdateGravitationPull()
+        {
+            // Update
+        }
+
+        protected void UpdateVectorialSpeed()
+        {
+            // Update
         }
     }
 }
