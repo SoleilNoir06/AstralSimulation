@@ -1,21 +1,17 @@
-﻿using Astral_simulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace astral_simulation
+﻿namespace Astral_simulation
 {
-    public class Stars : AstralObject
+    /// <summary>Represents an instance of <see cref="Star"/>.</summary>
+    public class Star : AstralObject
     {
+        // -----------------------------------------------------------
+        // Public attributes
+        // -----------------------------------------------------------
+
         public float Temperature;
         public float Brightness;
         public float Luminosity;
 
-        /// <summary>
-        /// Creates an instance of star
-        /// </summary>
+        /// <summary>Creates an instance of <see cref="Star"/>.</summary>
         /// <param name="temperature">Temperature of star</param>
         /// <param name="brightness"> Brightness of star</param>
         /// <param name="luminosity">Luminosity of star</param>
@@ -23,7 +19,7 @@ namespace astral_simulation
         /// <param name="radius">Radius of star</param>
         /// <param name="orbitPeriod">Orbit period of star</param>
         /// <param name="rotationPeriod">Rotation period of star</param>
-        public Stars(float temperature, float brightness, float luminosity, long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle): base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
+        public Star(float temperature, float brightness, float luminosity, long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle): base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
         { 
             Temperature = temperature;
             Brightness = brightness;

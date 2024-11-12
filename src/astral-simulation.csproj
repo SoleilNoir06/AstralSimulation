@@ -6,6 +6,7 @@
     <RootNamespace>astral_simulation</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="raylib.dll">
+    <None Update="assets\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	<None Update="raylib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
