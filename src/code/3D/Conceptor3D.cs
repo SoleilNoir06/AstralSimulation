@@ -13,6 +13,7 @@ namespace Astral_simulation
         // Private instances
         // -----------------------------------------------------------
 
+        private static Mesh _sphereMesh = GenMeshSphere(5, 50, 50); // Default planet mesh
         private static Camera3D _camera;
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;
@@ -55,11 +56,11 @@ namespace Astral_simulation
                     Vector3 movX = GetCameraRight(ref _camera) * GetMouseDelta().X * (_cameraMotion.Distance / 200);
                     Vector3 movY = GetCameraUp(ref _camera) * GetMouseDelta().Y * (_cameraMotion.Distance / 200);
 
-                    _camera.Position -= movX;
-                    _camera.Target -= movX;
+                    _camera.Position -= movX * 0.2f;
+                    _camera.Target -= movX * 0.2f;
 
-                    _camera.Position += movY;
-                    _camera.Target += movY;
+                    _camera.Position += movY * 0.2f;
+                    _camera.Target += movY * 0.2f;
                 }
                 else
                 {
@@ -83,10 +84,16 @@ namespace Astral_simulation
             // System rendering
             foreach (AstralObject obj in AstralObjects)
             {
-                DrawModel(obj.Model, Vector3.Zero, 1f, Color.White);
+                DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
             }
 
             EndMode3D();
+        }
+
+        /// <summary>Closes the conceptor by unloading all its data.</summary>
+        public static void Close()
+        {
+            UnloadSkybox(_skybox);
         }
 
         /// <summary>Moves the conceptor's camera.</summary>

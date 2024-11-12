@@ -1,11 +1,6 @@
-﻿using Astral_simulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Raylib_cs;
 
-namespace astral_simulation
+namespace Astral_simulation
 {
     public enum FloorElement
     {
@@ -31,8 +26,9 @@ namespace astral_simulation
     }
     public class Telluric : AstralObject
     {
-        public Telluric(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle) : base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
+        public Telluric(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle, Texture2D texture) : base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
         {
+            Raylib.SetMaterialTexture(ref Material1, MaterialMapIndex.Diffuse, texture); // Set texture to planet mesh material
         }
     }
 }

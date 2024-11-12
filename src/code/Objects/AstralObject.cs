@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="AstralObject"/>.</summary>
-    public abstract class AstralObject
+    public unsafe abstract class AstralObject
     {
         // -----------------------------------------------------------
         // Private instances
@@ -25,20 +25,22 @@ namespace Astral_simulation
         public float OrbitPeriod; // Around parent object
         public float TiltAngle;
 
-        public Model Model;
+        public Material Material1; // Generic material used for planet mesh
+        public Material Material2; // Material used for external rings mesh
+        public Matrix4x4 Transform; // Transform matrix used to define object properties
 
         /// <summary>Spatial position.</summary>
         public Vector3 Position
         {
             get
             {
-                return new Vector3(Model.Transform.M14, Model.Transform.M24, Model.Transform.M34);
+                return new Vector3(Transform.M14, Transform.M24, Transform.M34);
             }
             set
             {
-                Model.Transform.M14 = value.X;
-                Model.Transform.M24 = value.Y;
-                Model.Transform.M34 = value.Z;
+                Transform.M14 = value.X;
+                Transform.M24 = value.Y;
+                Transform.M34 = value.Z;
             }
         }
 
@@ -135,6 +137,12 @@ namespace Astral_simulation
             OrbitPeriod = orbitPeriod;
             RotationPeriod = rotationPeriod;
             TiltAngle = tiltAngle;
+
+            Transform = Raymath.MatrixRotateX(90 * Raylib.DEG2RAD); // Set default transform
+            Material1 = Raylib.LoadMaterialDefault(); // Load default materials and set default shader
+            Material1.Shader = ShaderCenter.LightingShader;
+            Material2 = Raylib.LoadMaterialDefault();
+            Material2.Shader = ShaderCenter.LightingShader;
         }
 
         /// <summary>Updates the transform rotation of the object.</summary>
@@ -144,7 +152,7 @@ namespace Astral_simulation
             nm.M14 = Position.X;
             nm.M24 = Position.Y; // Keep positions
             nm.M34 = Position.Z;
-            Model.Transform = nm;
+            Transform = nm;
         }
 
         protected void UpdateGravitationPull()

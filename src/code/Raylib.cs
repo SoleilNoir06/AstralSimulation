@@ -28,6 +28,13 @@ namespace Raylib_cs.Complements
             return new Skybox(); // Return empty object
         }
 
+        /// <summary>Unloads a skybox object from the vRAM.</summary>
+        /// <param name="skybox">Skybox to unload.</param>
+        public static void UnloadSkybox(Skybox skybox) 
+        {
+            UnloadMaterial(skybox.Material);
+        }
+
         /// <summary>Draws a <see cref="Skybox"/> object. (To call before any other draw call).</summary>
         /// <param name="skybox">Skybox to draw.</param>
         public static void DrawSkybox(Skybox skybox)
