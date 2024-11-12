@@ -74,7 +74,7 @@ namespace Raylib_cs.Complements
             Rlgl.SetUniformMatrix(ShaderCenter.CubemapShader.Locs[(int)ShaderLocationIndex.MatrixProjection], matFboProjection);
 
             // Define view matrix for every side of the cube
-            Matrix4x4[] fboViews = new Matrix4x4[]
+            Matrix4x4[] fboViews =
             {
                 Raymath.MatrixLookAt(Vector3.Zero, new Vector3(-1.0f,  0.0f,  0.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
                 Raymath.MatrixLookAt(Vector3.Zero, new Vector3( 1.0f,  0.0f,  0.0f), new Vector3( 0.0f, -1.0f,  0.0f)),
