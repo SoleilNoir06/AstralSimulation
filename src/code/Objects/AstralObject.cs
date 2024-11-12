@@ -23,6 +23,7 @@ namespace Astral_simulation
         public float RotationSpeed;
         public float RotationPeriod; // On itslef
         public float OrbitPeriod; // Around parent object
+        public float TiltAngle;
 
         public Model Model;
 
@@ -127,12 +128,13 @@ namespace Astral_simulation
         /// <param name="radius">Radius of the object.</param>
         /// <param name="orbitPeriod">Obritation period of the object.</param>
         /// <param name="rotationPeriod">Rotatino period of the object.</param>
-        public AstralObject(long mass, long radius, float orbitPeriod, float rotationPeriod)
+        public AstralObject(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle)
         {
             _mass = mass;
             _radius = radius;
             OrbitPeriod = orbitPeriod;
             RotationPeriod = rotationPeriod;
+            TiltAngle = tiltAngle;
         }
 
         /// <summary>Updates the transform rotation of the object.</summary>
