@@ -10,6 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="RayGUI_cs">
+      <HintPath>external\libraries\RayGUI_cs\RayGUI_cs.dll</HintPath>
+    </Reference>
     <Reference Include="Raylib-cs">
       <HintPath>external\libraries\Raylib-cs.dll</HintPath>
     </Reference>

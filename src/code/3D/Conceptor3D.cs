@@ -3,6 +3,7 @@ using static Raylib_cs.Raylib;
 using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
+using RayGUI_cs;
 
 namespace Astral_simulation
 {
@@ -74,6 +75,9 @@ namespace Astral_simulation
                 MoveCamera(_cameraMotion.Distance, ref _camera, _camera.Target, _cameraMotion.YOffset, true, _cameraMotion.Mouse, _cameraMotion.MouseOrigin);
             }
 
+            // Update planet click
+            ClickAstralObject();
+
             // -----------------------------------------------------------
             // Draw calls
             // -----------------------------------------------------------
@@ -88,6 +92,25 @@ namespace Astral_simulation
             }
 
             EndMode3D();
+        }
+
+        /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
+        public static void ClickAstralObject()
+        {
+            if (IsMouseButtonPressed(MouseButton.Left))
+            {
+                Ray mouse = GetMouseRay(GetMousePosition(), _camera); // Get mouse ray
+                RayCollision collision = new RayCollision(); // Init collision detection object
+                foreach (AstralObject obj in AstralObjects)
+                {
+                    collision = GetRayCollisionMesh(mouse, _sphereMesh, obj.Transform); // Check hit
+                    if (collision.Hit)
+                    {
+                        Conceptor2D.Components.Add(new Button("Jupiter", 20, 20, 200, 40));
+                    }
+                }
+                if (!collision.Hit) Conceptor2D.Components.Clear();
+            }
         }
 
         /// <summary>Closes the conceptor by unloading all its data.</summary>
