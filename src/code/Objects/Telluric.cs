@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace astral_simulation
 {
-    public enum Elements
+    public enum FloorElement
     {
         Silicate,
         Limestone,
@@ -21,11 +21,18 @@ namespace astral_simulation
         Aluminum,
         Rocks
     }
+    public enum AtmosphereElement
+    {
+        Hydrogen,
+        Oxygen,
+        Nitrogen,
+        CarboneDioxyde,
+        Dust
+    }
     public class Telluric : AstralObject
     {
-        public Telluric(long mass, long radius, float orbitPeriod, float rotationPeriod) : base (mass, radius, orbitPeriod, rotationPeriod)
+        public Telluric(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle) : base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
         {
-
         }
     }
 }

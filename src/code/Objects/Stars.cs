@@ -23,7 +23,7 @@ namespace astral_simulation
         /// <param name="radius">Radius of star</param>
         /// <param name="orbitPeriod">Orbit period of star</param>
         /// <param name="rotationPeriod">Rotation period of star</param>
-        public Stars(float temperature, float brightness, float luminosity, long mass, long radius, float orbitPeriod, float rotationPeriod): base (mass, radius, orbitPeriod, rotationPeriod)
+        public Stars(float temperature, float brightness, float luminosity, long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle): base (mass, radius, orbitPeriod, rotationPeriod, tiltAngle)
         { 
             Temperature = temperature;
             Brightness = brightness;

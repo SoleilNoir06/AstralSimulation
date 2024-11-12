@@ -9,7 +9,27 @@ namespace astral_simulation
 {
     public class Gaseous : AstralObject
     {
-        public Gaseous(long mass, long radius, float orbitPeriod, float rotationPeriod) : base(mass, radius, orbitPeriod, rotationPeriod) 
+        public enum FloorElement
+        {
+            Rocks,
+            Ice,
+            Methane,
+            MetallicHydrogen,
+            Silicates,
+            Iron
+
+        }
+        public enum AtmosphereElement
+        {
+            Hydrogen,
+            Helium,
+            Hydrocarbon,
+            Nitrogen,
+            Ammonia,
+            Methane,
+            Water
+        }
+        public Gaseous(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle) : base(mass, radius, orbitPeriod, rotationPeriod, tiltAngle) 
         { 
 
         }
