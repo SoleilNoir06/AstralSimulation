@@ -3,7 +3,6 @@ using static Raylib_cs.Raylib;
 using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
-using System;
 
 namespace Astral_simulation
 {
@@ -18,6 +17,8 @@ namespace Astral_simulation
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;
 
+        public static List<AstralObject> AstralObjects = new List<AstralObject>();
+
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
         {
@@ -31,6 +32,8 @@ namespace Astral_simulation
             };
             _cameraMotion = new CameraMotion(10, (short)GetScreenWidth(), (short)GetScreenHeight());
             _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
+
+            // Load default system
         }
 
         /// <summary>Draws the 3D environnement of the application.</summary>
@@ -76,7 +79,13 @@ namespace Astral_simulation
 
             BeginMode3D(_camera);
             DrawSkybox(_skybox);
-            DrawGrid(50, 50);
+            
+            // System rendering
+            foreach (AstralObject obj in AstralObjects)
+            {
+                DrawModel(obj.Model, Vector3.Zero, 1f, Color.White);
+            }
+
             EndMode3D();
         }
 
