@@ -29,7 +29,7 @@ namespace astral_simulation
             Methane,
             Water
         }
-        public Gaseous(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle) : base(mass, radius, orbitPeriod, rotationPeriod, tiltAngle) 
+        public Gaseous(long mass, long radius, float orbitPeriod, float rotationPeriod) : base(mass, radius, orbitPeriod, rotationPeriod) 
         { 
 
         }

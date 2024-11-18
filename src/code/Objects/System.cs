@@ -11,6 +11,8 @@
         /// <summary>Name of system</summary>
         public string Name { get { return _name; } set { _name = value; } }
 
+        public int Count { get { return _objects.Count; } }
+
         /// <summary>Creates an empty <see cref="System"/>.</summary>
         public System()
         {

@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Raylib_cs;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Astral_simulation.DatFiles
 {
@@ -24,75 +21,60 @@ namespace Astral_simulation.DatFiles
 
         /// <summary>Encodes a scene's information and stores it into a .DAT file.</summary>
         /// <param name="scene">Scene to read data from.</param>
-        public static void EncodeSystem(Scene scene)
+        public static void EncodeSystem(System system)
         {
-            if (UData.CurrentProject is not null)
+            // Transform information to JSON object
+            string[] jsons = JsonfyGos(system);
+            // Open file stream
+            FileStream stream = new FileStream($"{system.Name}.DAT", FileMode.Create);
+            using BinaryWriter writer = new BinaryWriter(stream);
+            // Write placeholder data to the beginning of the file
+            writer.Write(system.Count); // Object count placeholder (Int-32)
+            writer.Write(_offset); // Table placeholder (Int-32)
+            // Move writer after placeholder
+            _offset += 8; // Int-32 + Int-32 = 8 bytes
+            // Encode and write JSON data       
+            for (int i = 0; i < jsons.Length; i++)
             {
-                // Transform information to JSON object
-                string[] jsons = JsonfyGos(scene.GameObjects);
-                // Open file stream
-                FileStream stream = new FileStream(UData.CurrentProject.ProjectFolder + $"/scenes/{scene.Name}.DAT", FileMode.Create);
-                using BinaryWriter writer = new BinaryWriter(stream);
-                // Write placeholder data to the beginning of the file
-                writer.Write(scene.GameObjects.Count); // Object count placeholder (Int-32)
-                writer.Write(_offset); // Table placeholder (Int-32)
-                // Move writer after placeholder
-                _offset += 8; // Int-32 + Int-32 = 8 bytes
-                // Encode and write JSON data       
-                for (int i = 0; i < jsons.Length; i++)
-                {
-                    // Define game objects section
-                    string name = "";
-                    switch (i)
-                    {
-                        case 0: // UModel section
-                            name = MODELS_SECTION;
-                            break;
-                        case 1: // UCamera section
-                            name = CAMERAS_SECTION;
-                            break;
-                    }
-
-                    // Encrypt string to byte array
-                    byte[] data = Encrypt(jsons[i], UData.CurrentProject.EncryptionKey, UData.CurrentProject.SymmetricalVector);
-                    // Create DAT file entry
-                    DatFileEntry entry = new DatFileEntry(name, _offset, data.Length);
-                    _entries.Add(entry);
-                    // Write data to file
-                    writer.Write(data);
-                    _offset += data.Length;
-                }
-                // Write entries table
-                int tableOffset = _offset;
-                foreach (DatFileEntry entry in _entries)
-                {
-                    writer.Write(entry.Name);
-                    writer.Write(entry.Index);
-                    writer.Write(entry.Size);
-                }
-                // Go back to the beginning of the file to write important data
-                stream.Seek(0, SeekOrigin.Begin);
-                writer.Write(_entries.Count);
-                writer.Write(tableOffset);
-                /* Which gives us a similar file structure : 
-                    * 
-                    * Entries count
-                    * Table offset
-                    * Files data at specific location
-                    * Entries informations (Name, size, index), aka information table
-                    * */
-
-                // Reset internal data
-                _offset = 0;
-                _entries.Clear();
+                // Encrypt string to byte array
+                byte[] data = Encrypt(jsons[i], RLoading.EncryptionKey, RLoading.SymmetricalVector);
+                // Create DAT file entry
+                DatFileEntry entry = new DatFileEntry(system.Name, _offset, data.Length);
+                _entries.Add(entry);
+                // Write data to file
+                writer.Write(data);
+                _offset += data.Length;
             }
+            // Write entries table
+            int tableOffset = _offset;
+            foreach (DatFileEntry entry in _entries)
+            {
+                writer.Write(entry.Name);
+                writer.Write(entry.Index);
+                writer.Write(entry.Size);
+            }
+            // Go back to the beginning of the file to write important data
+            stream.Seek(0, SeekOrigin.Begin);
+            writer.Write(_entries.Count);
+            writer.Write(tableOffset);
+            /* Which gives us a similar file structure : 
+                * 
+                * Entries count
+                * Table offset
+                * Files data at specific location
+                * Entries informations (Name, size, index), aka information table
+                * */
+
+            // Reset internal data
+            _offset = 0;
+            _entries.Clear();
         }
 
         /// <summary>Reads a .DAT file and decodes the scene informations from it.</summary>
         /// <param name="path">Path to the .DAT file.</param>
         /// <returns>Uniray corresponding Scene.</returns>
         /// <exception cref="Exception">No file found exception.</exception>
-        public static Scene DecodeScene(string path, byte[] key, byte[] iv)
+        public static System DecodeScene(string path, byte[] key, byte[] iv)
         {
             if (!Path.Exists(path)) throw new Exception("No .DAT file was found at the given location");
             // Open file stream
@@ -112,7 +94,7 @@ namespace Astral_simulation.DatFiles
                 int size = reader.ReadInt32();
                 _entries.Add(new DatFileEntry(entryName, index, size));
             }
-            List<GameObject3D> objects = new List<GameObject3D>();
+            List<System> objects = new List<System>();
             // Read entries data
             foreach (DatFileEntry entry in _entries)
             {
@@ -123,22 +105,13 @@ namespace Astral_simulation.DatFiles
                 datFile.Read(encryptedData, 0, encryptedData.Length);
                 // Decrypt data
                 string text = Decrypt(encryptedData, key, iv);
-                switch (entry.Name)
-                {
-                    case MODELS_SECTION:
-                        List<UModel>? models = JsonConvert.DeserializeObject<List<UModel>>(text);
-                        if (models is not null) objects.AddRange(models);
-                        break;
-                    case CAMERAS_SECTION:
-                        List<UCamera>? cameras = JsonConvert.DeserializeObject<List<UCamera>>(text);
-                        if (cameras is not null) objects.AddRange(cameras);
-                        break;
-                }
+                List<AstralObject>? _system = JsonConvert.DeserializeObject<List<AstralObject>>(text); // Create object list
+                if (_system is not null) objects.Add(new System(_system, "PLACEHOLDER")); // Create system
             }
             // Reset entries list
             _entries.Clear();
             // Create scene
-            return new Scene("PLACEHOLDER", objects);
+            return objects.First(); // Return first system
         }
 
         /// <summary>Encrypts data with the AES algorithm.</summary>
@@ -208,40 +181,29 @@ namespace Astral_simulation.DatFiles
             return text;
         }
 
-        /// <summary>Transforms a list of <see cref="GameObject3D"/> to JSON information.</summary>
-        /// <param name="gos">List of <see cref="GameObject3D"/> to use.</param>
+        /// <summary>Transforms a list of <see cref="AstralObject"/> to JSON information.</summary>
+        /// <param name="gos">List of <see cref="AstralObject"/> to use.</param>
         /// <returns>JSON object under a string format.</returns>
-        private static string[] JsonfyGos(List<GameObject3D> gos)
+        private static string[] JsonfyGos(System system)
         {
             // Open the jsons
-            string modelsJson = "[";
-            string cameraJson = "[";
+            string jsonStream = "[";
             // Go through every element of the scene's list
-            foreach (GameObject3D go in gos)
+            system.ForEach(obj =>
             {
-                if (go is UModel model)
-                {
-                    modelsJson += "{" + "X: " + model.X + ",Y: " + model.Y + ",Z: " + model.Z + ",Yaw: " + model.Yaw +
-                    ",Pitch: " + model.Pitch + ",Roll: " + model.Roll + ",ModelID: \"" + model.ModelID + "\",TextureID: \"" + model.TextureID + "\", Transform:";
-                    modelsJson += JsonConvert.SerializeObject(model.Transform);
-                    modelsJson += "}, ";
-                }
-                else if (go is UCamera camera)
-                {
-                    cameraJson += JsonConvert.SerializeObject(camera);
-                    cameraJson += ",";
-                }
-
-            }
+                /*jsonStream += "{" + "X: " + model.X + ",Y: " + model.Y + ",Z: " + model.Z + ",Yaw: " + model.Yaw +
+                ",Pitch: " + model.Pitch + ",Roll: " + model.Roll + ",ModelID: \"" + model.ModelID + "\",TextureID: \"" + model.TextureID + "\", Transform:";
+                jsonStream += JsonConvert.SerializeObject(model.Transform);
+                jsonStream += "}, ";*/
+            });
+            
             // Delete the last comma of the jsons
 
-            if (modelsJson != "[") modelsJson = modelsJson.Substring(0, modelsJson.LastIndexOf(','));
-            if (cameraJson != "[") cameraJson = cameraJson.Substring(0, cameraJson.LastIndexOf(','));
+            if (jsonStream != "[") jsonStream = jsonStream.Substring(0, jsonStream.LastIndexOf(','));
 
-            // Close the jsons
-            modelsJson += "]";
-            cameraJson += "]";
-            return new string[] { modelsJson, cameraJson };
+            // Close the json
+            jsonStream += "]";
+            return [jsonStream]; // return json
         }
     }
 }
