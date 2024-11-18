@@ -1,0 +1,152 @@
+[
+    {
+        "Name" : "Sun",
+        "Position": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 6,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.046,
+        "Mass": 1988400E24
+    },
+    {
+        "Name": "Mercure",
+        "Position": {
+            "X": 3.9,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 0.03,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.00040,
+        "Mass":0.33E24
+    },
+    {
+        "Name": "Venus",
+        "Position": {
+            "X": 7.2,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 177.36,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.00025,
+        "Mass": 4.87E24
+    },
+    {
+        "Name": "Earth",
+        "Position": {
+            "X": 10,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 23.44,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.00042,
+        "Mass": 5.97E24
+    },
+    {
+        "Name": "Mars",
+        "Position": {
+            "X": 15.2,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 25.19,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.00023,
+        "Mass": 0.642E24
+    },
+    {
+        "Name": "Jupiter",
+        "Position": {
+            "X": 51.9,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 3.12,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.0047,
+        "Mass":1898E24
+    },
+    {
+        "Name": "Saturn",
+        "Position": {
+            "X": 95.1,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 26.73,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.0039,
+        "Mass": 568E24
+    },
+    {
+        "Name": "Uranus",
+        "Position": {
+            "X": 191.4,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 97.8,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.0017,
+        "Mass": 86.8E24
+    },
+    {
+        "Name": "Neptune",
+        "Position": {
+            "X": 299.9,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 29.58,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.0016,
+        "Mass": 102E24
+    },
+    {
+        "Name": "Pluto",
+        "Position": {
+            "X": 393.7,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation":{
+            "X": 122.53,
+            "Y": 0,
+            "Z": 0
+        },
+        "Radius": 0.000079,
+        "Mass": 0.013E24
+    }
+]
