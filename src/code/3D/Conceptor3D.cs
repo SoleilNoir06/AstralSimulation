@@ -10,6 +10,8 @@ namespace Astral_simulation
     /// <summary>Represents an instance of <see cref="Conceptor3D"/>.</summary>
     public static class Conceptor3D
     {
+        public const int Scale = 15000000; // UA
+
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
@@ -19,7 +21,7 @@ namespace Astral_simulation
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;
 
-        public static List<AstralObject> AstralObjects = new List<AstralObject>();
+        public static System System = new System(); // Init default system
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
@@ -86,10 +88,10 @@ namespace Astral_simulation
             DrawSkybox(_skybox);
             
             // System rendering
-            foreach (AstralObject obj in AstralObjects)
+            System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-            }
+            });
 
             EndMode3D();
         }
@@ -101,14 +103,14 @@ namespace Astral_simulation
             {
                 Ray mouse = GetMouseRay(GetMousePosition(), _camera); // Get mouse ray
                 RayCollision collision = new RayCollision(); // Init collision detection object
-                foreach (AstralObject obj in AstralObjects)
+                System.ForEach(obj =>
                 {
                     collision = GetRayCollisionMesh(mouse, _sphereMesh, obj.Transform); // Check hit
                     if (collision.Hit)
                     {
                         Conceptor2D.Components.Add(new Button("Jupiter", 20, 20, 200, 40));
                     }
-                }
+                });
                 if (!collision.Hit) Conceptor2D.Components.Clear();
             }
         }
