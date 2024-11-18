@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="RayGUI_cs">
       <HintPath>external\libraries\RayGUI_cs\RayGUI_cs.dll</HintPath>
     </Reference>

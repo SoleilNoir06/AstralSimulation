@@ -21,9 +21,9 @@ namespace Astral_simulation
         // -----------------------------------------------------------
 
         public float RotationSpeed;
-        public float RotationPeriod; // On itslef
-        public float OrbitPeriod; // Around parent object
-        public float TiltAngle;
+        public string Name { get; set; }
+        public float RotationPeriod { get; set; } // On itslef
+        public float OrbitPeriod { get; set; } // Around parent object
 
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
@@ -130,13 +130,12 @@ namespace Astral_simulation
         /// <param name="radius">Radius of the object.</param>
         /// <param name="orbitPeriod">Obritation period of the object.</param>
         /// <param name="rotationPeriod">Rotatino period of the object.</param>
-        public AstralObject(long mass, long radius, float orbitPeriod, float rotationPeriod, float tiltAngle)
+        public AstralObject(long mass, long radius, float orbitPeriod, float rotationPeriod)
         {
             _mass = mass;
             _radius = radius;
             OrbitPeriod = orbitPeriod;
             RotationPeriod = rotationPeriod;
-            TiltAngle = tiltAngle;
 
             Transform = Raymath.MatrixRotateX(90 * Raylib.DEG2RAD); // Set default transform
             Material1 = Raylib.LoadMaterialDefault(); // Load default materials and set default shader
@@ -163,6 +162,12 @@ namespace Astral_simulation
         protected void UpdateVectorialSpeed()
         {
             // Update
+        }
+
+        protected void UpdateSize()
+        {
+            // Update
+             
         }
     }
 }
