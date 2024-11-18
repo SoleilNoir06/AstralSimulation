@@ -74,7 +74,7 @@ namespace Astral_simulation.DatFiles
         /// <param name="path">Path to the .DAT file.</param>
         /// <returns>Uniray corresponding Scene.</returns>
         /// <exception cref="Exception">No file found exception.</exception>
-        public static System DecodeScene(string path, byte[] key, byte[] iv)
+        public static List<AstralObject> DecodeSystem(string path, byte[] key, byte[] iv)
         {
             if (!Path.Exists(path)) throw new Exception("No .DAT file was found at the given location");
             // Open file stream
@@ -94,7 +94,7 @@ namespace Astral_simulation.DatFiles
                 int size = reader.ReadInt32();
                 _entries.Add(new DatFileEntry(entryName, index, size));
             }
-            List<System> objects = new List<System>();
+            List<AstralObject> objects = new List<AstralObject>();
             // Read entries data
             foreach (DatFileEntry entry in _entries)
             {
@@ -106,12 +106,12 @@ namespace Astral_simulation.DatFiles
                 // Decrypt data
                 string text = Decrypt(encryptedData, key, iv);
                 List<AstralObject>? _system = JsonConvert.DeserializeObject<List<AstralObject>>(text); // Create object list
-                if (_system is not null) objects.Add(new System(_system, "PLACEHOLDER")); // Create system
+                if (_system is not null) objects.AddRange(_system); // Create system
             }
             // Reset entries list
             _entries.Clear();
             // Create scene
-            return objects.First(); // Return first system
+            return objects; // Return first system
         }
 
         /// <summary>Encrypts data with the AES algorithm.</summary>
@@ -191,10 +191,10 @@ namespace Astral_simulation.DatFiles
             // Go through every element of the scene's list
             system.ForEach(obj =>
             {
-                /*jsonStream += "{" + "X: " + model.X + ",Y: " + model.Y + ",Z: " + model.Z + ",Yaw: " + model.Yaw +
-                ",Pitch: " + model.Pitch + ",Roll: " + model.Roll + ",ModelID: \"" + model.ModelID + "\",TextureID: \"" + model.TextureID + "\", Transform:";
-                jsonStream += JsonConvert.SerializeObject(model.Transform);
-                jsonStream += "}, ";*/
+                jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y +",Z: " + obj.Position.Z + 
+                "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y +",Z: " + obj.Rotation.Z + "},Radius: " + obj.Radius +
+                ",Mass: " + obj.Mass;
+                jsonStream += "}, ";
             });
             
             // Delete the last comma of the jsons

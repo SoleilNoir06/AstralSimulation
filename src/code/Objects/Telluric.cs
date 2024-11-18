@@ -26,7 +26,7 @@ namespace Astral_simulation
     }
     public class Telluric : AstralObject
     {
-        public Telluric(long mass, long radius, float orbitPeriod, float rotationPeriod, Texture2D texture) : base (mass, radius, orbitPeriod, rotationPeriod)
+        public Telluric(Int128 mass, long radius, float orbitPeriod, float rotationPeriod, Texture2D texture) : base (mass, radius, orbitPeriod, rotationPeriod)
         {
             Raylib.SetMaterialTexture(ref Material1, MaterialMapIndex.Diffuse, texture); // Set texture to planet mesh material
         }

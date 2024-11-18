@@ -16,7 +16,7 @@ namespace Astral_simulation
         // Private instances
         // -----------------------------------------------------------
 
-        private static Mesh _sphereMesh = GenMeshSphere(5, 50, 50); // Default planet mesh
+        private static Mesh _sphereMesh = GenMeshSphere(0.5f, 50, 50); // Default planet mesh
         private static Camera3D _camera;
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;

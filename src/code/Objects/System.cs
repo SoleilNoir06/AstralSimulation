@@ -16,8 +16,8 @@
         /// <summary>Creates an empty <see cref="System"/>.</summary>
         public System()
         {
-            _objects = RLoading.LoadDefaultSystem(); // Load default solar system
-            _name = DEFAULT_SYSTEM_NAME;
+            _objects = RLoading.LoadDefaultSystem();
+            _name = "Solar";
         }
 
         /// <summary>Creates an new <see cref="System"/>.</summary>

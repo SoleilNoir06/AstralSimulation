@@ -1,4 +1,7 @@
-﻿namespace Astral_simulation
+﻿using Astral_simulation.DatFiles;
+using Newtonsoft.Json;
+
+namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="RLoading"/>.</summary>
     internal static class RLoading
@@ -10,7 +13,8 @@
         /// <returns>The list of astral objects of the default solar system.</returns>
         public static List<AstralObject> LoadDefaultSystem()
         {
-            return new List<AstralObject>();
+            List<AstralObject> objs = DatEncoder.DecodeSystem("assets/json/Solar.DAT", EncryptionKey, SymmetricalVector); // Load default solar system from .DAT
+            return objs;
         }
 
         /// <summary>Inits the RLoading class.</summary>

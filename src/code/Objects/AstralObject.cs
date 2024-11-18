@@ -1,27 +1,36 @@
-﻿using Raylib_cs;
+﻿using Newtonsoft.Json.Linq;
+using Raylib_cs;
 using System.Numerics;
 
 namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="AstralObject"/>.</summary>
-    public unsafe abstract class AstralObject
+    public unsafe class AstralObject
     {
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
 
-        private long _mass;
-        private long _radius;
+        private Int128 _mass;
+        private float _radius;
         private float _gravitationPull;
         private Vector3 _rotation;
         private Vector3 _velocity;
+        private string _name;
 
         // -----------------------------------------------------------
         // Public attributes
         // -----------------------------------------------------------
 
         public float RotationSpeed;
-        public string Name { get; set; }
+        public string Name { get { return _name; } 
+            set 
+            {
+                _name = value;
+                // Load corresponding texture
+                Raylib.SetMaterialTexture(ref Material1, MaterialMapIndex.Diffuse, Raylib.LoadTexture($"assets/textures/{Name}.png"));
+            } 
+        }
         public float RotationPeriod { get; set; } // On itslef
         public float OrbitPeriod { get; set; } // Around parent object
 
@@ -89,7 +98,7 @@ namespace Astral_simulation
         }
 
         /// <summary>Radius of the object.</summary>
-        public long Radius
+        public float Radius
         {
             get
             {
@@ -103,7 +112,7 @@ namespace Astral_simulation
         }
 
         /// <summary>Mass of the object.</summary>
-        public long Mass 
+        public Int128 Mass 
         { 
             get
             { 
@@ -130,12 +139,13 @@ namespace Astral_simulation
         /// <param name="radius">Radius of the object.</param>
         /// <param name="orbitPeriod">Obritation period of the object.</param>
         /// <param name="rotationPeriod">Rotatino period of the object.</param>
-        public AstralObject(long mass, long radius, float orbitPeriod, float rotationPeriod)
+        public AstralObject(Int128 mass, float radius, float orbitPeriod, float rotationPeriod)
         {
             _mass = mass;
             _radius = radius;
             OrbitPeriod = orbitPeriod;
             RotationPeriod = rotationPeriod;
+            _name = "";
 
             Transform = Raymath.MatrixRotateX(90 * Raylib.DEG2RAD); // Set default transform
             Material1 = Raylib.LoadMaterialDefault(); // Load default materials and set default shader
