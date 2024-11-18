@@ -21,6 +21,7 @@ namespace Astral_simulation
         // -----------------------------------------------------------
 
         public float RotationSpeed;
+        public string Name { get; set; }
         public float RotationPeriod { get; set; } // On itslef
         public float OrbitPeriod { get; set; } // Around parent object
 
@@ -161,6 +162,12 @@ namespace Astral_simulation
         protected void UpdateVectorialSpeed()
         {
             // Update
+        }
+
+        protected void UpdateSize()
+        {
+            // Update
+             
         }
     }
 }

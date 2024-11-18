@@ -20,7 +20,7 @@ namespace Astral_simulation
             RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/SupremeSpike-KVO8D.ttf"));
 
 #if DEBUG
-            Conceptor3D.System = new System(new List<AstralObject>() { new Telluric(500, 500, 500, 500, LoadTexture("assets/textures/jupiter.png")) }, "Debug");
+            Conceptor3D.System = new System(new List<AstralObject>() { new Telluric(500, 500, 500, 500, LoadTexture("assets/textures/Earth.png")) }, "Debug");
 #endif
             // Fullscreen window
             SetWindowState(ConfigFlags.ResizableWindow);
