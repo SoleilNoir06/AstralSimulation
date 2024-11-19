@@ -32,7 +32,7 @@ namespace Astral_simulation
             {
                 BeginDrawing();
 
-                ClearBackground(Color.White);
+                ClearBackground(Color.Black);
 
                 Conceptor3D.Draw(); // Draw 3D environnment
 

@@ -44,6 +44,14 @@
             return _objects.Where(x => x.Name == name).ToArray()[0]; // Return 1st element matching
         }
 
+        /// <summary>Gets the first matching object in system.</summary>
+        /// <param name="index">Index of the object to search for.</param>
+        /// <returns>Corresponding <see cref="AstralObject"/>.</returns>
+        public AstralObject GetObject(int index)
+        {
+            return _objects[index]; // Return 1st element matching
+        }
+
         public override string ToString()
         {
             return $"The system {_name} contains {_objects.Count}";
