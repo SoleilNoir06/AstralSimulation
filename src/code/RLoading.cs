@@ -1,5 +1,4 @@
 ﻿using Astral_simulation.DatFiles;
-using Newtonsoft.Json;
 
 namespace Astral_simulation
 {
@@ -26,6 +25,11 @@ namespace Astral_simulation
             DatEncoder.EncodeSystem(new System(objects, "Solar")); */
 
             List<AstralObject> objs = DatEncoder.DecodeSystem("assets/json/Solar.DAT", EncryptionKey, SymmetricalVector); // Load default solar system from .DAT
+            // Fix rotation
+            objs.ForEach(obj =>
+            {
+                obj.Pitch += 90f;
+            });
 
             return objs;
         }
