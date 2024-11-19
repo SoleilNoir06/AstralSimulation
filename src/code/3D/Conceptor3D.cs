@@ -23,12 +23,15 @@ namespace Astral_simulation
 
         public static System System = new System(); // Init default system
 
+        // Debug
+        public static Vector3 targetPosition = Vector3.Zero;
+
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
         {
             _camera = new Camera3D() // Init 3D camera
             {
-                Position = new Vector3(1f, 1f, 1f),
+                Position = new Vector3(2f, 2f, 2f),
                 Target = Vector3.UnitX,
                 Up = Vector3.UnitY,
                 FovY = 45f,
@@ -49,6 +52,26 @@ namespace Astral_simulation
             // Update planet click
             ClickAstralObject();
 
+            if (IsKeyPressed(KeyboardKey.M))
+            {
+                _cameraMotion.InTransit = true;
+                targetPosition = System.GetObject("Mars").Position + System.GetObject("Mars").Radius * 5 * Raymath.Vector3Normalize(Raymath.Vector3Subtract(System.GetObject("Sun").Position, System.GetObject("Mars").Position));
+                _cameraMotion.Velocity = Vector3.Zero;
+            }
+
+            if (_cameraMotion.InTransit)
+            {
+                if (Raymath.Vector3Subtract(_camera.Position, targetPosition).Length() > 0.02f)
+                {
+                    _camera.Position = Raymath.Vector3Lerp(_camera.Position, targetPosition, (float)GetFrameTime());
+                    _camera.Target = Raymath.Vector3Lerp(_camera.Target, targetPosition, (float)GetFrameTime());
+                }
+                else
+                {
+                    _cameraMotion.InTransit = false;
+                }
+            }
+
             // -----------------------------------------------------------
             // Draw calls
             // -----------------------------------------------------------
@@ -60,10 +83,7 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-                //DrawSphere(obj.Position, 5, Color.Red);
             });
-
-            DrawGrid(500, 500);
 
             EndMode3D();
         }
