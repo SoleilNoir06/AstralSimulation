@@ -21,8 +21,6 @@ namespace Astral_simulation
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;
 
-        public static bool testc = false;
-
         public static System System = new System(); // Init default system
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
@@ -62,13 +60,7 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-                //DrawSphere(obj.Position, 2, Color.Red)
-                /*if (obj.Name == "Pluto" && !testc)
-                {
-                    _camera.Position = obj.Position - new Vector3(0.0005f, 0.0005f, 0.0005f);
-                    _camera.Target = obj.Position;
-                    testc = true;
-                }*/
+                //DrawSphere(obj.Position, 5, Color.Red);
             });
 
             DrawGrid(500, 500);
@@ -101,8 +93,6 @@ namespace Astral_simulation
                 if (!click) Conceptor2D.Components.Clear();
             }
         }
-
-
 
         /// <summary>Closes the conceptor by unloading all its data.</summary>
         public static void Close()
@@ -143,31 +133,34 @@ namespace Astral_simulation
             if (IsKeyDown(KeyboardKey.W))
             {
                 _cameraMotion.Velocity += CameraMotion.SPEED * GetCameraForward(ref _camera);
-                _cameraMotion.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.S))
             {
                 _cameraMotion.Velocity -= CameraMotion.SPEED * GetCameraForward(ref _camera);
-                _cameraMotion.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.A))
             {
                 _cameraMotion.Velocity -= CameraMotion.SPEED * GetCameraRight(ref _camera);
-                _cameraMotion.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.D))
             {
                 _cameraMotion.Velocity += CameraMotion.SPEED * GetCameraRight(ref _camera);
-                _cameraMotion.Moving = true;
             }
-            else if (!_cameraMotion.Moving)
+            if (IsKeyDown(KeyboardKey.F))
             {
-                _cameraMotion.Velocity = Vector3.Zero;
+                _cameraMotion.Velocity -= CameraMotion.SPEED * GetCameraUp(ref _camera);
             }
-            _cameraMotion.Moving = false;
+            if (IsKeyDown(KeyboardKey.Space))
+            {
+                _cameraMotion.Velocity += CameraMotion.SPEED * GetCameraUp(ref _camera);
+            }
         }
 
-        // Fonction pour vérifier l'intersection entre un rayon et une sphère
+        /// <summary>Checks for non-inverse sphere-ray collision.</summary>
+        /// <param name="ray">Ray to use.</param>
+        /// <param name="sphereCenter">Sphere center.</param>
+        /// <param name="sphereRadius">Sphere radius.</param>
+        /// <returns><see langword="true"/> if collision occurs. <see langword="false"/> otherwise.</returns>
         public static bool CheckRaySphereIntersection(Ray ray, Vector3 sphereCenter, float sphereRadius)
         {
             Vector3 m = Raymath.Vector3Subtract(ray.Position, sphereCenter);
