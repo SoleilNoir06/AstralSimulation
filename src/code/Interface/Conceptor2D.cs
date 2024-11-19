@@ -23,7 +23,8 @@ namespace Astral_simulation
 
         public static void DisplayObject(AstralObject obj)
         {
-            
+            Components.Clear();
+            Components.Add(new Button(obj.Name, 20, 20, 200, 80));
         }
     }
 }
