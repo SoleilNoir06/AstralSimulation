@@ -25,10 +25,11 @@ namespace Astral_simulation
             DatEncoder.EncodeSystem(new System(objects, "Solar")); */
 
             List<AstralObject> objs = DatEncoder.DecodeSystem("assets/json/Solar.DAT", EncryptionKey, SymmetricalVector); // Load default solar system from .DAT
-            // Fix rotation
+            // Fix objects value
             objs.ForEach(obj =>
             {
                 obj.Pitch += 90f;
+                obj.Radius = obj.Radius * 20;
             });
 
             return objs;
