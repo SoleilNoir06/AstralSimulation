@@ -30,6 +30,7 @@ namespace Astral_simulation
             {
                 obj.Pitch += 90f;
                 obj.Radius = obj.Radius * 20;
+                obj.Position *= 20;
             });
 
             return objs;
