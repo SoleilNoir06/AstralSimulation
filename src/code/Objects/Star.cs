@@ -19,7 +19,7 @@
         /// <param name="radius">Radius of star</param>
         /// <param name="orbitPeriod">Orbit period of star</param>
         /// <param name="rotationPeriod">Rotation period of star</param>
-        public Star(float temperature, float brightness, float luminosity, Int128 mass, long radius, float orbitPeriod, float rotationPeriod): base (mass, radius, orbitPeriod, rotationPeriod)
+        public Star(float temperature, float brightness, float luminosity, float mass, long radius, float orbitPeriod, float rotationPeriod): base (mass, radius, orbitPeriod, rotationPeriod)
         { 
             Temperature = temperature;
             Brightness = brightness;

@@ -11,7 +11,7 @@ namespace Astral_simulation
         // Private instances
         // -----------------------------------------------------------
 
-        private Int128 _mass;
+        private float _mass;
         private float _radius;
         private float _gravitationPull;
         private Vector3 _rotation;
@@ -112,7 +112,7 @@ namespace Astral_simulation
         }
 
         /// <summary>Mass of the object.</summary>
-        public Int128 Mass 
+        public float Mass 
         { 
             get
             { 
@@ -139,7 +139,7 @@ namespace Astral_simulation
         /// <param name="radius">Radius of the object.</param>
         /// <param name="orbitPeriod">Obritation period of the object.</param>
         /// <param name="rotationPeriod">Rotatino period of the object.</param>
-        public AstralObject(Int128 mass, float radius, float orbitPeriod, float rotationPeriod)
+        public AstralObject(float mass, float radius, float orbitPeriod, float rotationPeriod)
         {
             _mass = mass;
             _radius = radius;

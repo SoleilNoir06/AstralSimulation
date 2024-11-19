@@ -108,7 +108,7 @@ namespace Astral_simulation
                     collision = GetRayCollisionMesh(mouse, _sphereMesh, obj.Transform); // Check hit
                     if (collision.Hit)
                     {
-                        Conceptor2D.DisplayObject(obj);
+                        Conceptor2D.DisplayObject(obj); // Display object infos
                     }
                 });
                 if (!collision.Hit) Conceptor2D.Components.Clear();
