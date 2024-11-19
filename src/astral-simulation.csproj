@@ -26,6 +26,9 @@
     <None Update="assets\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="external\crypto.env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
 	<None Update="raylib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
