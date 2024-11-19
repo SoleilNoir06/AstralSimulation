@@ -31,7 +31,7 @@ namespace Astral_simulation
                 Raylib.SetMaterialTexture(ref Material1, MaterialMapIndex.Diffuse, Raylib.LoadTexture($"assets/textures/{Name}.png"));
             } 
         }
-        public float RotationPeriod { get; set; } // On itslef
+        public float RotationPeriod { get; set; } // On itself
         public float OrbitPeriod { get; set; } // Around parent object
 
         public Material Material1; // Generic material used for planet mesh

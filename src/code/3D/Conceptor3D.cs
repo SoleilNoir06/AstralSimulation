@@ -102,19 +102,27 @@ namespace Astral_simulation
         {
             if (IsMouseButtonPressed(MouseButton.Left))
             {
+                bool click = false;
                 Ray mouse = GetMouseRay(GetMousePosition(), _camera); // Get mouse ray
                 RayCollision collision = new RayCollision(); // Init collision detection object
                 System.ForEach(obj =>
                 {
-                    collision = GetRayCollisionMesh(mouse, _sphereMesh, obj.Transform); // Check hit
-                    if (collision.Hit)
+                    if (!click)
                     {
-                        Conceptor2D.DisplayObject(obj); // Display object infos
+                        RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
+                        if (currentCollision.Hit) 
+                        {
+                            collision = currentCollision;
+                            Conceptor2D.DisplayObject(obj); // Display object infos
+                            click = true;
+                        }
                     }
                 });
-                if (!collision.Hit) Conceptor2D.Components.Clear();
+                if (!click) Conceptor2D.Components.Clear();
             }
         }
+
+
 
         /// <summary>Closes the conceptor by unloading all its data.</summary>
         public static void Close()
