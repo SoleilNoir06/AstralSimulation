@@ -45,40 +45,6 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // -----------------------------------------------------------
-            // Camera updates
-            // -----------------------------------------------------------
-            /*if (IsMouseButtonReleased(MouseButton.Middle))
-            {
-                _cameraMotion.Mouse = _cameraMotion.FakePosition;
-                _cameraMotion.MouseOrigin = Vector2.Zero;
-            }
-            if (IsMouseButtonDown(MouseButton.Middle))
-            {
-
-                if (IsKeyDown(KeyboardKey.LeftShift))
-                {
-                    Vector3 movX = GetCameraRight(ref _camera) * GetMouseDelta().X * (_cameraMotion.Distance / 200);
-                    Vector3 movY = GetCameraUp(ref _camera) * GetMouseDelta().Y * (_cameraMotion.Distance / 200);
-
-                    _camera.Position -= movX * 0.2f;
-                    _camera.Target -= movX * 0.2f;
-
-                    _camera.Position += movY * 0.2f;
-                    _camera.Target += movY * 0.2f;
-                }
-                else
-                {
-                    if (_cameraMotion.MouseOrigin == Vector2.Zero) { _cameraMotion.MouseOrigin = GetMousePosition(); }
-                    _cameraMotion.FakePosition = MoveCamera(_cameraMotion.Distance, ref _camera, _camera.Target, _cameraMotion.YOffset, false, _cameraMotion.Mouse, _cameraMotion.MouseOrigin);
-                }
-            }
-            else
-            {
-                _cameraMotion.Distance -= GetMouseWheelMove() * 2f * _cameraMotion.LinearVelocity;
-                MoveCamera(_cameraMotion.Distance, ref _camera, _camera.Target, _cameraMotion.YOffset, true, _cameraMotion.Mouse, _cameraMotion.MouseOrigin);
-            }*/
-
             // Move camera
             MoveCamera();
 
@@ -115,20 +81,28 @@ namespace Astral_simulation
         {
             if (IsMouseButtonPressed(MouseButton.Left))
             {
+                bool click = false;
                 Ray mouse = GetMouseRay(GetMousePosition(), _camera); // Get mouse ray
-                RayCollision collision = new RayCollision(); // Init collision detection object
+                bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
                 {
-                    if (obj.Name == "Jupiter") Console.Write("");
-                    collision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
-                    if (collision.Hit)
+                    if (!click)
                     {
-                        Conceptor2D.DisplayObject(obj); // Display object infos
+                        //RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
+                        bool currentCollision = CheckRaySphereIntersection(mouse, obj.Position, obj.Radius);
+                        if (currentCollision) 
+                        {
+                            collision = currentCollision;
+                            Conceptor2D.DisplayObject(obj); // Display object infos
+                            click = true;
+                        }
                     }
                 });
-                if (!collision.Hit) Conceptor2D.Components.Clear();
+                if (!click) Conceptor2D.Components.Clear();
             }
         }
+
+
 
         /// <summary>Closes the conceptor by unloading all its data.</summary>
         public static void Close()
@@ -191,6 +165,19 @@ namespace Astral_simulation
                 _cameraMotion.Velocity = Vector3.Zero;
             }
             _cameraMotion.Moving = false;
+        }
+
+        // Fonction pour vérifier l'intersection entre un rayon et une sphère
+        public static bool CheckRaySphereIntersection(Ray ray, Vector3 sphereCenter, float sphereRadius)
+        {
+            Vector3 m = Raymath.Vector3Subtract(ray.Position, sphereCenter);
+            float b = Raymath.Vector3DotProduct(m, ray.Direction);
+            float c = Raymath.Vector3DotProduct(m, m) - sphereRadius * sphereRadius;
+
+            if (c > 0.0f && b > 0.0f) return false;
+
+            float discr = b * b - c;
+            return discr >= 0.0f;
         }
     }
 }
