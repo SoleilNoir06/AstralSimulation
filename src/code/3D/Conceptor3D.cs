@@ -16,10 +16,12 @@ namespace Astral_simulation
         // Private instances
         // -----------------------------------------------------------
 
-        private static Mesh _sphereMesh = GenMeshSphere(0.5f, 50, 50); // Default planet mesh
+        private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
         private static Camera3D _camera;
         private static CameraMotion _cameraMotion = new CameraMotion();
         private static Skybox _skybox;
+
+        public static bool testc = false;
 
         public static System System = new System(); // Init default system
 
@@ -43,39 +45,8 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // -----------------------------------------------------------
-            // Camera updates
-            // -----------------------------------------------------------
-            if (IsMouseButtonReleased(MouseButton.Middle))
-            {
-                _cameraMotion.Mouse = _cameraMotion.FakePosition;
-                _cameraMotion.MouseOrigin = Vector2.Zero;
-            }
-            if (IsMouseButtonDown(MouseButton.Middle))
-            {
-
-                if (IsKeyDown(KeyboardKey.LeftShift))
-                {
-                    Vector3 movX = GetCameraRight(ref _camera) * GetMouseDelta().X * (_cameraMotion.Distance / 200);
-                    Vector3 movY = GetCameraUp(ref _camera) * GetMouseDelta().Y * (_cameraMotion.Distance / 200);
-
-                    _camera.Position -= movX * 0.2f;
-                    _camera.Target -= movX * 0.2f;
-
-                    _camera.Position += movY * 0.2f;
-                    _camera.Target += movY * 0.2f;
-                }
-                else
-                {
-                    if (_cameraMotion.MouseOrigin == Vector2.Zero) { _cameraMotion.MouseOrigin = GetMousePosition(); }
-                    _cameraMotion.FakePosition = MoveCamera(_cameraMotion.Distance, ref _camera, _camera.Target, _cameraMotion.YOffset, false, _cameraMotion.Mouse, _cameraMotion.MouseOrigin);
-                }
-            }
-            else
-            {
-                _cameraMotion.Distance -= GetMouseWheelMove() * 2f * Raymath.Vector3Distance(_camera.Position, _camera.Target) / 10;
-                MoveCamera(_cameraMotion.Distance, ref _camera, _camera.Target, _cameraMotion.YOffset, true, _cameraMotion.Mouse, _cameraMotion.MouseOrigin);
-            }
+            // Move camera
+            MoveCamera();
 
             // Update planet click
             ClickAstralObject();
@@ -91,8 +62,16 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-                DrawSphere(obj.Position, 2, Color.Red);
+                //DrawSphere(obj.Position, 2, Color.Red)
+                /*if (obj.Name == "Pluto" && !testc)
+                {
+                    _camera.Position = obj.Position - new Vector3(0.0005f, 0.0005f, 0.0005f);
+                    _camera.Target = obj.Position;
+                    testc = true;
+                }*/
             });
+
+            DrawGrid(500, 500);
 
             EndMode3D();
         }
@@ -104,13 +83,14 @@ namespace Astral_simulation
             {
                 bool click = false;
                 Ray mouse = GetMouseRay(GetMousePosition(), _camera); // Get mouse ray
-                RayCollision collision = new RayCollision(); // Init collision detection object
+                bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
                 {
                     if (!click)
                     {
-                        RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
-                        if (currentCollision.Hit) 
+                        //RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
+                        bool currentCollision = CheckRaySphereIntersection(mouse, obj.Position, obj.Radius);
+                        if (currentCollision) 
                         {
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
@@ -131,63 +111,73 @@ namespace Astral_simulation
         }
 
         /// <summary>Moves the conceptor's camera.</summary>
-        /// <param name="distance">Distance from the target.</param>
-        /// <param name="camera">3D camera of the editor.</param>
-        /// <param name="targetPosition">Target of the camera.</param>
-        /// <param name="yOffset">Well I don't even remember what this is.</param>
-        /// <param name="zoom">Is zoom possible ?</param>
-        /// <param name="mousePos">Last position of the mouse</param>
-        /// <param name="mouseOrigin">First position of the mouse when interacting with movement</param>
-        /// <returns></returns>
-        static Vector2 MoveCamera(float distance, ref Camera3D camera, Vector3 targetPosition, float yOffset, bool zoom, Vector2 mousePos, Vector2 mouseOrigin)
+        static void MoveCamera()
         {
-            float alpha = 0;
-            float beta = 0;
-            Vector2 verticalPosition = CalculateVerticalPosition(distance, targetPosition, ref alpha, zoom, mousePos, mouseOrigin);
-            Vector2 HorizontalPosition = CalculateHorizontalPosition(distance, targetPosition, ref beta, zoom, mousePos, mouseOrigin);
-            camera.Position.Y = verticalPosition.Y + yOffset;
-            camera.Position.X = HorizontalPosition.X;
-            camera.Position.Z = HorizontalPosition.Y;
+            if (IsMouseButtonDown(MouseButton.Left))
+            {
+                Vector2 mouse = GetMouseDelta();
+                _cameraMotion.Yaw -= mouse.X * 0.003f;
+                _cameraMotion.Pitch -= mouse.Y * 0.003f;
 
-            return mousePos - (mouseOrigin - GetMousePosition());
+                _cameraMotion.Pitch = Math.Clamp(_cameraMotion.Pitch, -1.5f, 1.5f);
+
+                // Calculate camera direction
+                Vector3 direction;
+                direction.X = (float)(Math.Cos(_cameraMotion.Pitch) * Math.Sin(_cameraMotion.Yaw));
+                direction.Y = (float)Math.Sin(_cameraMotion.Pitch);
+                //direction.Y = 0;
+                direction.Z = (float)(Math.Cos(_cameraMotion.Pitch) * Math.Cos(_cameraMotion.Yaw));
+
+                // Add target
+                _camera.Target = Vector3.Add(_camera.Position, direction);
+            }
+
+            _camera.Position += _cameraMotion.Velocity;
+            _camera.Target += _cameraMotion.Velocity;
+
+            Vector3 zoom = GetMouseWheelMove() * CameraMotion.SPEED * 10000 * GetCameraForward(ref _camera);
+            _camera.Position += zoom;
+            _camera.Target += zoom;
+
+            // Keys movement
+            if (IsKeyDown(KeyboardKey.W))
+            {
+                _cameraMotion.Velocity += CameraMotion.SPEED * GetCameraForward(ref _camera);
+                _cameraMotion.Moving = true;
+            }
+            if (IsKeyDown(KeyboardKey.S))
+            {
+                _cameraMotion.Velocity -= CameraMotion.SPEED * GetCameraForward(ref _camera);
+                _cameraMotion.Moving = true;
+            }
+            if (IsKeyDown(KeyboardKey.A))
+            {
+                _cameraMotion.Velocity -= CameraMotion.SPEED * GetCameraRight(ref _camera);
+                _cameraMotion.Moving = true;
+            }
+            if (IsKeyDown(KeyboardKey.D))
+            {
+                _cameraMotion.Velocity += CameraMotion.SPEED * GetCameraRight(ref _camera);
+                _cameraMotion.Moving = true;
+            }
+            else if (!_cameraMotion.Moving)
+            {
+                _cameraMotion.Velocity = Vector3.Zero;
+            }
+            _cameraMotion.Moving = false;
         }
 
-        /// <summary>Calculate the vertical position of the conceptor's camera.</summary>
-        /// <param name="distance">Distance from the target</param>
-        /// <param name="targetPosition">Target of the camera</param>
-        /// <param name="alpha">Alpha angle</param>
-        /// <param name="zoom">Is zoom possible ?</param>
-        /// <param name="m">Last position of the mouse</param>
-        /// <param name="mO">First position of the mouse when interacting with movement</param>
-        /// <returns></returns>
-        static Vector2 CalculateVerticalPosition(float distance, Vector3 targetPosition, ref float alpha, bool zoom, Vector2 m, Vector2 mO)
+        // Fonction pour vérifier l'intersection entre un rayon et une sphère
+        public static bool CheckRaySphereIntersection(Ray ray, Vector3 sphereCenter, float sphereRadius)
         {
-            if (!zoom) alpha = (m.Y - (mO.Y - GetMousePosition().Y)) * 0.005f;
-            else alpha = m.Y * 0.005f;
-            float offsetZ = (float)(distance * Math.Cos(alpha));
-            float offsetY = (float)(distance * Math.Sin(alpha));
-            float posY = targetPosition.Y + offsetY;
-            float posZ = targetPosition.Z + offsetZ;
-            return new Vector2(posZ, posY);
-        }
+            Vector3 m = Raymath.Vector3Subtract(ray.Position, sphereCenter);
+            float b = Raymath.Vector3DotProduct(m, ray.Direction);
+            float c = Raymath.Vector3DotProduct(m, m) - sphereRadius * sphereRadius;
 
-        /// <summary>Calculates the horizontal position of the conceptor's camera.</summary>
-        /// <param name="distance">Distance from the target</param>
-        /// <param name="targetPosition">Target of the camera</param>
-        /// <param name="beta">Beta angle</param>
-        /// <param name="zoom">Is zoom possible ?</param>
-        /// <param name="m">Last position of the mouse</param>
-        /// <param name="mO">First position of the mouse when interacting with movement</param>
-        /// <returns></returns>
-        static Vector2 CalculateHorizontalPosition(float distance, Vector3 targetPosition, ref float beta, bool zoom, Vector2 m, Vector2 mO)
-        {
-            if (!zoom) beta = (m.X - (mO.X - GetMousePosition().X)) * 0.005f;
-            else beta = m.X * 0.005f;
-            float offsetX = (float)(distance * Math.Cos(beta));
-            float offsetZ = (float)(distance * Math.Sin(beta));
-            float posX = targetPosition.X + offsetX;
-            float posZ = targetPosition.Z + offsetZ;
-            return new Vector2(posX, posZ);
+            if (c > 0.0f && b > 0.0f) return false;
+
+            float discr = b * b - c;
+            return discr >= 0.0f;
         }
     }
 }
