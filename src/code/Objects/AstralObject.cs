@@ -107,6 +107,7 @@ namespace Astral_simulation
             set
             {
                 _radius = value;
+                UpdateScale();
                 UpdateGravitationPull();
             }
         }
@@ -178,6 +179,12 @@ namespace Astral_simulation
         {
             // Update
              
+        }
+
+        protected void UpdateScale()
+        {
+            Matrix4x4 mat = Raymath.MatrixScale(_radius, _radius, _radius);
+            Transform = Raymath.MatrixMultiply(mat, Transform); // Multiply matrix
         }
     }
 }

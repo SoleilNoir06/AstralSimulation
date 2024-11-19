@@ -91,6 +91,7 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
+                DrawSphere(obj.Position, 2, Color.Red);
             });
 
             EndMode3D();
