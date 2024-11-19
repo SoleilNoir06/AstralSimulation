@@ -25,7 +25,8 @@ namespace Astral_simulation
         {
             Components.Clear();
             Components.Add(new Button(obj.Name.ToString(), 0, 0, 100, 100));
-            Components.Add(new Button(obj.Radius.ToString(), 0, 100, 100, 100));
+            Components.Add(new Button($"Radius : {obj.Radius}", 0, 100, 100, 100));
+
         }
     }
 }
