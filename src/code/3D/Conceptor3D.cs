@@ -108,7 +108,7 @@ namespace Astral_simulation
                     collision = GetRayCollisionMesh(mouse, _sphereMesh, obj.Transform); // Check hit
                     if (collision.Hit)
                     {
-                        Conceptor2D.Components.Add(new Button("Jupiter", 20, 20, 200, 40));
+                        Conceptor2D.DisplayObject(obj);
                     }
                 });
                 if (!collision.Hit) Conceptor2D.Components.Clear();

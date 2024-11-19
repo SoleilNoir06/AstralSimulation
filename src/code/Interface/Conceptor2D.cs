@@ -20,5 +20,10 @@ namespace Astral_simulation
                 if (!focus) SetMouseCursor(MouseCursor.Default);
             }
         }
+
+        public static void DisplayObject(AstralObject obj)
+        {
+            
+        }
     }
 }
