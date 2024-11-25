@@ -5,7 +5,10 @@ namespace Astral_simulation
     /// <summary>Represents an instance of <see cref="Probe"/>.</summary>
     public class Probe
     {
-        public const float SPEED = 0.000005f; // Default speed (= ~24 * Light Speed)
+        public static float IMMERSIVE_SPEED = 0.000005f;
+        public static float VOYAGER_SPEED = 0.005f;
+
+        public static float SPEED = IMMERSIVE_SPEED; // Default speed (= ~24 * Light Speed)
 
         private int _targetId;
 
