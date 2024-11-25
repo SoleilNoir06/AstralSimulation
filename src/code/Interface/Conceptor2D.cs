@@ -25,7 +25,9 @@ namespace Astral_simulation
         {
             Components.Clear();
             Components.Add(new Button(obj.Name.ToString(), 0, 0, 100, 100));
-            Components.Add(new Button(obj.Radius.ToString(), 0, 100, 100, 100));
+            Components.Add(new Button($"Radius : {obj.Radius * 15000000}km", 0, 100, 300, 100));
+            Components.Add(new Button($"Mass : {obj.Mass}*10^24 kg", 0, 200, 300, 100));
+
         }
     }
 }
