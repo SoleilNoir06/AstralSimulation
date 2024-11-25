@@ -5,10 +5,8 @@ using System.Numerics;
 namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="ShaderCenter"/>.</summary>
-    public static class ShaderCenter
+    public static unsafe class ShaderCenter
     {
-        private static int sunPosLoc;
-
         /// <summary>Cubemap loading shader.</summary>
         public static Shader CubemapShader;
 
@@ -38,13 +36,18 @@ namespace Astral_simulation
             LightingShader = LoadShader("assets/shaders/lighting.vs", "assets/shaders/lighting.fs");
 
             // Load sun shader
-            SunShader = LoadShader(null, "assets/shaders/sun.fs");
-            sunPosLoc = GetShaderLocation(SunShader, "lightPosition"); // Get sun position loc
-            int sunColorLoc = GetShaderLocation(SunShader, "lightColor"); // Get color loc
-            int sunLightIntensity = GetShaderLocation(SunShader, "intensity"); // Get intensity loc
-            // Set values
-            SetShaderValue(SunShader, sunColorLoc, new Vector3(1), ShaderUniformDataType.Vec3);
-            SetShaderValue(SunShader, sunLightIntensity, 0.5f, ShaderUniformDataType.Float);
+            SunShader = LoadShader(null, "assets/shaders/flares.fs");
+            int shineTexLoc = GetShaderLocation(SunShader, "shineTexture");
+            Texture2D shineTexture = LoadTexture("assets/shaders/textures/shine.png");
+            SetShaderValueTexture(SunShader, shineTexLoc, shineTexture);
+
+            //// Load frame buffer
+            //uint frameBuffer = Rlgl.LoadFramebuffer(shineTexture.Width, shineTexture.Height); // Load texture
+            //Rlgl.EnableFramebuffer(frameBuffer); // Enable frame buffer
+            //uint texId = Rlgl.LoadTexture(null, shineTexture.Width, shineTexture.Height, PixelFormat.UncompressedR8G8B8A8, 1); // Load texture
+
+            //Rlgl.ActiveDrawBuffers(1);
+            //Rlgl.FramebufferAttach(frameBuffer, texId, FramebufferAttachType.ColorChannel0, FramebufferAttachTextureType.Texture2D, 0);
         }
 
         /// <summary>Closes the shader center by unloading every program shader from the vRAM.</summary>
@@ -53,22 +56,6 @@ namespace Astral_simulation
             // Unload shader programs from vRAM
             UnloadShader(CubemapShader);
             UnloadShader(SkyboxShader);
-        }
-
-        /// <summary>Updates screen resolution to shaders.</summary>
-        /// <param name="width">Screen width</param>
-        /// <param name="height">Screen height.</param>
-        public static void UpdateResolution(int width, int height)
-        {
-            int resLoc = GetShaderLocation(SunShader, "resolution");
-            SetShaderValue(SunShader, resLoc, new Vector2(width, height), ShaderUniformDataType.Vec2);
-        }
-
-        /// <summary>Updates sun position to shader.</summary>
-        /// <param name="position">Sun position.</param>
-        public static void UpdateSun(Vector3 position, float radius)
-        {
-            SetShaderValue(SunShader, sunPosLoc, GetWorldToScreen(position, Conceptor3D.Camera), ShaderUniformDataType.Vec2);
         }
     }
 }

@@ -29,8 +29,6 @@ namespace Astral_simulation
             Conceptor3D.System = new System();
 #endif
 
-            ShaderCenter.UpdateResolution(GetScreenWidth(), GetScreenHeight()); // Update resolution to shaders
-
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop
             {

@@ -82,9 +82,6 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // Update sun to shaders
-            ShaderCenter.UpdateSun(System.GetObject(0).Position, System.GetObject(0).Radius);
-
             // Move camera
             MoveCamera();
 
