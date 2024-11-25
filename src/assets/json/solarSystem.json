@@ -28,7 +28,7 @@
         },
         "Radius": 0.00040,
         "Mass":0.33,
-        "Speed": 0.23
+        "InitialVelocity": 0.23
     },
     {
         "Name": "Venus",
@@ -44,7 +44,7 @@
         },
         "Radius": 0.00025,
         "Mass": 4.87,
-        "Speed": 0.17
+        "InitialVelocity": 0.17
     },
     {
         "Name": "Earth",
@@ -60,7 +60,7 @@
         },
         "Radius": 0.00042,
         "Mass": 5.97,
-        "Speed": 0.14
+        "InitialVelocity": 0.14
     },
     {
         "Name": "Mars",
@@ -76,7 +76,7 @@
         },
         "Radius": 0.00023,
         "Mass": 0.642,
-        "Speed": 0.12
+        "InitialVelocity": 0.12
     },
     {
         "Name": "Jupiter",
@@ -92,7 +92,7 @@
         },
         "Radius": 0.0047,
         "Mass":1898,
-        "Speed": 0.062
+        "InitialVelocity": 0.062
     },
     {
         "Name": "Saturn",
@@ -108,7 +108,7 @@
         },
         "Radius": 0.0039,
         "Mass": 568,
-        "Speed": 0.046
+        "InitialVelocity": 0.046
     },
     {
         "Name": "Uranus",
@@ -124,7 +124,7 @@
         },
         "Radius": 0.0017,
         "Mass": 86.8,
-        "Speed": 0.033
+        "InitialVelocity": 0.033
     },
     {
         "Name": "Neptune",
@@ -140,7 +140,7 @@
         },
         "Radius": 0.0016,
         "Mass": 102,
-        "Speed": 0.026
+        "InitialVelocity": 0.026
     },
     {
         "Name": "Pluto",
@@ -156,6 +156,6 @@
         },
         "Radius": 0.000079,
         "Mass": 0.013,
-        "Speed": 0.022
+        "InitialVelocity": 0.022
     }
 ]

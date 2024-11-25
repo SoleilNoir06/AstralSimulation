@@ -17,6 +17,7 @@ namespace Astral_simulation
         private Vector3 _rotation;
         private Vector3 _velocity;
         private string _name;
+        private float _initialVelocity;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -94,6 +95,18 @@ namespace Astral_simulation
             {
                 _rotation.Z = value;
                 UpdateRotation();
+            }
+        }
+
+        public float InitialVelocity
+        {
+            get
+            {
+                return _initialVelocity;
+            }
+            set
+            {
+                _initialVelocity = value;
             }
         }
 
