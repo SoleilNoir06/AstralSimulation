@@ -15,6 +15,11 @@ namespace Astral_simulation
             InitWindow(500, 300, "Astra Simulation");
             SetWindowState(ConfigFlags.UndecoratedWindow);
 
+            // Fullscreen window
+            SetWindowState(ConfigFlags.ResizableWindow);
+            SetWindowState(ConfigFlags.MaximizedWindow);
+
+            // DONT CHANGE ORDER
             RLoading.Init(); // Inits the RLoading instance (loads crypto keys)
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
@@ -23,16 +28,15 @@ namespace Astral_simulation
 #if DEBUG
             Conceptor3D.System = new System();
 #endif
-            // Fullscreen window
-            SetWindowState(ConfigFlags.ResizableWindow);
-            SetWindowState(ConfigFlags.MaximizedWindow);
+
+            ShaderCenter.UpdateResolution(GetScreenWidth(), GetScreenHeight()); // Update resolution to shaders
 
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop
             {
                 BeginDrawing();
 
-                ClearBackground(Color.White);
+                ClearBackground(Color.Black);
 
                 Conceptor3D.Draw(); // Draw 3D environnment
 
