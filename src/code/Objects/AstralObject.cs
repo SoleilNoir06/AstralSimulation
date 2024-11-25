@@ -184,7 +184,12 @@ namespace Astral_simulation
         protected void UpdateScale()
         {
             Matrix4x4 mat = Raymath.MatrixScale(_radius, _radius, _radius);
-            Transform = Raymath.MatrixMultiply(mat, Transform); // Multiply matrix
+
+            mat.M14 = Transform.M14;
+            mat.M24 = Transform.M24;
+            mat.M34 = Transform.M34;
+
+            Transform = mat;
         }
     }
 }

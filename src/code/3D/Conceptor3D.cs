@@ -3,18 +3,28 @@ using static Raylib_cs.Raylib;
 using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
-using RayGUI_cs;
 
 namespace Astral_simulation
 {
+    /// <summary>Defines the state of the conceptor</summary>
+    public enum Mode
+    {
+        Immersive, // 12 f*cking light-years
+        Voyager // NASA VIEW
+    }
+
     /// <summary>Represents an instance of <see cref="Conceptor3D"/>.</summary>
     public static class Conceptor3D
     {
-        public const int Scale = 15000000; // UA
+        public const int SCALE = 15000000; // UA
+        public const float VOYAGER_SCALE = 20; // Voyager mode scale
+        public const float VOYAGER_DISTANCE_SCALE = 20;
 
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
+
+        private static Mode _style;
 
         private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
         private static Skybox _skybox;
@@ -39,6 +49,34 @@ namespace Astral_simulation
             };
             Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
             //_skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
+        }
+
+        /// <summary>Toggles the conceptor's style.</summary>
+        public static void ToggleConceptorMode()
+        {
+            if (_style == Mode.Immersive)
+            {
+                _style = Mode.Voyager;
+                Probe.SPEED = Probe.VOYAGER_SPEED;
+                //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
+                System.ForEach(obj =>
+                {
+                    obj.Position /= VOYAGER_DISTANCE_SCALE;
+                    if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
+                    Camera.Position = new Vector3(15, 40, 15);
+                });
+            }
+            else 
+            {
+                _style = Mode.Immersive;
+                Probe.SPEED = Probe.IMMERSIVE_SPEED;
+                //System.ForEach(obj => obj.Radius /= VOYAGER_SCALE);
+                System.ForEach(obj =>
+                {
+                    obj.Position *= VOYAGER_DISTANCE_SCALE;
+                    if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
+                });
+            }
         }
 
         /// <summary>Draws the 3D environnement of the application.</summary>
@@ -72,6 +110,10 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
+                if (_style == Mode.Voyager)
+                {
+                    DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
+                }
             });
 
             EndMode3D();
@@ -134,6 +176,12 @@ namespace Astral_simulation
                 Probe.Velocity = Vector3.Zero;
             }
 
+            // Mode switch
+            if (IsKeyPressed(KeyboardKey.Tab))
+            {
+                ToggleConceptorMode();
+            }
+
             if (Probe.InTransit)
             {
                 if (Raymath.Vector3Subtract(Camera.Position, Probe.Target.Position).Length() > 0.02f)
@@ -177,30 +225,45 @@ namespace Astral_simulation
             Camera.Position += zoom;
             Camera.Target += zoom;
 
+            Probe.Moving = false;
+
             // Keys movement
             if (IsKeyDown(KeyboardKey.W))
             {
                 Probe.Velocity += Probe.SPEED * GetCameraForward(ref Camera);
+                Probe.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.S))
             {
                 Probe.Velocity -= Probe.SPEED * GetCameraForward(ref Camera);
+                Probe.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.A))
             {
                 Probe.Velocity -= Probe.SPEED * GetCameraRight(ref Camera);
+                Probe.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.D))
             {
                 Probe.Velocity += Probe.SPEED * GetCameraRight(ref Camera);
+                Probe.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.F))
             {
                 Probe.Velocity -= Probe.SPEED * GetCameraUp(ref Camera);
+                Probe.Moving = true;
             }
             if (IsKeyDown(KeyboardKey.Space))
             {
                 Probe.Velocity += Probe.SPEED * GetCameraUp(ref Camera);
+                Probe.Moving = true;
+            }
+            if (!Probe.Moving)
+            {
+                if (_style == Mode.Voyager) 
+                { 
+                    Probe.Velocity = Vector3.Zero;
+                }
             }
         }
 
