@@ -30,7 +30,8 @@
         "Mass":0.33,
         "InitialVelocity": 0.23,
         "SemiMajorAxis" : 7.72e-5,
-        "SemiMinorAxis": 7.56e-5
+        "SemiMinorAxis": 7.56e-5,
+        "OrbitalEccentricity": 0.206
     },
     {
         "Name": "Venus",
@@ -48,7 +49,8 @@
         "Mass": 4.87,
         "InitialVelocity": 0.17,
         "SemiMajorAxis": 1.44e-4,
-        "SemiMinorAxis": 1.44e-4
+        "SemiMinorAxis": 1.44e-4,
+        "OrbitalEccentricity": 0.007
     },
     {
         "Name": "Earth",
@@ -66,7 +68,8 @@
         "Mass": 5.97,
         "InitialVelocity": 0.14,
         "SemiMajorAxis": 2e-4,
-        "SemiMinorAxis": 2e-4
+        "SemiMinorAxis": 2e-4,
+        "OrbitalEccentricity": 0.017
     },
     {
         "Name": "Mars",
@@ -84,7 +87,8 @@
         "Mass": 0.642,
         "InitialVelocity": 0.12,
         "SemiMajorAxis": 3.04e-4,
-        "SemiMinorAxis": 3.03e-4
+        "SemiMinorAxis": 3.03e-4,
+        "OrbitalEccentricity": 0.094
     },
     {
         "Name": "Jupiter",
@@ -102,7 +106,8 @@
         "Mass":1898,
         "InitialVelocity": 0.062,
         "SemiMajorAxis": 1.039e-3,
-        "SemiMinorAxis": 1.04e-3
+        "SemiMinorAxis": 1.04e-3,
+        "OrbitalEccentricity": 0.049
     },
     {
         "Name": "Saturn",
@@ -120,7 +125,8 @@
         "Mass": 568,
         "InitialVelocity": 0.046,
         "SemiMajorAxis": 1.907e-3,
-        "SemiMinorAxis": 6.51e-4
+        "SemiMinorAxis": 6.51e-4,
+        "OrbitalEccentricity": 0.052
     },
     {
         "Name": "Uranus",
@@ -138,7 +144,8 @@
         "Mass": 86.8,
         "InitialVelocity": 0.033,
         "SemiMajorAxis": 3.827e-3,
-        "SemiMinorAxis": 3.82e-3
+        "SemiMinorAxis": 3.82e-3,
+        "OrbitalEccentricity": 0.047
     },
     {
         "Name": "Neptune",
@@ -156,7 +163,8 @@
         "Mass": 102,
         "InitialVelocity": 0.026,
         "SemiMajorAxis": 6e-3,
-        "SemiMinorAxis": 6.00e-3
+        "SemiMinorAxis": 6.00e-3,
+        "OrbitalEccentricity": 0.010
     },
     {
         "Name": "Pluto",
@@ -174,6 +182,7 @@
         "Mass": 0.013,
         "InitialVelocity": 0.022,
         "SemiMajorAxis": 7.87e-3,
-        "SemiMinorAxis": 7.63e-3
+        "SemiMinorAxis": 7.63e-3,
+        "OrbitalEccentricity": 0.244
     }
 ]

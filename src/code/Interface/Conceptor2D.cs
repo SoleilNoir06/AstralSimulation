@@ -31,7 +31,7 @@ namespace Astral_simulation
             Components.Add(new Button($"Position : {obj.Position}", 0, 300, 500, 100));
             Components.Add(new Button($"gPull of {obj.Name} : {Physics.ComputeGravitationPull(obj.Mass, obj.Position)}", 0, 400, 500, 100));
             Components.Add(new Button($"Semi-major axis : {obj.SemiMajorAxis}", 0, 500, 500, 100));
-            Components.Add(new Button($"Orbital velocity : {Physics.ComputeOrbitalVelocity(obj.SemiMajorAxis, obj.Position)}", 0, 600, 500, 100));
+            Components.Add(new Button($"Eccentricity : {obj.OrbitalEccentricity}", 0, 600, 500, 100));
         }
     }
 }

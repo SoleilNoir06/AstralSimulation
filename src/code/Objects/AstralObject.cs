@@ -20,6 +20,7 @@ namespace Astral_simulation
         private float _initialVelocity;
         private float _semiMajorAxis;
         private float _semiMinorAxis;
+        private float _orbitalEccentricity;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -136,6 +137,19 @@ namespace Astral_simulation
             set
             {
                 _semiMinorAxis = value;
+            }
+        }
+
+        /// <summary>Orbital eccentricity of the object</summary>
+        public float OrbitalEccentricity
+        {
+            get
+            {
+                return _orbitalEccentricity;
+            }
+            set
+            {
+                _orbitalEccentricity = value;
             }
         }
 
