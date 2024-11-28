@@ -12,7 +12,8 @@
             "Z": 0
         },
         "Radius": 0.046,
-        "Mass": 1988400
+        "Mass": 1988400,
+        "Tilt": 7.25
     },
     {
         "Name": "Mercury",
@@ -31,7 +32,10 @@
         "InitialVelocity": 0.23,
         "SemiMajorAxis" : 7.72e-5,
         "SemiMinorAxis": 7.56e-5,
-        "OrbitalEccentricity": 0.206
+        "OrbitalEccentricity": 0.206,
+        "Perihelion": 61.33,
+        "Aphelion": 93.09,
+        "Tilt": 0.01
     },
     {
         "Name": "Venus",
@@ -50,7 +54,10 @@
         "InitialVelocity": 0.17,
         "SemiMajorAxis": 1.44e-4,
         "SemiMinorAxis": 1.44e-4,
-        "OrbitalEccentricity": 0.007
+        "OrbitalEccentricity": 0.007,
+        "Perihelion": 143.30,
+        "Aphelion": 145.26,
+        "Tilt": 177.4 
     },
     {
         "Name": "Earth",
@@ -69,7 +76,10 @@
         "InitialVelocity": 0.14,
         "SemiMajorAxis": 2e-4,
         "SemiMinorAxis": 2e-4,
-        "OrbitalEccentricity": 0.017
+        "OrbitalEccentricity": 0.017,
+        "Perihelion": 196.13,
+        "Aphelion": 202.80,
+        "Tilt": 23.44
     },
     {
         "Name": "Mars",
@@ -88,7 +98,10 @@
         "InitialVelocity": 0.12,
         "SemiMajorAxis": 3.04e-4,
         "SemiMinorAxis": 3.03e-4,
-        "OrbitalEccentricity": 0.094
+        "OrbitalEccentricity": 0.094,
+        "Perihelion": 275.54,
+        "Aphelion": 332.31,
+        "Tilt": 25.19
     },
     {
         "Name": "Jupiter",
@@ -107,7 +120,10 @@
         "InitialVelocity": 0.062,
         "SemiMajorAxis": 1.039e-3,
         "SemiMinorAxis": 1.04e-3,
-        "OrbitalEccentricity": 0.049
+        "OrbitalEccentricity": 0.049,
+        "Perihelion": 987.57,
+        "Aphelion": 1088.00,
+        "Tilt": 3.13
     },
     {
         "Name": "Saturn",
@@ -126,7 +142,10 @@
         "InitialVelocity": 0.046,
         "SemiMajorAxis": 1.907e-3,
         "SemiMinorAxis": 6.51e-4,
-        "OrbitalEccentricity": 0.052
+        "OrbitalEccentricity": 0.052,
+        "Perihelion": 1799.76,
+        "Aphelion": 2004.68,
+        "Tilt": 26.73
     },
     {
         "Name": "Uranus",
@@ -145,7 +164,10 @@
         "InitialVelocity": 0.033,
         "SemiMajorAxis": 3.827e-3,
         "SemiMinorAxis": 3.82e-3,
-        "OrbitalEccentricity": 0.047
+        "OrbitalEccentricity": 0.047,
+        "Perihelion": 3646.66,
+        "Aphelion": 4008.42,
+        "Tilt": 97.77
     },
     {
         "Name": "Neptune",
@@ -164,7 +186,10 @@
         "InitialVelocity": 0.026,
         "SemiMajorAxis": 6e-3,
         "SemiMinorAxis": 6.00e-3,
-        "OrbitalEccentricity": 0.010
+        "OrbitalEccentricity": 0.010,
+        "Perihelion": 5946.34,
+        "Aphelion": 6049.39,
+        "Tilt": 28.32
     },
     {
         "Name": "Pluto",
@@ -183,6 +208,9 @@
         "InitialVelocity": 0.022,
         "SemiMajorAxis": 7.87e-3,
         "SemiMinorAxis": 7.63e-3,
-        "OrbitalEccentricity": 0.244
+        "OrbitalEccentricity": 0.244,
+        "Perihelion": 5915.68,
+        "Aphelion": 9834.83,
+        "Tilt": 119.61
     }
 ]

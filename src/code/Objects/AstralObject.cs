@@ -21,6 +21,9 @@ namespace Astral_simulation
         private float _semiMajorAxis;
         private float _semiMinorAxis;
         private float _orbitalEccentricity;
+        private float _perihelion;
+        private float _aphelion;
+        private float _tilt;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -150,6 +153,43 @@ namespace Astral_simulation
             set
             {
                 _orbitalEccentricity = value;
+            }
+        }
+
+        /// <summary>Perihelion of the object</summary>
+        public float Perihelion
+        {
+            get
+            {
+                return _perihelion;
+            }
+            set
+            {
+                _perihelion = value;
+            }
+        }
+        /// <summary>Aphelion of the object</summary>
+        public float Aphelion
+        {
+            get
+            {
+                return _aphelion;
+            }
+            set
+            {
+                _aphelion = value;
+            }
+        }
+         /// <summary>TIlt of the object</summary>
+        public float Tilt
+        {
+            get
+            {
+                return _tilt;
+            }
+            set
+            {
+                _tilt = value;
             }
         }
 

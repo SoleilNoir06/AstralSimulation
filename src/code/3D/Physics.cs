@@ -47,9 +47,11 @@ namespace astral_simulation
             return velocity;
         }
 
-        //public static float ComputeTrueAnomalia()
+        //public static float ComputeTrueAnomalia(float eccentricity, Vector3 planetPosition)
         //{
+        //    float r = ComputeDistanceBetweenSunAndPlanet(planetPosition);
 
+            
         //}
     }
 }
