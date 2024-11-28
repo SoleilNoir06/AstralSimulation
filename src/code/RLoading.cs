@@ -25,7 +25,7 @@ namespace Astral_simulation
             List<AstralObject>? objects = JsonConvert.DeserializeObject<List<AstralObject>>(data);
 
             DatEncoder.EncodeSystem(new System(objects, "Solar")); 
-            */           
+            */
             List<AstralObject> objs = DatEncoder.DecodeSystem("assets/json/Solar.DAT", EncryptionKey, SymmetricalVector); // Load default solar system from .DAT
             // Fix objects value
             objs.ForEach(obj =>
