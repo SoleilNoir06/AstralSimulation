@@ -28,7 +28,9 @@
         },
         "Radius": 0.00040,
         "Mass":0.33,
-        "Speed": 0.23
+        "InitialVelocity": 0.23,
+        "SemiMajorAxis" : 7.72e-5,
+        "SemiMinorAxis": 7.56e-5
     },
     {
         "Name": "Venus",
@@ -44,7 +46,9 @@
         },
         "Radius": 0.00025,
         "Mass": 4.87,
-        "Speed": 0.17
+        "InitialVelocity": 0.17,
+        "SemiMajorAxis": 1.44e-4,
+        "SemiMinorAxis": 1.44e-4
     },
     {
         "Name": "Earth",
@@ -60,7 +64,9 @@
         },
         "Radius": 0.00042,
         "Mass": 5.97,
-        "Speed": 0.14
+        "InitialVelocity": 0.14,
+        "SemiMajorAxis": 2e-4,
+        "SemiMinorAxis": 2e-4
     },
     {
         "Name": "Mars",
@@ -76,7 +82,9 @@
         },
         "Radius": 0.00023,
         "Mass": 0.642,
-        "Speed": 0.12
+        "InitialVelocity": 0.12,
+        "SemiMajorAxis": 3.04e-4,
+        "SemiMinorAxis": 3.03e-4
     },
     {
         "Name": "Jupiter",
@@ -92,7 +100,9 @@
         },
         "Radius": 0.0047,
         "Mass":1898,
-        "Speed": 0.062
+        "InitialVelocity": 0.062,
+        "SemiMajorAxis": 1.039e-3,
+        "SemiMinorAxis": 1.04e-3
     },
     {
         "Name": "Saturn",
@@ -108,7 +118,9 @@
         },
         "Radius": 0.0039,
         "Mass": 568,
-        "Speed": 0.046
+        "InitialVelocity": 0.046,
+        "SemiMajorAxis": 1.907e-3,
+        "SemiMinorAxis": 6.51e-4
     },
     {
         "Name": "Uranus",
@@ -124,7 +136,9 @@
         },
         "Radius": 0.0017,
         "Mass": 86.8,
-        "Speed": 0.033
+        "InitialVelocity": 0.033,
+        "SemiMajorAxis": 3.827e-3,
+        "SemiMinorAxis": 3.82e-3
     },
     {
         "Name": "Neptune",
@@ -140,7 +154,9 @@
         },
         "Radius": 0.0016,
         "Mass": 102,
-        "Speed": 0.026
+        "InitialVelocity": 0.026,
+        "SemiMajorAxis": 6e-3,
+        "SemiMinorAxis": 6.00e-3
     },
     {
         "Name": "Pluto",
@@ -156,6 +172,8 @@
         },
         "Radius": 0.000079,
         "Mass": 0.013,
-        "Speed": 0.022
+        "InitialVelocity": 0.022,
+        "SemiMajorAxis": 7.87e-3,
+        "SemiMinorAxis": 7.63e-3
     }
 ]

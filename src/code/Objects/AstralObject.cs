@@ -17,6 +17,9 @@ namespace Astral_simulation
         private Vector3 _rotation;
         private Vector3 _velocity;
         private string _name;
+        private float _initialVelocity;
+        private float _semiMajorAxis;
+        private float _semiMinorAxis;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -94,6 +97,45 @@ namespace Astral_simulation
             {
                 _rotation.Z = value;
                 UpdateRotation();
+            }
+        }
+
+        /// <summary>Initial velocity of planet</summary>
+        public float InitialVelocity
+        {
+            get
+            {
+                return _initialVelocity;
+            }
+            set
+            {
+                _initialVelocity = value;
+            }
+        }
+
+        /// <summary>Semi-major axis of orbital ellipse</summary>
+        public float SemiMajorAxis
+        {
+            get
+            {
+                return _semiMajorAxis;
+            }
+            set
+            {
+                _semiMajorAxis = value;
+            }
+        }
+
+        /// <summary>Semi-minor axis of orbital ellipse</summary>
+        public float SemiMinorAxis
+        {
+            get
+            {
+                return _semiMinorAxis;
+            }
+            set
+            {
+                _semiMinorAxis = value;
             }
         }
 

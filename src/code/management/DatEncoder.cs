@@ -193,7 +193,7 @@ namespace Astral_simulation.DatFiles
             {
                 jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y +",Z: " + obj.Position.Z + 
                 "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y +",Z: " + obj.Rotation.Z + "},Radius: " + obj.Radius +
-                ",Mass: " + obj.Mass;
+                ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity +",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis;
                 jsonStream += "}, ";
             });
             
