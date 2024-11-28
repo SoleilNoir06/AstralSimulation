@@ -22,6 +22,7 @@ namespace Astral_simulation
         public const float VOYAGER_SCALE = 20; // Voyager mode scale
         public const float VOYAGER_DISTANCE_SCALE = 20;
 
+        public static readonly Vector4 SUN_COLOR = new Vector4(0.5f, 0.41f, 0.3f, 1.0f); // Normalized
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
@@ -84,9 +85,6 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // Update sun to shaders
-            ShaderCenter.UpdateSun(System.GetObject(0).Position, System.GetObject(0).Radius);
-
             // Move camera
             MoveCamera();
 
@@ -124,10 +122,8 @@ namespace Astral_simulation
 
             EndTextureMode();
 
-            // Draw texture
-            BeginShaderMode(ShaderCenter.SunShader);
-            DrawTexturePro(_renderTexture.Texture, _srcRectangle, _destRectangle, Vector2.Zero, 0, Color.White);
-            EndShaderMode();
+            // Update post-pro shader
+            UpdatePostProcessingShader();
         }
 
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
@@ -269,6 +265,29 @@ namespace Astral_simulation
                     Probe.Velocity = Vector3.Zero;
                 }
             }
+        }
+
+        /// <summary>Updates the post-processing shader values.</summary>
+        public static void UpdatePostProcessingShader()
+        {
+            // Draw texture
+            BeginShaderMode(ShaderCenter.SunShader);
+            // Calculate new values
+            // Determine if sun behind or not
+            Vector3 camDirection = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
+            Vector3 sunDirection = Vector3.Normalize(-Camera.Position);
+            float dotProduct = Raymath.Vector3DotProduct(camDirection, sunDirection);
+            bool isSunVisible = dotProduct > 0;
+            if (isSunVisible) 
+            {
+                float camDist = Raymath.Clamp(25 / MathF.Log(Camera.Position.Length() + 1), 3, 25);
+                ShaderCenter.UpdateShine(Camera, camDist);
+            }
+
+            DrawTexturePro(_renderTexture.Texture, _srcRectangle, _destRectangle, Vector2.Zero, 0, Color.White);
+            EndShaderMode();
+
+            //DrawCircle((int)sunPos.X, (int)sunPos.Y, shineSize * 1000, Color.Blue);
         }
 
         /// <summary>Checks for non-inverse sphere-ray collision.</summary>

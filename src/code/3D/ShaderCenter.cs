@@ -5,9 +5,13 @@ using System.Numerics;
 namespace Astral_simulation
 {
     /// <summary>Represents an instance of <see cref="ShaderCenter"/>.</summary>
-    public static class ShaderCenter
+    public static unsafe class ShaderCenter
     {
-        private static int sunPosLoc;
+        // Post-processing shader locations
+        private static int _shinePosLoc;
+        private static int _timeLoc;
+        private static int _camDistLoc;
+        private static int _resolutionLoc;
 
         /// <summary>Cubemap loading shader.</summary>
         public static Shader CubemapShader;
@@ -36,15 +40,20 @@ namespace Astral_simulation
 
             // Load lighting shader
             LightingShader = LoadShader("assets/shaders/lighting.vs", "assets/shaders/lighting.fs");
+            LightingShader.Locs[(int)ShaderLocationIndex.VectorView] = GetShaderLocation(LightingShader, "viewPos");
+            int ambientLoc = GetShaderLocation(LightingShader, "ambient");
+            int lightColLoc = GetShaderLocation(LightingShader, "lightCol");
+            float[] ambient = new[] { 0.1f, 0.1f, 0.1f, 1.0f }; // Define ambient lighting level
+            SetShaderValue(LightingShader, ambientLoc, ambient, ShaderUniformDataType.Vec4);
+            SetShaderValue(LightingShader, lightColLoc, Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
 
-            // Load sun shader
-            SunShader = LoadShader(null, "assets/shaders/sun.fs");
-            sunPosLoc = GetShaderLocation(SunShader, "lightPosition"); // Get sun position loc
-            int sunColorLoc = GetShaderLocation(SunShader, "lightColor"); // Get color loc
-            int sunLightIntensity = GetShaderLocation(SunShader, "intensity"); // Get intensity loc
-            // Set values
-            SetShaderValue(SunShader, sunColorLoc, new Vector3(1), ShaderUniformDataType.Vec3);
-            SetShaderValue(SunShader, sunLightIntensity, 0.5f, ShaderUniformDataType.Float);
+            // Load sun shader and relative layout locations
+            SunShader = LoadShader(null, "assets/shaders/flares.fs");
+            _shinePosLoc = GetShaderLocation(SunShader, "sourcePos");
+            _resolutionLoc = GetShaderLocation(SunShader, "iResolution");
+            _timeLoc = GetShaderLocation(SunShader, "time");
+            _camDistLoc = GetShaderLocation(SunShader, "camDist");
+            SetShaderValue(SunShader, GetShaderLocation(SunShader, "sunCol"), Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
         }
 
         /// <summary>Closes the shader center by unloading every program shader from the vRAM.</summary>
@@ -55,20 +64,21 @@ namespace Astral_simulation
             UnloadShader(SkyboxShader);
         }
 
-        /// <summary>Updates screen resolution to shaders.</summary>
-        /// <param name="width">Screen width</param>
-        /// <param name="height">Screen height.</param>
-        public static void UpdateResolution(int width, int height)
+        /// <summary>Updates shine texture sampler2D (EndShaderMode() forces batch drawing and consequently resets active textures)</summary>
+        public static void UpdateShine(Camera3D camera, float camDist)
         {
-            int resLoc = GetShaderLocation(SunShader, "resolution");
-            SetShaderValue(SunShader, resLoc, new Vector2(width, height), ShaderUniformDataType.Vec2);
+            // Calculate 2D position of the camera
+            Vector2 sunPos = GetWorldToScreen(Vector3.Zero, camera);
+            // Set values
+            SetShaderValue(SunShader, _shinePosLoc, sunPos, ShaderUniformDataType.Vec2);
+            SetShaderValue(SunShader, _timeLoc, GetTime(), ShaderUniformDataType.Float); // Update time
+            SetShaderValue(SunShader, _camDistLoc, camDist, ShaderUniformDataType.Float); // Update camera distance to sun
+            SetShaderValue(LightingShader, LightingShader.Locs[(int)ShaderLocationIndex.VectorView], camera.Position, ShaderUniformDataType.Vec3);
         }
 
-        /// <summary>Updates sun position to shader.</summary>
-        /// <param name="position">Sun position.</param>
-        public static void UpdateSun(Vector3 position, float radius)
+        public static void SetResolution(int width, int height)
         {
-            SetShaderValue(SunShader, sunPosLoc, GetWorldToScreen(position, Conceptor3D.Camera), ShaderUniformDataType.Vec2);
+            SetShaderValue(SunShader, _resolutionLoc, new Vector2(width, height), ShaderUniformDataType.Vec2);
         }
     }
 }

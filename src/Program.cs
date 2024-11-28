@@ -28,8 +28,7 @@ namespace Astral_simulation
 #if DEBUG
             Conceptor3D.System = new System();
 #endif
-
-            ShaderCenter.UpdateResolution(GetScreenWidth(), GetScreenHeight()); // Update resolution to shaders
+            ShaderCenter.SetResolution(GetScreenWidth(), GetScreenHeight()); // Set new resolution
 
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop
@@ -41,6 +40,8 @@ namespace Astral_simulation
                 Conceptor3D.Draw(); // Draw 3D environnment
 
                 Conceptor2D.Draw(); // Draw 2D interface 
+
+                DrawFPS(0, 0);
 
                 EndDrawing();
             }
