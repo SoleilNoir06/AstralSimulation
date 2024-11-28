@@ -18,6 +18,9 @@ namespace Astral_simulation
         private Vector3 _velocity;
         private string _name;
         private float _initialVelocity;
+        private float _semiMajorAxis;
+        private float _semiMinorAxis;
+        private float _orbitalEccentricity;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -98,6 +101,7 @@ namespace Astral_simulation
             }
         }
 
+        /// <summary>Initial velocity of planet</summary>
         public float InitialVelocity
         {
             get
@@ -107,6 +111,45 @@ namespace Astral_simulation
             set
             {
                 _initialVelocity = value;
+            }
+        }
+
+        /// <summary>Semi-major axis of orbital ellipse</summary>
+        public float SemiMajorAxis
+        {
+            get
+            {
+                return _semiMajorAxis;
+            }
+            set
+            {
+                _semiMajorAxis = value;
+            }
+        }
+
+        /// <summary>Semi-minor axis of orbital ellipse</summary>
+        public float SemiMinorAxis
+        {
+            get
+            {
+                return _semiMinorAxis;
+            }
+            set
+            {
+                _semiMinorAxis = value;
+            }
+        }
+
+        /// <summary>Orbital eccentricity of the object</summary>
+        public float OrbitalEccentricity
+        {
+            get
+            {
+                return _orbitalEccentricity;
+            }
+            set
+            {
+                _orbitalEccentricity = value;
             }
         }
 

@@ -2,6 +2,7 @@
 using static RayGUI_cs.RayGUI;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
+using astral_simulation;
 
 namespace Astral_simulation
 {
@@ -27,7 +28,10 @@ namespace Astral_simulation
             Components.Add(new Button(obj.Name.ToString(), 0, 0, 100, 100));
             Components.Add(new Button($"Radius : {obj.Radius * 15000000}km", 0, 100, 300, 100));
             Components.Add(new Button($"Mass : {obj.Mass}*10^24 kg", 0, 200, 300, 100));
-
+            Components.Add(new Button($"Position : {obj.Position}", 0, 300, 500, 100));
+            Components.Add(new Button($"gPull of {obj.Name} : {Physics.ComputeGravitationPull(obj.Mass, obj.Position)}", 0, 400, 500, 100));
+            Components.Add(new Button($"Semi-major axis : {obj.SemiMajorAxis}", 0, 500, 500, 100));
+            Components.Add(new Button($"Eccentricity : {obj.OrbitalEccentricity}", 0, 600, 500, 100));
         }
     }
 }
