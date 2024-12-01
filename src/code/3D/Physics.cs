@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using static Raylib_cs.Raylib;
 
 namespace astral_simulation
@@ -47,11 +48,37 @@ namespace astral_simulation
             return velocity;
         }
 
-        //public static float ComputeTrueAnomalia(float eccentricity, Vector3 planetPosition)
-        //{
-        //    float r = ComputeDistanceBetweenSunAndPlanet(planetPosition);
+        /// <summary>
+        /// Compute and update planet position
+        /// </summary>
+        /// <param name="semiMajorAxis">Planet's semi-major axis</param>
+        /// <param name="eccentricity">Planet's eccentricity</param>
+        /// <param name="deltaTime">Period</param>
+        /// <returns><see cref="langword="float"/>: Updated position</returns>
+        public static Vector3 ComputePosition(float semiMajorAxis, float eccentricity, float deltaTime)
+        {
+            //Compute average anomaly
+            float angularVelocity = MathF.Sqrt(G / MathF.Pow(semiMajorAxis, 3));
+            float averageAnomaly = angularVelocity * GetFrameTime();
 
-            
-        //}
+            //Numeric resolution of eccentric anomaly
+            float eccentricAnomaly = angularVelocity;
+            for (int i = 0; i < 10; i++)
+            {
+                eccentricAnomaly = angularVelocity + eccentricity * MathF.Sin(eccentricAnomaly);
+            }
+
+            //Copmute true anomaly
+            float trueAnomaly = 2 * MathF.Atan(MathF.Sqrt((1 + eccentricity) / (1 - eccentricity)) * MathF.Tan(eccentricAnomaly / 2));
+
+            //Compute radiale distance
+            float radialeDistance = semiMajorAxis * (1 - MathF.Pow(eccentricity, 2)) / (1 + eccentricity * MathF.Cos(trueAnomaly));
+
+            //Convert to cartesian coordinates
+            float x = radialeDistance * MathF.Cos(trueAnomaly);
+            float y = radialeDistance * MathF.Sin(trueAnomaly);
+
+            return new Vector3(x, y, 0) + _sunPosition;
+        }
     }
 }

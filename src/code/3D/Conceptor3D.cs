@@ -21,6 +21,7 @@ namespace Astral_simulation
         public const int SCALE = 15000000; // UA
         public const float VOYAGER_SCALE = 20; // Voyager mode scale
         public const float VOYAGER_DISTANCE_SCALE = 20;
+        public const float DELTA_TIME = 1f / 60f;
 
         public static readonly Vector4 SUN_COLOR = new Vector4(0.5f, 0.41f, 0.3f, 1.0f); // Normalized
         // -----------------------------------------------------------
@@ -109,6 +110,7 @@ namespace Astral_simulation
             // System rendering
             System.ForEach(obj =>
             {
+                obj.Position = Physics.ComputePosition(obj.SemiMajorAxis, obj.OrbitalEccentricity, DELTA_TIME);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
                 if (_style == Mode.Voyager)
                 {

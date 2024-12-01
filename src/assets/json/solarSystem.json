@@ -35,7 +35,8 @@
         "OrbitalEccentricity": 0.206,
         "Perihelion": 61.33,
         "Aphelion": 93.09,
-        "Tilt": 0.01
+        "Tilt": 0.01,
+        "PerihelionLongitude": 77.46
     },
     {
         "Name": "Venus",
@@ -57,7 +58,8 @@
         "OrbitalEccentricity": 0.007,
         "Perihelion": 143.30,
         "Aphelion": 145.26,
-        "Tilt": 177.4 
+        "Tilt": 177.4,
+        "PerihelionLongitude": 131.53
     },
     {
         "Name": "Earth",
@@ -79,7 +81,8 @@
         "OrbitalEccentricity": 0.017,
         "Perihelion": 196.13,
         "Aphelion": 202.80,
-        "Tilt": 23.44
+        "Tilt": 23.44,
+        "PerihelionLongitude": 102.95
     },
     {
         "Name": "Mars",
@@ -101,7 +104,8 @@
         "OrbitalEccentricity": 0.094,
         "Perihelion": 275.54,
         "Aphelion": 332.31,
-        "Tilt": 25.19
+        "Tilt": 25.19,
+        "PerihelionLongitude": 336.04
     },
     {
         "Name": "Jupiter",
@@ -123,7 +127,8 @@
         "OrbitalEccentricity": 0.049,
         "Perihelion": 987.57,
         "Aphelion": 1088.00,
-        "Tilt": 3.13
+        "Tilt": 3.13,
+        "PerihelionLongitude": 14.75
     },
     {
         "Name": "Saturn",
@@ -145,7 +150,8 @@
         "OrbitalEccentricity": 0.052,
         "Perihelion": 1799.76,
         "Aphelion": 2004.68,
-        "Tilt": 26.73
+        "Tilt": 26.73,
+        "PerihelionLongitude": 92.43
     },
     {
         "Name": "Uranus",
@@ -167,7 +173,8 @@
         "OrbitalEccentricity": 0.047,
         "Perihelion": 3646.66,
         "Aphelion": 4008.42,
-        "Tilt": 97.77
+        "Tilt": 97.77,
+        "PerihelionLongitude": 170.96
     },
     {
         "Name": "Neptune",
@@ -189,7 +196,8 @@
         "OrbitalEccentricity": 0.010,
         "Perihelion": 5946.34,
         "Aphelion": 6049.39,
-        "Tilt": 28.32
+        "Tilt": 28.32,
+        "PerihelionLongitude": 44.97
     },
     {
         "Name": "Pluto",
@@ -211,6 +219,7 @@
         "OrbitalEccentricity": 0.244,
         "Perihelion": 5915.68,
         "Aphelion": 9834.83,
-        "Tilt": 119.61
+        "Tilt": 119.61,
+        "PerihelionLongitude": 224.07
     }
 ]
