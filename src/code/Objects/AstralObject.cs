@@ -24,6 +24,7 @@ namespace Astral_simulation
         private float _perihelion;
         private float _aphelion;
         private float _tilt;
+        private float _perihelionLongitude;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -180,7 +181,7 @@ namespace Astral_simulation
                 _aphelion = value;
             }
         }
-         /// <summary>TIlt of the object</summary>
+         /// <summary>Tilt of the object</summary>
         public float Tilt
         {
             get
@@ -190,6 +191,18 @@ namespace Astral_simulation
             set
             {
                 _tilt = value;
+            }
+        }
+
+        public float PerihelionLongitude
+        {
+            get
+            {
+                return _perihelionLongitude;
+            }
+            set
+            {
+                _perihelionLongitude = value;
             }
         }
 

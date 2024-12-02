@@ -65,7 +65,7 @@ namespace astral_simulation
             float eccentricAnomaly = angularVelocity;
             for (int i = 0; i < 10; i++)
             {
-                eccentricAnomaly = angularVelocity + eccentricity * MathF.Sin(eccentricAnomaly);
+                eccentricAnomaly = averageAnomaly + eccentricity * MathF.Sin(eccentricAnomaly);
             }
 
             //Copmute true anomaly
