@@ -106,8 +106,8 @@ namespace Astral_simulation
 
             System.ForEach(obj =>
             {
-                if (obj.Name == "Sun") DrawSphere(obj.Position, obj.Radius, Color.White);
-                else DrawSphere(obj.Position, obj.Radius, new Color(0, 0, 255, 120));
+                if (obj.Name == "Sun") DrawSphere(obj.Position, obj.Radius, Color.Black);
+                else DrawSphere(obj.Position, obj.Radius, Color.White);
             });
 
             EndMode3D();

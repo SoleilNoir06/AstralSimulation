@@ -38,6 +38,23 @@ namespace Astral_simulation
             return objs;
         }
 
+        public static Dictionary<string, Music> LoadMusics()
+        {
+            Dictionary<string, Music> list = new Dictionary<string, Music>()
+            {
+                {"ambient", Raylib.LoadMusicStream("assets/audio/ambient.mp3")},
+            };
+            return list;
+        }
+        public static Dictionary<string, Sound> LoadSounds()
+        {
+            Dictionary<string, Sound> list = new Dictionary<string, Sound>()
+            {
+                {"ambient", Raylib.LoadSound("assets/audio/ambient.mp3")},
+            };
+            return list;
+        }
+
         /// <summary>Inits the RLoading class.</summary>
         public static void Init()
         {

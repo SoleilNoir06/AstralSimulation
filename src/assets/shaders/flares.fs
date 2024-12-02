@@ -76,7 +76,7 @@ float sun(vec2 p, vec2 mouse)
 void main()
 {
     // Get planet occlusion
-    float occlusion = abs(1.0 - texture(oTexture0, fragTexCoord).r);
+    float occlusion = texture(oTexture0, fragTexCoord).r;
 
     vec2 resol = normalize(iResolution.xy);
 
@@ -120,6 +120,6 @@ void main()
 
     // Mix between render and calculations
     vec4 renderColor = texture(texture0, fragTexCoord);
-    finalColor = mix(finalColor, renderColor, 0.5) * occlusion;
-    finalColor = texture(oTexture0, fragTexCoord);
+    finalColor = mix(finalColor, renderColor, 0.5);
+    finalColor = mix(finalColor, renderColor, occlusion);
 }
