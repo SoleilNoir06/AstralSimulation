@@ -13,6 +13,9 @@ namespace Astral_simulation
         private static int _camDistLoc;
         private static int _resolutionLoc;
 
+        // Vertex lighting shader locations
+        private static int _viewPosLoc;
+
         /// <summary>Cubemap loading shader.</summary>
         public static Shader CubemapShader;
 
@@ -41,11 +44,10 @@ namespace Astral_simulation
             // Load lighting shader
             LightingShader = LoadShader("assets/shaders/lighting.vs", "assets/shaders/lighting.fs");
             LightingShader.Locs[(int)ShaderLocationIndex.VectorView] = GetShaderLocation(LightingShader, "viewPos");
-            int ambientLoc = GetShaderLocation(LightingShader, "ambient");
-            int lightColLoc = GetShaderLocation(LightingShader, "lightCol");
-            float[] ambient = new[] { 0.1f, 0.1f, 0.1f, 1.0f }; // Define ambient lighting level
-            SetShaderValue(LightingShader, ambientLoc, ambient, ShaderUniformDataType.Vec4);
-            SetShaderValue(LightingShader, lightColLoc, Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
+            int lightColorLoc = GetShaderLocation(LightingShader, "lightColor");
+            _viewPosLoc = GetShaderLocation(LightingShader, "viewPos");
+            SetShaderValue(LightingShader, lightColorLoc, Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
+
 
             // Load sun shader and relative layout locations
             SunShader = LoadShader(null, "assets/shaders/flares.fs");
@@ -73,7 +75,7 @@ namespace Astral_simulation
             SetShaderValue(SunShader, _shinePosLoc, sunPos, ShaderUniformDataType.Vec2);
             SetShaderValue(SunShader, _timeLoc, GetTime(), ShaderUniformDataType.Float); // Update time
             SetShaderValue(SunShader, _camDistLoc, camDist, ShaderUniformDataType.Float); // Update camera distance to sun
-            SetShaderValue(LightingShader, LightingShader.Locs[(int)ShaderLocationIndex.VectorView], camera.Position, ShaderUniformDataType.Vec3);
+            SetShaderValue(LightingShader, _viewPosLoc, camera.Position, ShaderUniformDataType.Vec3);
         }
 
         public static void SetResolution(int width, int height)
