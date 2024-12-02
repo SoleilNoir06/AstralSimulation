@@ -21,7 +21,6 @@ namespace Astral_simulation
         public const int SCALE = 15000000; // UA
         public const float VOYAGER_SCALE = 20; // Voyager mode scale
         public const float VOYAGER_DISTANCE_SCALE = 20;
-        public const float DELTA_TIME = 1f / 60f;
 
         public static readonly Vector4 SUN_COLOR = new Vector4(0.5f, 0.41f, 0.3f, 1.0f); // Normalized
         // -----------------------------------------------------------
@@ -74,7 +73,6 @@ namespace Astral_simulation
             {
                 _style = Mode.Immersive;
                 Probe.SPEED = Probe.IMMERSIVE_SPEED;
-                //System.ForEach(obj => obj.Radius /= VOYAGER_SCALE);
                 System.ForEach(obj =>
                 {
                     obj.Position *= VOYAGER_DISTANCE_SCALE;
@@ -110,14 +108,14 @@ namespace Astral_simulation
             // System rendering
             System.ForEach(obj =>
             {
-                obj.Position = Physics.ComputePosition(obj.SemiMajorAxis, obj.OrbitalEccentricity, DELTA_TIME);
+
+                //System.ForEach(obj => obj.Radius /= 1.01f);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
                 if (_style == Mode.Voyager)
                 {
                     DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
                     DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
                 }
-                Conceptor2D.DisplayObject(obj);
             });
 
             EndMode3D();
@@ -273,7 +271,7 @@ namespace Astral_simulation
         public static void UpdatePostProcessingShader()
         {
             // Draw texture
-            BeginShaderMode(ShaderCenter.SunShader);
+           // BeginShaderMode(ShaderCenter.SunShader);
             // Calculate new values
             // Determine if sun behind or not
             Vector3 camDirection = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
@@ -287,7 +285,7 @@ namespace Astral_simulation
             }
 
             DrawTexturePro(_renderTexture.Texture, _srcRectangle, _destRectangle, Vector2.Zero, 0, Color.White);
-            EndShaderMode();
+         //   EndShaderMode();
 
             //DrawCircle((int)sunPos.X, (int)sunPos.Y, shineSize * 1000, Color.Blue);
         }

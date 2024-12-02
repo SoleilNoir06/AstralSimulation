@@ -14,6 +14,7 @@ namespace Astral_simulation
         private float _mass;
         private float _radius;
         private float _gravitationPull;
+        private float _revolution;
         private Vector3 _rotation;
         private Vector3 _velocity;
         private string _name;
@@ -69,6 +70,19 @@ namespace Astral_simulation
             {
                 _rotation = value;
                 UpdateRotation();
+            }
+        }
+
+        /// <summary>Time for the objec to revolut</summary>
+        public float Revolution
+        {
+            get
+            {
+                return _revolution;
+            }
+            set
+            {
+                _revolution = value;
             }
         }
 
