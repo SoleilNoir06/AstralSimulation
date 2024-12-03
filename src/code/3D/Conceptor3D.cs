@@ -290,7 +290,7 @@ namespace Astral_simulation
         public static void UpdatePostProcessingShader()
         {
             // Draw texture
-            //BeginShaderMode(ShaderCenter.SunShader);
+            BeginShaderMode(ShaderCenter.SunShader);
             // Calculate new values
             // Determine if sun behind or not
             Vector3 camDirection = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
@@ -304,7 +304,7 @@ namespace Astral_simulation
             }
 
             DrawTexturePro(_renderTexture.Texture, _srcRectangle, _destRectangle, Vector2.Zero, 0, Color.White);
-            //EndShaderMode();
+            EndShaderMode();
 
             //DrawCircle((int)sunPos.X, (int)sunPos.Y, shineSize * 1000, Color.Blue);
         }
