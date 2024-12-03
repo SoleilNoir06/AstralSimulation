@@ -14,6 +14,7 @@ namespace Astral_simulation
         private float _mass;
         private float _radius;
         private float _gravitationPull;
+        private float _revolution;
         private Vector3 _rotation;
         private Vector3 _velocity;
         private string _name;
@@ -21,6 +22,10 @@ namespace Astral_simulation
         private float _semiMajorAxis;
         private float _semiMinorAxis;
         private float _orbitalEccentricity;
+        private float _perihelion;
+        private float _aphelion;
+        private float _tilt;
+        private float _perihelionLongitude;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -65,6 +70,19 @@ namespace Astral_simulation
             {
                 _rotation = value;
                 UpdateRotation();
+            }
+        }
+
+        /// <summary>Time for the objec to revolut</summary>
+        public float Revolution
+        {
+            get
+            {
+                return _revolution;
+            }
+            set
+            {
+                _revolution = value;
             }
         }
 
@@ -153,6 +171,55 @@ namespace Astral_simulation
             }
         }
 
+        /// <summary>Perihelion of the object</summary>
+        public float Perihelion
+        {
+            get
+            {
+                return _perihelion;
+            }
+            set
+            {
+                _perihelion = value;
+            }
+        }
+        /// <summary>Aphelion of the object</summary>
+        public float Aphelion
+        {
+            get
+            {
+                return _aphelion;
+            }
+            set
+            {
+                _aphelion = value;
+            }
+        }
+         /// <summary>Tilt of the object</summary>
+        public float Tilt
+        {
+            get
+            {
+                return _tilt;
+            }
+            set
+            {
+                _tilt = value;
+            }
+        }
+
+        public float PerihelionLongitude
+        {
+            get
+            {
+                return _perihelionLongitude;
+            }
+            set
+            {
+                _perihelionLongitude = value;
+            }
+        }
+
         /// <summary>Radius of the object.</summary>
         public float Radius
         {
@@ -162,7 +229,7 @@ namespace Astral_simulation
             }
             set
             {
-                _radius = value;
+                _radius = value / 2;
                 UpdateScale();
                 UpdateGravitationPull();
             }

@@ -192,9 +192,10 @@ namespace Astral_simulation.DatFiles
             system.ForEach(obj =>
             {
                 jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y +",Z: " + obj.Position.Z + 
-                "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y +",Z: " + obj.Rotation.Z + "},Radius: " + obj.Radius +
+                "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y +",Z: " + obj.Rotation.Z + "},Revolution: " + obj.Revolution + ",Radius: " + obj.Radius +
                 ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity +",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis +
-                ",OrbitalEccentricity: " + obj.OrbitalEccentricity;
+                ",OrbitalEccentricity: " + obj.OrbitalEccentricity + ",Perihelion: " + obj.Perihelion + ",Aphelion: " + obj.Aphelion + ",Tilt: " + obj.Tilt +
+                ",PerihelionLongitude: " + obj.PerihelionLongitude;
                 jsonStream += "}, ";
             });
             

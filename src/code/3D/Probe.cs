@@ -6,7 +6,7 @@ namespace Astral_simulation
     public class Probe
     {
         public static float IMMERSIVE_SPEED = 0.000005f;
-        public static float VOYAGER_SPEED = 0.005f;
+        public static float VOYAGER_SPEED = 0.05f;
 
         public static float SPEED = IMMERSIVE_SPEED; // Default speed (= ~24 * Light Speed)
 
