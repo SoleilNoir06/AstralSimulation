@@ -38,7 +38,7 @@ namespace astral_simulation
         /// </summary>
         /// <param name="period">Object's period</param>
         /// <param name="position">Object's position</param>
-        /// <returns></returns>
+        /// <returns><see langword="Vector3"/>: The updated position of object</returns>
         public static Vector3 ComputePositionAtTime(float period, Vector3 position)
         {
             float r = ComputeRadialDistance(position);
