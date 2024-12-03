@@ -229,7 +229,7 @@ namespace Astral_simulation
             }
             set
             {
-                _radius = value;
+                _radius = value / 2;
                 UpdateScale();
                 UpdateGravitationPull();
             }

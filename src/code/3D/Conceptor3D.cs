@@ -4,7 +4,6 @@ using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
 using astral_simulation;
-using RayGUI_cs;
 
 namespace Astral_simulation
 {
@@ -62,7 +61,7 @@ namespace Astral_simulation
             {
                 _style = Mode.Voyager;
                 Probe.SPEED = Probe.VOYAGER_SPEED;
-                //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
+                System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
                 System.ForEach(obj =>
                 {
                     obj.Position /= VOYAGER_DISTANCE_SCALE;
@@ -76,7 +75,7 @@ namespace Astral_simulation
                 Probe.SPEED = Probe.IMMERSIVE_SPEED;
                 System.ForEach(obj =>
                 {
-                    obj.Position *= VOYAGER_DISTANCE_SCALE;
+                    //obj.Position *= VOYAGER_DISTANCE_SCALE;
                     if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
                 });
             }
@@ -128,14 +127,14 @@ namespace Astral_simulation
             // System rendering
             System.ForEach(obj =>
             {
-
-                //System.ForEach(obj => obj.Radius /= 1.01f);
+                obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
                 if (_style == Mode.Voyager)
                 {
                     DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
                     DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
                 }
+                //Conceptor2D.DisplayObject(obj);
             });
 
             EndMode3D();
@@ -291,7 +290,7 @@ namespace Astral_simulation
         public static void UpdatePostProcessingShader()
         {
             // Draw texture
-           // BeginShaderMode(ShaderCenter.SunShader);
+            //BeginShaderMode(ShaderCenter.SunShader);
             // Calculate new values
             // Determine if sun behind or not
             Vector3 camDirection = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
@@ -305,7 +304,7 @@ namespace Astral_simulation
             }
 
             DrawTexturePro(_renderTexture.Texture, _srcRectangle, _destRectangle, Vector2.Zero, 0, Color.White);
-         //   EndShaderMode();
+            //EndShaderMode();
 
             //DrawCircle((int)sunPos.X, (int)sunPos.Y, shineSize * 1000, Color.Blue);
         }

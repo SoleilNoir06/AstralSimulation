@@ -1,21 +1,5 @@
 [
     {
-        "Name" : "Sun",
-        "Position": {
-            "X": 0,
-            "Y": 0,
-            "Z": 0
-        },
-        "Rotation":{
-            "X": 6,
-            "Y": 0,
-            "Z": 0
-        },
-        "Radius": 0.046,
-        "Mass": 1988400,
-        "Tilt": 7.25
-    },
-    {
         "Name": "Mercury",
         "Position": {
             "X": 3.9,
