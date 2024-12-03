@@ -65,7 +65,7 @@ namespace Astral_simulation
                 System.ForEach(obj =>
                 {
                     obj.Position /= VOYAGER_DISTANCE_SCALE;
-                    if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
+                    //if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
                     Camera.Position = new Vector3(15, 40, 15);
                 });
             }
@@ -75,7 +75,7 @@ namespace Astral_simulation
                 Probe.SPEED = Probe.IMMERSIVE_SPEED;
                 System.ForEach(obj =>
                 {
-                    if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
+                    //if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
                 });
             }
         }
@@ -126,7 +126,7 @@ namespace Astral_simulation
             // System rendering
             System.ForEach(obj =>
             {
-                obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
+                //obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
                 if (_style == Mode.Voyager)
                 {
