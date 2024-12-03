@@ -13,6 +13,7 @@ namespace Astral_simulation
         public static void Main(string[] args)
         {
             InitWindow(500, 300, "Astra Simulation");
+            InitAudioDevice();
             SetWindowState(ConfigFlags.UndecoratedWindow);
 
             // Fullscreen window
@@ -23,6 +24,7 @@ namespace Astral_simulation
             RLoading.Init(); // Inits the RLoading instance (loads crypto keys)
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
+            AudioCenter.Init();
             RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/SupremeSpike-KVO8D.ttf"));
 
 #if DEBUG
@@ -33,6 +35,8 @@ namespace Astral_simulation
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop
             {
+                AudioCenter.Update();
+
                 BeginDrawing();
 
                 ClearBackground(Color.Black);

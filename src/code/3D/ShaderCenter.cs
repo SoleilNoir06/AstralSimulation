@@ -12,6 +12,10 @@ namespace Astral_simulation
         private static int _timeLoc;
         private static int _camDistLoc;
         private static int _resolutionLoc;
+        private static int _occlusionLoc;
+
+        // Vertex lighting shader locations
+        private static int _viewPosLoc;
 
         /// <summary>Cubemap loading shader.</summary>
         public static Shader CubemapShader;
@@ -24,6 +28,10 @@ namespace Astral_simulation
 
         /// <summary>Sun light shader.</summary>
         public static Shader SunShader;
+
+        public static RenderTexture2D OcclusionMap;
+        public static Rectangle OcclusionMapSource;
+        public static Rectangle OcclusionMapDestination;
 
         /// <summary>Inits the shader center by loading the shaders of the application.</summary>
         public static void Init()
@@ -41,11 +49,9 @@ namespace Astral_simulation
             // Load lighting shader
             LightingShader = LoadShader("assets/shaders/lighting.vs", "assets/shaders/lighting.fs");
             LightingShader.Locs[(int)ShaderLocationIndex.VectorView] = GetShaderLocation(LightingShader, "viewPos");
-            int ambientLoc = GetShaderLocation(LightingShader, "ambient");
-            int lightColLoc = GetShaderLocation(LightingShader, "lightCol");
-            float[] ambient = new[] { 0.1f, 0.1f, 0.1f, 1.0f }; // Define ambient lighting level
-            SetShaderValue(LightingShader, ambientLoc, ambient, ShaderUniformDataType.Vec4);
-            SetShaderValue(LightingShader, lightColLoc, Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
+            int lightColorLoc = GetShaderLocation(LightingShader, "lightColor");
+            _viewPosLoc = GetShaderLocation(LightingShader, "viewPos");
+            SetShaderValue(LightingShader, lightColorLoc, Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
 
             // Load sun shader and relative layout locations
             SunShader = LoadShader(null, "assets/shaders/flares.fs");
@@ -54,6 +60,7 @@ namespace Astral_simulation
             _timeLoc = GetShaderLocation(SunShader, "time");
             _camDistLoc = GetShaderLocation(SunShader, "camDist");
             SetShaderValue(SunShader, GetShaderLocation(SunShader, "sunCol"), Conceptor3D.SUN_COLOR, ShaderUniformDataType.Vec4);
+            _occlusionLoc = GetShaderLocation(SunShader, "oTexture0");
         }
 
         /// <summary>Closes the shader center by unloading every program shader from the vRAM.</summary>
@@ -73,12 +80,21 @@ namespace Astral_simulation
             SetShaderValue(SunShader, _shinePosLoc, sunPos, ShaderUniformDataType.Vec2);
             SetShaderValue(SunShader, _timeLoc, GetTime(), ShaderUniformDataType.Float); // Update time
             SetShaderValue(SunShader, _camDistLoc, camDist, ShaderUniformDataType.Float); // Update camera distance to sun
-            SetShaderValue(LightingShader, LightingShader.Locs[(int)ShaderLocationIndex.VectorView], camera.Position, ShaderUniformDataType.Vec3);
+            SetShaderValueTexture(SunShader, _occlusionLoc, OcclusionMap.Texture);
+            SetShaderValue(LightingShader, _viewPosLoc, camera.Position, ShaderUniformDataType.Vec3);
         }
 
         public static void SetResolution(int width, int height)
         {
             SetShaderValue(SunShader, _resolutionLoc, new Vector2(width, height), ShaderUniformDataType.Vec2);
+            LoadOcclusionMap(width, height);
+        }
+
+        public static void LoadOcclusionMap(int width, int height)
+        {
+            OcclusionMap = LoadRenderTexture(width, height);
+            OcclusionMapSource = new Rectangle(Vector2.Zero, width, -height);
+            OcclusionMapDestination = new Rectangle(Vector2.Zero, width, height);
         }
     }
 }

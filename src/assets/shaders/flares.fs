@@ -3,6 +3,7 @@
 in vec2 fragTexCoord;
 
 uniform sampler2D texture0;
+uniform sampler2D oTexture0;
 
 uniform vec4 sunCol;
 uniform vec2 sourcePos;
@@ -74,6 +75,9 @@ float sun(vec2 p, vec2 mouse)
 
 void main()
 {
+    // Get planet occlusion
+    float occlusion = texture(oTexture0, fragTexCoord).r;
+
     vec2 resol = normalize(iResolution.xy);
 
     vec2 uv = fragTexCoord;
@@ -117,4 +121,5 @@ void main()
     // Mix between render and calculations
     vec4 renderColor = texture(texture0, fragTexCoord);
     finalColor = mix(finalColor, renderColor, 0.5);
+    finalColor = mix(finalColor, renderColor, occlusion);
 }

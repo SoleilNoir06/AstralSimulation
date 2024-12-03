@@ -29,11 +29,18 @@
             _name = name;
         }
 
-        /// <summary>Iterates over the </summary>
+        /// <summary>Iterates over the system's planets</summary>
         /// <param name="action"></param>
         public void ForEach(Action<AstralObject> action)
         {
             _objects.ForEach(action);
+        }
+
+        /// <summary>Iterates over the system's planets (except sun)</summary>
+        /// <param name="action"></param>
+        public void ForEachExceptSun(Action<AstralObject> action)
+        {
+            _objects.Where(x => x.Name != "Sun").ToList().ForEach(action);
         }
 
         /// <summary>Gets the first matching object in system.</summary>

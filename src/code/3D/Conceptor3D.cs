@@ -16,7 +16,7 @@ namespace Astral_simulation
     }
 
     /// <summary>Represents an instance of <see cref="Conceptor3D"/>.</summary>
-    public static class Conceptor3D
+    public unsafe static class Conceptor3D
     {
         public const int SCALE = 15000000; // UA
         public const float VOYAGER_SCALE = 20; // Voyager mode scale
@@ -38,6 +38,7 @@ namespace Astral_simulation
         public static Probe Probe = new Probe(); // Init default probe
         public static System System = new System(); // Init default system
         public static Camera3D Camera;
+        private static Material _occlusionMaterial = LoadMaterialDefault();
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
@@ -92,6 +93,25 @@ namespace Astral_simulation
 
             // Update probe functions
             UpdateProbe();
+
+            // -----------------------------------------------------------
+            // Occlusion map rendering 
+            // -----------------------------------------------------------
+            BeginTextureMode(ShaderCenter.OcclusionMap);
+
+            ClearBackground(Color.Black);
+
+            BeginMode3D(Camera);
+
+            System.ForEach(obj =>
+            {
+                if (obj.Name == "Sun") DrawSphere(obj.Position, obj.Radius, Color.Black);
+                else DrawSphere(obj.Position, obj.Radius, Color.White);
+            });
+
+            EndMode3D();
+
+            EndTextureMode();
 
             // -----------------------------------------------------------
             // Draw calls
