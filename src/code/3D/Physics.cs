@@ -48,7 +48,7 @@ namespace astral_simulation
             float x = r * MathF.Cos(angularPos);
             float z = r * MathF.Sin(angularPos);
 
-            _timeScale += 0.1f;
+            _timeScale -= 0.1f;
 
             return new Vector3(x, 0, z);
         }

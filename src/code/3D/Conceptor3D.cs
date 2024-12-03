@@ -61,7 +61,7 @@ namespace Astral_simulation
             {
                 _style = Mode.Voyager;
                 Probe.SPEED = Probe.VOYAGER_SPEED;
-                System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
+                //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
                 System.ForEach(obj =>
                 {
                     obj.Position /= VOYAGER_DISTANCE_SCALE;
@@ -75,7 +75,6 @@ namespace Astral_simulation
                 Probe.SPEED = Probe.IMMERSIVE_SPEED;
                 System.ForEach(obj =>
                 {
-                    //obj.Position *= VOYAGER_DISTANCE_SCALE;
                     if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
                 });
             }
