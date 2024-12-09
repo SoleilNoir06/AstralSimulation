@@ -2,7 +2,6 @@
 using static RayGUI_cs.RayGUI;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
-using astral_simulation;
 
 namespace Astral_simulation
 {
@@ -25,9 +24,15 @@ namespace Astral_simulation
         public static void DisplayObject(AstralObject obj)
         {
             Components.Clear();
+            Container c = new Container(10, 10, 500, GetScreenHeight() - 20);
+            c.BaseColor = new Color(22, 22, 22, 20);
+            Components.Add(c);
             Components.Add(new Textbox(10, 10, 500, 50, $"{obj.Name}"));
-            Components.Add(new Textbox(10, 60, 500, 50, $"Mass : {obj.Mass}e24 kg"));
-            Components.Add(new Textbox(10, 110, 500, 50, $"Radius : {obj.Radius * 150000} km"));
+            Components.Add(new Textbox(10, 60, 500, 50, $"Type: {obj.Type}"));
+            Components.Add(new Textbox(10, 110, 500, 50, $"Mass: {obj.Mass}e24 kg"));
+            Components.Add(new Textbox(10, 160, 500, 50, $"Radius: {obj.Radius * 150000f}km"));
+            Components.Add(new Textbox(10, 210, 500, 50, $"Volume: {obj.Volume}km^3"));
+            Components.Add(new Textbox(10, 260, 500, 50, $"Velocity: {obj.InitialVelocity}km/h"));
         }
     }
 }

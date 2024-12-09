@@ -51,7 +51,7 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
             Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
-            //_skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
+            _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
         }
 
         /// <summary>Toggles the conceptor's style.</summary>
@@ -121,7 +121,7 @@ namespace Astral_simulation
 
             BeginMode3D(Camera);
 
-            //DrawSkybox(_skybox);
+            DrawSkybox(_skybox);
 
             // System rendering
             System.ForEach(obj =>
@@ -134,7 +134,6 @@ namespace Astral_simulation
                     DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
                     DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
                 }
-                //Conceptor2D.DisplayObject(obj);
             });
 
             EndMode3D();
