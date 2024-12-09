@@ -25,10 +25,9 @@ namespace Astral_simulation
         public static void DisplayObject(AstralObject obj)
         {
             Components.Clear();
-            Components.Add(new Button(obj.Name.ToString(), 0, 0, 100, 100));
-            Components.Add(new Button($"Radius : {obj.Radius}", 0, 200, 500, 100));
-            Components.Add(new Button($"Revolution : {obj.Revolution}", 0, 300, 700, 100));
-            Components.Add(new Button($"Position : {obj.Position}", 0, 400, 700, 100));
+            Components.Add(new Textbox(10, 10, 500, 50, $"{obj.Name}"));
+            Components.Add(new Textbox(10, 60, 500, 50, $"Mass : {obj.Mass}e24 kg"));
+            Components.Add(new Textbox(10, 110, 500, 50, $"Radius : {obj.Radius * 150000} km"));
         }
     }
 }

@@ -13,31 +13,43 @@ namespace astral_simulation
         private static float _initialAngle = 0.0f;
         private static float _timeScale = 0.1f;
 
-        public static float ComputeRadialDistance(Vector3 planetPosition)
+        /// <summary>
+        /// Compute distance between Sun and object
+        /// </summary>
+        /// <param name="position">Object's position</param>
+        /// <returns><see langword="float"/>: Radial distance</returns>
+        public static float ComputeRadialDistance(Vector3 position)
         {
-            return Vector3.Distance(_sunPosition, planetPosition);
+            return Vector3.Distance(_sunPosition, position);
         }
         
+        /// <summary>
+        /// Compute angular velocity of object
+        /// </summary>
+        /// <param name="period">Object's revolution period</param>
+        /// <returns><see langword="float"/>: Angular velocity of object</returns>
         public static float ComputeAngularVelocity(float period)
         {
             return 2 * MathF.PI / period;
         }
 
-        public static Vector3 ComputePositionAtTime(float period, Vector3 planetPosition)
+        /// <summary>
+        /// Compute and update position of object at every 0.1f time
+        /// </summary>
+        /// <param name="period">Object's period</param>
+        /// <param name="position">Object's position</param>
+        /// <returns><see langword="Vector3"/>: The updated position of object</returns>
+        public static Vector3 ComputePositionAtTime(float period, Vector3 position)
         {
-            // Calcul du rayon (distance au centre)
-            float r = ComputeRadialDistance(planetPosition);
+            float r = ComputeRadialDistance(position);
 
-            // Calcul de la position angulaire à l'instant t
             float angularPos = _initialAngle + ComputeAngularVelocity(period) * _timeScale;
 
-            // Coordonnées cartésiennes à l'instant t
             float x = r * MathF.Cos(angularPos);
             float z = r * MathF.Sin(angularPos);
 
-            _timeScale += 0.1f;
+            _timeScale -= 0.01f;
 
-            // Retourne la position (x, 0, z)
             return new Vector3(x, 0, z);
         }
 
