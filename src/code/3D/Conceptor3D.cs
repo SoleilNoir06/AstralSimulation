@@ -162,6 +162,7 @@ namespace Astral_simulation
                 Probe.InTransit = true;
                 Probe.Target = System.GetObject(Probe.TargetId); // Get next target
                 Probe.Velocity = Vector3.Zero;
+                Conceptor2D.DisplayObject(Probe.Target);
             }
             if (IsKeyPressed(KeyboardKey.Left))
             {
@@ -169,19 +170,22 @@ namespace Astral_simulation
                 Probe.InTransit = true;
                 Probe.Target = System.GetObject(Probe.TargetId); // Get next target
                 Probe.Velocity = Vector3.Zero;
+                Conceptor2D.DisplayObject(Probe.Target);
             }
 
             if (Probe.InTransit)
             {
                 if (Raymath.Vector3Subtract(Camera.Position, Probe.Target.Position).Length() > 0.02f)
                 {
-                    Camera.Position = Raymath.Vector3Lerp(Camera.Position, Probe.Target.Position, (float)GetFrameTime());
-                    Camera.Target = Raymath.Vector3Lerp(Camera.Target, Probe.Target.Position, (float)GetFrameTime());
+                    Camera.Position = Raymath.Vector3Lerp(Camera.Position, Probe.Target.Position + Vector3.UnitY * 0.5f, (float)GetFrameTime());
+                    Camera.Target = Raymath.Vector3Lerp(Camera.Position, Probe.Target.Position + Vector3.UnitY * 0.05f, (float)GetFrameTime());
                 }
                 else
                 {
                     Probe.InTransit = false;
                 }
+                // Stop transit option
+                if (IsKeyPressed(KeyboardKey.Escape)) Probe.InTransit = false;
             }
         }
 
