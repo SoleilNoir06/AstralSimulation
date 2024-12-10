@@ -26,6 +26,9 @@
     <None Update="assets\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Update="code\management\HardRessource.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
     <None Update="external\crypto.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
