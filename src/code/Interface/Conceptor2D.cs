@@ -27,7 +27,7 @@ namespace Astral_simulation
             RayGUI.SetDefaultFontSize(30);
             Components.Clear();
 
-            List<Texture2D> planetsImages = new List<Texture2D>();
+            //HardRessource.Textures[$"{obj.Name}"] = 
 
             Container c = new Container(10, 10, 520, GetScreenHeight() - 20);
             c.BaseColor = new Color(22, 22, 22, 20);
