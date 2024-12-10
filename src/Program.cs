@@ -34,6 +34,8 @@ namespace Astral_simulation
 
             Conceptor3D.ToggleConceptorMode();
 
+            Conceptor3D.PrepareCamera();
+
             SetExitKey(KeyboardKey.Null);
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop

@@ -15,6 +15,8 @@ namespace Astral_simulation
         /// <summary>Velocity of the camera.</summary>
         public Vector3 Velocity;
 
+        public Vector3 TargetOffset;
+
         /// <summary>Defines if camera moving</summary>
         public bool Moving;
 

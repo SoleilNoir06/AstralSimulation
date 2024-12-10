@@ -35,7 +35,7 @@ namespace Astral_simulation
             Camera = new Camera3D() // Init 3D camera
             {
                 Position = new Vector3(2f, 2f, 2f),
-                Target = Vector3.UnitX,
+                Target = Vector3.UnitZ,
                 Up = Vector3.UnitY,
                 FovY = 45f,
                 Projection = CameraProjection.Perspective
@@ -117,6 +117,9 @@ namespace Astral_simulation
 
             // Update post-pro shader
             UpdatePostProcessingShader();
+
+            DrawText($"Camera Target: {Camera.Target}", 500, 100, 40, Color.Green);
+            DrawText($"Camera Position: {Camera.Position}", 500, 150, 40, Color.Green);
         }
 
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
@@ -188,7 +191,16 @@ namespace Astral_simulation
             {
                 Probe.InTransit = false;
                 Conceptor2D.Components.Clear();
+                PrepareCamera(); // Reset camera angles
             }
+        }
+
+        public static void PrepareCamera()
+        {
+            Vector3 newDir = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
+
+            Probe.Yaw = MathF.Atan2(newDir.X, newDir.Z);
+            Probe.Pitch = MathF.Asin(newDir.Y);
         }
 
         /// <summary>Moves the conceptor's camera.</summary>
@@ -206,7 +218,6 @@ namespace Astral_simulation
                 Vector3 direction;
                 direction.X = (float)(Math.Cos(Probe.Pitch) * Math.Sin(Probe.Yaw));
                 direction.Y = (float)Math.Sin(Probe.Pitch);
-                //direction.Y = 0;
                 direction.Z = (float)(Math.Cos(Probe.Pitch) * Math.Cos(Probe.Yaw));
 
                 // Add target
