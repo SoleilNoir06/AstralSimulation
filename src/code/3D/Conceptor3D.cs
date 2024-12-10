@@ -28,7 +28,6 @@ namespace Astral_simulation
         public static Probe Probe = new Probe(); // Init default probe
         public static System System = new System(); // Init default system
         public static Camera3D Camera;
-        private static Material _occlusionMaterial = LoadMaterialDefault();
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
@@ -110,7 +109,6 @@ namespace Astral_simulation
 
                 DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
                 DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
-                //Conceptor2D.DisplayObject(obj);
             });
 
             EndMode3D();
@@ -143,7 +141,6 @@ namespace Astral_simulation
                         }
                     }
                 });
-                if (!click) Conceptor2D.Components.Clear();
             }
         }
 
@@ -184,8 +181,13 @@ namespace Astral_simulation
                 {
                     Probe.InTransit = false;
                 }
-                // Stop transit option
-                if (IsKeyPressed(KeyboardKey.Escape)) Probe.InTransit = false;
+            }
+
+            // Stop transit option
+            if (IsKeyPressed(KeyboardKey.Escape))
+            {
+                Probe.InTransit = false;
+                Conceptor2D.Components.Clear();
             }
         }
 
