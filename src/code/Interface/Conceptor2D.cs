@@ -26,6 +26,9 @@ namespace Astral_simulation
         {
             RayGUI.SetDefaultFontSize(30);
             Components.Clear();
+
+            List<Texture2D> planetsImages = new List<Texture2D>();
+
             Container c = new Container(10, 10, 520, GetScreenHeight() - 20);
             c.BaseColor = new Color(22, 22, 22, 20);
             Components.Add(c);
@@ -35,6 +38,7 @@ namespace Astral_simulation
             Components.Add(new Textbox(20, 170, 500, 50, $"Radius: {obj.Radius * 150000f}km"));
             Components.Add(new Textbox(20, 220, 500, 50, $"Volume: {obj.Volume}km^3"));
             Components.Add(new Textbox(20, 270, 500, 50, $"Distance from sun : {Physics.ComputeRadialDistance(obj.Position) * 15000000}km"));
+            Components.Add(new Panel(20, 320, 1.0f, 0.0f, LoadTexture($"assets/images/{obj.Name}.webp")));
         }
     }
 }
