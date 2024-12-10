@@ -191,11 +191,11 @@ namespace Astral_simulation.DatFiles
             // Go through every element of the scene's list
             system.ForEach(obj =>
             {
-                jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y +",Z: " + obj.Position.Z + 
-                "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y +",Z: " + obj.Rotation.Z + "},Revolution: " + obj.Revolution + ",Radius: " + obj.Radius +
-                ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity +",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis +
+                jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y + ",Z: " + obj.Position.Z +
+                "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y + ",Z: " + obj.Rotation.Z + "},Revolution: " + obj.Revolution + ",Radius: " + obj.Radius +
+                ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity + ",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis +
                 ",OrbitalEccentricity: " + obj.OrbitalEccentricity + ",Perihelion: " + obj.Perihelion + ",Aphelion: " + obj.Aphelion + ",Tilt: " + obj.Tilt +
-                ",PerihelionLongitude: " + obj.PerihelionLongitude;
+                ",PerihelionLongitude: " + obj.PerihelionLongitude + ",Type: \"" + obj.Type + "\"";
                 jsonStream += "}, ";
             });
             

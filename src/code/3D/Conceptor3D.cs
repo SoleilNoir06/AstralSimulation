@@ -3,7 +3,7 @@ using static Raylib_cs.Raylib;
 using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
-using astral_simulation;
+using Astral_Simulation;
 
 namespace Astral_simulation
 {
@@ -42,7 +42,7 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
             Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
-            //_skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
+            _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
         }
 
         /// <summary>Toggles the conceptor's style.</summary>
@@ -99,7 +99,7 @@ namespace Astral_simulation
 
             BeginMode3D(Camera);
 
-            //DrawSkybox(_skybox);
+            DrawSkybox(_skybox);
 
             // System rendering
             System.ForEach(obj =>
@@ -107,6 +107,7 @@ namespace Astral_simulation
                 //Update pos of objects
                 obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
+
                 DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
                 DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
                 //Conceptor2D.DisplayObject(obj);

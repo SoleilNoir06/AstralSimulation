@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace astral_simulation
+namespace Astral_Simulation
 {
     public class Gaseous : AstralObject
     {

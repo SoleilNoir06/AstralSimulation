@@ -13,6 +13,7 @@ namespace Astral_simulation
 
         private float _mass;
         private float _radius;
+        private string _type;
         private float _gravitationPull;
         private float _revolution;
         private Vector3 _rotation;
@@ -235,6 +236,19 @@ namespace Astral_simulation
             }
         }
 
+        /// <summary>Type of the object.</summary>
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+            }
+        }
+
         /// <summary>Mass of the object.</summary>
         public float Mass 
         { 
@@ -250,7 +264,7 @@ namespace Astral_simulation
         }
 
         /// <summary>Gets the volume of the object.</summary>
-        public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius, 3) / 3); } }
+        public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius * 150000, 3) / 3); } }
 
         /// <summary>Vectorial speed of the object.</summary>
         public Vector3 Velocity { get {  return _velocity; } }
