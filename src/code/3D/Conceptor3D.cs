@@ -7,13 +7,6 @@ using Astral_Simulation;
 
 namespace Astral_simulation
 {
-    /// <summary>Defines the state of the conceptor</summary>
-    public enum Mode
-    {
-        Immersive, // 12 f*cking light-years
-        Voyager // NASA VIEW
-    }
-
     /// <summary>Represents an instance of <see cref="Conceptor3D"/>.</summary>
     public unsafe static class Conceptor3D
     {
@@ -25,8 +18,6 @@ namespace Astral_simulation
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
-
-        private static Mode _style;
 
         private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
         private static Skybox _skybox;
@@ -57,27 +48,14 @@ namespace Astral_simulation
         /// <summary>Toggles the conceptor's style.</summary>
         public static void ToggleConceptorMode()
         {
-            if (_style == Mode.Immersive)
+            Probe.SPEED = Probe.VOYAGER_SPEED;
+            //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
+            System.ForEach(obj =>
             {
-                _style = Mode.Voyager;
-                Probe.SPEED = Probe.VOYAGER_SPEED;
-                //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
-                System.ForEach(obj =>
-                {
-                    obj.Position /= VOYAGER_DISTANCE_SCALE;
-                    if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
-                    Camera.Position = new Vector3(15, 40, 15);
-                });
-            }
-            else 
-            {
-                _style = Mode.Immersive;
-                Probe.SPEED = Probe.IMMERSIVE_SPEED;
-                System.ForEach(obj =>
-                {
-                    //if (obj.Name != "Sun") obj.Radius /= VOYAGER_SCALE;
-                });
-            }
+                obj.Position /= VOYAGER_DISTANCE_SCALE;
+                if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
+                Camera.Position = new Vector3(15, 40, 15);
+            });
         }
 
         /// <summary>Draws the 3D environnement of the application.</summary>
@@ -129,11 +107,10 @@ namespace Astral_simulation
                 //Update pos of objects
                 obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-                if (_style == Mode.Voyager)
-                {
-                    DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
-                    DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
-                }
+
+                DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
+                DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
+                //Conceptor2D.DisplayObject(obj);
             });
 
             EndMode3D();
@@ -192,12 +169,6 @@ namespace Astral_simulation
                 Probe.InTransit = true;
                 Probe.Target = System.GetObject(Probe.TargetId); // Get next target
                 Probe.Velocity = Vector3.Zero;
-            }
-
-            // Mode switch
-            if (IsKeyPressed(KeyboardKey.Tab))
-            {
-                ToggleConceptorMode();
             }
 
             if (Probe.InTransit)
@@ -278,10 +249,7 @@ namespace Astral_simulation
             }
             if (!Probe.Moving)
             {
-                if (_style == Mode.Voyager) 
-                { 
-                    Probe.Velocity = Vector3.Zero;
-                }
+                Probe.Velocity = Vector3.Zero;
             }
         }
 

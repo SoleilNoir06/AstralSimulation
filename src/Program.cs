@@ -12,7 +12,7 @@ namespace Astral_simulation
         /// <param name="args">Arguments passed from outside the program.</param>
         public static void Main(string[] args)
         {
-            InitWindow(500, 300, "Astra Simulation");
+            InitWindow(0, 0, "Astra Simulation");
             InitAudioDevice();
             SetWindowState(ConfigFlags.UndecoratedWindow);
 
@@ -31,6 +31,8 @@ namespace Astral_simulation
             Conceptor3D.System = new System();
 #endif
             ShaderCenter.SetResolution(GetScreenWidth(), GetScreenHeight()); // Set new resolution
+
+            Conceptor3D.ToggleConceptorMode();
 
             SetTargetFPS(120);
             while (!WindowShouldClose()) // Main game loop
