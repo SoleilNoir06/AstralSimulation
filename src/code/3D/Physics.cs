@@ -2,7 +2,7 @@
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
-namespace astral_simulation
+namespace Astral_Simulation
 {
     public static class Physics
     {

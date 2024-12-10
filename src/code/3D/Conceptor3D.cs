@@ -3,7 +3,7 @@ using static Raylib_cs.Raylib;
 using Raylib_cs.Complements;
 using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
-using astral_simulation;
+using Astral_Simulation;
 
 namespace Astral_simulation
 {

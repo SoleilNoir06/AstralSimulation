@@ -25,7 +25,7 @@ namespace Astral_simulation
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
             AudioCenter.Init();
-            RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/SupremeSpike-KVO8D.ttf"));
+            RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/Poppins/Poppins-Medium.ttf"));
 
 #if DEBUG
             Conceptor3D.System = new System();
