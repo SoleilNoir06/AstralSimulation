@@ -117,11 +117,7 @@ namespace Astral_simulation
 
             // Update post-pro shader
             UpdatePostProcessingShader();
-
-            DrawText($"Camera Target: {Camera.Target}", 500, 100, 40, Color.Green);
-            DrawText($"Camera Position: {Camera.Position}", 500, 150, 40, Color.Green);
         }
-
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
         public static void ClickAstralObject()
         {

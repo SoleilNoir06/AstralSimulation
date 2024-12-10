@@ -38,7 +38,7 @@ namespace Astral_simulation
             Components.Add(new Label(20, 220, 500, 50, $"Volume: {obj.Volume}km^3"));
             Components.Add(new Label(20, 270, 500, 50, $"Distance from sun : {Physics.ComputeRadialDistance(obj.Position) * 15000000}km"));
 
-            Panel p = new Panel(20, 320, 0, HardRessource.Textures[$"{obj.Name}"]);
+            Panel p = new Panel(20, 320, 0, 1, HardRessource.Textures[$"{obj.Name}"]);
             p.MaxHeight = 270;
             p.MaxWidth = 480;
             Components.Add(p); 
