@@ -2,6 +2,7 @@
 using RayGUI_cs;
 using static Raylib_cs.Raylib;
 using Astral_simulation.DatFiles;
+using Astral_Simulation;
 
 namespace Astral_simulation
 {
@@ -25,6 +26,7 @@ namespace Astral_simulation
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
             AudioCenter.Init();
+            HardRessource.Init();
             RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/Poppins/Poppins-Medium.ttf"));
 
 #if DEBUG
