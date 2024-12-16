@@ -70,7 +70,7 @@ namespace Astral_simulation
             set
             {
                 _rotation = value;
-                UpdateRotation();
+                UpdateTransform();
             }
         }
 
@@ -94,7 +94,7 @@ namespace Astral_simulation
             set
             {
                 _rotation.X = value;
-                UpdateRotation();
+                UpdateTransform();
             }
         }
 
@@ -105,7 +105,7 @@ namespace Astral_simulation
             set
             {
                 _rotation.Y = value;
-                UpdateRotation();
+                UpdateTransform();
             }
         }
 
@@ -116,7 +116,7 @@ namespace Astral_simulation
             set
             {
                 _rotation.Z = value;
-                UpdateRotation();
+                UpdateTransform();
             }
         }
 
@@ -231,7 +231,7 @@ namespace Astral_simulation
             set
             {
                 _radius = value / 2;
-                UpdateScale();
+                UpdateTransform();
                 UpdateGravitationPull();
             }
         }
@@ -292,16 +292,6 @@ namespace Astral_simulation
             Material2.Shader = ShaderCenter.LightingShader;
         }
 
-        /// <summary>Updates the transform rotation of the object.</summary>
-        protected void UpdateRotation()
-        {
-            Matrix4x4 nm = Raymath.MatrixRotateXYZ(_rotation / Raylib.RAD2DEG);
-            nm.M14 = Position.X;
-            nm.M24 = Position.Y; // Keep positions
-            nm.M34 = Position.Z;
-            Transform = nm;
-        }
-
         protected void UpdateGravitationPull()
         {
             // Update
@@ -318,15 +308,13 @@ namespace Astral_simulation
              
         }
 
-        protected void UpdateScale()
+        protected void UpdateTransform()
         {
-            Matrix4x4 mat = Raymath.MatrixScale(_radius, _radius, _radius);
-
-            mat.M14 = Transform.M14;
-            mat.M24 = Transform.M24;
-            mat.M34 = Transform.M34;
-
-            Transform = mat;
+            Matrix4x4 rm = Raymath.MatrixRotateXYZ(_rotation / Raylib.RAD2DEG);
+            Matrix4x4 sm = Raymath.MatrixScale(_radius, _radius, _radius);
+            Matrix4x4 pm = Raymath.MatrixTranslate(Transform.M14, Transform.M24, Transform.M34);
+            // Multiply matrices in order
+            Transform = pm * sm * rm;
         }
     }
 }
