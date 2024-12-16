@@ -50,6 +50,7 @@ namespace Astral_simulation
         {
             Velocity = Vector3.Zero;
             InTransit = false;
+            _targetId = -1;
         }
 
         /// <summary>Creates an empty <see cref="CameraMotion"/> instance.</summary>
@@ -57,6 +58,7 @@ namespace Astral_simulation
         {
             Velocity = Vector3.Zero;
             InTransit = false;
+            _targetId = -1;
         }
     }
 }
