@@ -20,6 +20,9 @@ namespace Astral_simulation
         // -----------------------------------------------------------
 
         private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
+        private static Mesh _rings = GenMeshPlane(8, 8, 1, 1);
+        private static Material _ringsMat = LoadMaterialDefault();
+        private static Matrix4x4 saturnRings = Matrix4x4.Identity;
         private static Skybox _skybox;
         private static RenderTexture2D _renderTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         private static Rectangle _srcRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), -GetScreenHeight());
@@ -42,6 +45,8 @@ namespace Astral_simulation
             };
             Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
             _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
+            SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
+            _ringsMat.Shader = ShaderCenter.LightingShader;
         }
 
         /// <summary>Toggles the conceptor's style.</summary>
@@ -80,8 +85,8 @@ namespace Astral_simulation
 
             System.ForEach(obj =>
             {
-                if (obj.Name == "Sun") DrawSphere(obj.Position, obj.Radius, Color.Black);
-                else DrawSphere(obj.Position, obj.Radius, Color.White);
+                if (obj.Name == "Saturn") DrawMesh(_rings, _ringsMat, obj.Transform);
+                DrawSphere(obj.Position, obj.Radius, Color.White);
             });
 
             EndMode3D();
@@ -98,7 +103,7 @@ namespace Astral_simulation
 
             BeginMode3D(Camera);
 
-            DrawSkybox(_skybox);
+            //DrawSkybox(_skybox);
 
             // System rendering
             System.ForEach(obj =>
