@@ -12,6 +12,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 10.89,
         "Radius": 0.00016,
         "Mass":0.33,
         "InitialVelocity": 0.23,
@@ -37,6 +38,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 6.52,
         "Radius": 0.00040,
         "Mass": 4.87,
         "InitialVelocity": 0.17,
@@ -62,6 +64,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 1674.39,
         "Radius": 0.00042,
         "Mass": 5.97,
         "InitialVelocity": 0.14,
@@ -87,6 +90,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 866.63,
         "Radius": 0.00023,
         "Mass": 0.642,
         "InitialVelocity": 0.12,
