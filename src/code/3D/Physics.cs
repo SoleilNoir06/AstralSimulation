@@ -53,6 +53,16 @@ namespace Astral_Simulation
             return new Vector3(x, 0, z);
         }
 
+        public static float ComputeRotationPeriod(float radius, float rotationSpeed)
+        {
+            return (2 * MathF.PI * radius) / rotationSpeed;
+        }
+
+        public static Vector3 ComputeRotation(float radius, float rotationSpeed)
+        {
+
+        }
+
         /*
                 /// <summary>
                 /// Compute average anomaly
