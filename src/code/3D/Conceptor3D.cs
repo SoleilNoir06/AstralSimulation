@@ -109,7 +109,7 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 //Update pos of objects
-                obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
+                obj.Position = Physics.ComputePositionAtTime(obj);
                 Physics.ComputeRotation(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
