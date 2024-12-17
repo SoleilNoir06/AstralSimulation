@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Astral_simulation;
+using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -18,9 +19,9 @@ namespace Astral_Simulation
         /// </summary>
         /// <param name="position">Object's position</param>
         /// <returns><see langword="float"/>: Radial distance</returns>
-        public static float ComputeRadialDistance(Vector3 position)
+        public static float ComputeRadialDistance(AstralObject obj)
         {
-            return Vector3.Distance(_sunPosition, position);
+            return Vector3.Distance(_sunPosition, obj.Position);
         }
         
         /// <summary>
@@ -28,9 +29,9 @@ namespace Astral_Simulation
         /// </summary>
         /// <param name="period">Object's revolution period</param>
         /// <returns><see langword="float"/>: Angular velocity of object</returns>
-        public static float ComputeAngularVelocity(float period)
+        public static float ComputeAngularVelocity(AstralObject obj)
         {
-            return 2 * MathF.PI / period;
+            return 2 * MathF.PI / obj.Revolution;
         }
 
         /// <summary>
@@ -39,11 +40,11 @@ namespace Astral_Simulation
         /// <param name="period">Object's period</param>
         /// <param name="position">Object's position</param>
         /// <returns><see langword="Vector3"/>: The updated position of object</returns>
-        public static Vector3 ComputePositionAtTime(float period, Vector3 position)
+        public static Vector3 ComputePositionAtTime(AstralObject obj)
         {
-            float r = ComputeRadialDistance(position);
+            float r = ComputeRadialDistance(obj);
 
-            float angularPos = _initialAngle + ComputeAngularVelocity(period) * _timeScale;
+            float angularPos = _initialAngle + ComputeAngularVelocity(obj) * _timeScale;
 
             float x = r * MathF.Cos(angularPos);
             float z = r * MathF.Sin(angularPos);
@@ -51,6 +52,16 @@ namespace Astral_Simulation
             _timeScale -= 0.01f;
 
             return new Vector3(x, 0, z);
+        }
+
+        public static float ComputeRotationPeriod(AstralObject obj)
+        {
+            return (2 * MathF.PI * obj.Radius) / obj.RotationSpeed;
+        }
+
+        public static void ComputeRotation(AstralObject obj)
+        {
+            obj.Roll += obj.RotationSpeed * (float)0.00001;
         }
 
         /*

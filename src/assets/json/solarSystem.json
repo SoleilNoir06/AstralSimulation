@@ -12,6 +12,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 10.89,
         "Radius": 0.00016,
         "Mass":0.33,
         "InitialVelocity": 0.23,
@@ -37,6 +38,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 6.52,
         "Radius": 0.00040,
         "Mass": 4.87,
         "InitialVelocity": 0.17,
@@ -62,6 +64,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 1674.39,
         "Radius": 0.00042,
         "Mass": 5.97,
         "InitialVelocity": 0.14,
@@ -87,6 +90,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 866.63,
         "Radius": 0.00023,
         "Mass": 0.642,
         "InitialVelocity": 0.12,
@@ -112,6 +116,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 45259.19,
         "Radius": 0.0047,
         "Mass":1898,
         "InitialVelocity": 0.062,
@@ -137,6 +142,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 35536.32,
         "Radius": 0.0039,
         "Mass": 568,
         "InitialVelocity": 0.046,
@@ -162,6 +168,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 9315.08,
         "Radius": 0.0017,
         "Mass": 86.8,
         "InitialVelocity": 0.033,
@@ -187,6 +194,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 9658.08,
         "Radius": 0.0016,
         "Mass": 102,
         "InitialVelocity": 0.026,
@@ -212,6 +220,7 @@
             "Y": 0,
             "Z": 0
         },
+        "RotationSpeed": 48.71,
         "Radius": 0.000079,
         "Mass": 0.013,
         "InitialVelocity": 0.022,

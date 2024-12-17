@@ -36,7 +36,7 @@ namespace Astral_simulation
         public int TargetId { get { return _targetId; } 
             set 
             {
-                if (value >= Conceptor3D.System.Count - 1) _targetId = 0;
+                if (value >= Conceptor3D.System.Count) _targetId = 0;
                 else if (value < 0) _targetId = Conceptor3D.System.Count - 1;
                 else _targetId = value;
             } 

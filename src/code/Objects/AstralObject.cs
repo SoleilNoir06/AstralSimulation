@@ -18,6 +18,7 @@ namespace Astral_simulation
         private float _revolution;
         private Vector3 _rotation;
         private Vector3 _velocity;
+        private float _rotationSpeed;
         private string _name;
         private float _initialVelocity;
         private float _semiMajorAxis;
@@ -32,7 +33,18 @@ namespace Astral_simulation
         // Public attributes
         // -----------------------------------------------------------
 
-        public float RotationSpeed;
+        public float RotationSpeed
+        {
+            get
+            {
+                return _rotationSpeed;
+            }
+            set
+            {
+                _rotationSpeed = value;
+            }
+        }
+
         public string Name { get { return _name; } 
             set 
             {
