@@ -44,6 +44,7 @@ namespace Astral_simulation
                 _rotationSpeed = value;
             }
         }
+
         public string Name { get { return _name; } 
             set 
             {

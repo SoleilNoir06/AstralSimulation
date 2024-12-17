@@ -110,6 +110,7 @@ namespace Astral_simulation
             {
                 //Update pos of objects
                 obj.Position = Physics.ComputePositionAtTime(obj.Revolution, obj.Position);
+                Physics.ComputeRotation(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
                 DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);

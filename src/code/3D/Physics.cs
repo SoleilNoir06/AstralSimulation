@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Astral_simulation;
+using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -58,9 +59,9 @@ namespace Astral_Simulation
             return (2 * MathF.PI * radius) / rotationSpeed;
         }
 
-        public static Vector3 ComputeRotation(float radius, float rotationSpeed)
+        public static void ComputeRotation(AstralObject obj)
         {
-
+            obj.Roll += obj.RotationSpeed * (float)0.00001;
         }
 
         /*
