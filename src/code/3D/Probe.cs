@@ -60,5 +60,14 @@ namespace Astral_simulation
             InTransit = false;
             _targetId = -1;
         }
+
+        /// <summary>Defines the target for the probe.</summary>
+        public void DefineTarget()
+        {
+            InTransit = true;
+            Target = Conceptor3D.System.GetObject(TargetId); // Get next target
+            Velocity = Vector3.Zero;
+            Conceptor2D.DisplayObject(Target);
+        }
     }
 }
