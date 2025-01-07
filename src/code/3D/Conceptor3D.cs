@@ -57,7 +57,6 @@ namespace Astral_simulation
             System.ForEach(obj =>
             {
                 obj.Position /= VOYAGER_DISTANCE_SCALE;
-                if (obj.Name != "Sun") obj.Radius *= VOYAGER_SCALE;
                 Camera.Position = new Vector3(15, 40, 15);
             });
         }
@@ -130,6 +129,7 @@ namespace Astral_simulation
             if (IsMouseButtonPressed(MouseButton.Left))
             {
                 bool click = false;
+                int index = 0;
                 Ray mouse = GetMouseRay(GetMousePosition(), Camera); // Get mouse ray
                 bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
@@ -142,9 +142,11 @@ namespace Astral_simulation
                         {
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
+                            Probe.TargetId = index;
                             click = true;
                         }
                     }
+                    index++;
                 });
             }
         }
