@@ -143,6 +143,7 @@ namespace Astral_simulation
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
                             Probe.TargetId = index;
+                            Probe.DefineTarget();
                             click = true;
                         }
                     }
