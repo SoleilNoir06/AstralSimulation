@@ -228,10 +228,6 @@ namespace Astral_simulation
             Camera.Position += Probe.Velocity;
             Camera.Target += Probe.Velocity;
 
-            Vector3 zoom = GetMouseWheelMove() * Probe.SPEED * 10000 * GetCameraForward(ref Camera);
-            Camera.Position += zoom;
-            Camera.Target += zoom;
-
             Probe.Moving = false;
 
             // Keys movement

@@ -3,6 +3,7 @@ using RayGUI_cs;
 using static Raylib_cs.Raylib;
 using Astral_simulation.DatFiles;
 using Astral_Simulation;
+using System.Numerics;
 
 namespace Astral_simulation
 {
@@ -20,6 +21,9 @@ namespace Astral_simulation
             // Fullscreen window
             SetWindowState(ConfigFlags.ResizableWindow);
             SetWindowState(ConfigFlags.MaximizedWindow);
+
+            // Draw Splash
+            DrawSplash();
 
             // DONT CHANGE ORDER
             RLoading.Init(); // Inits the RLoading instance (loads crypto keys)
@@ -40,6 +44,7 @@ namespace Astral_simulation
 
             SetExitKey(KeyboardKey.Null);
             SetTargetFPS(120);
+
             while (!WindowShouldClose()) // Main game loop
             {
                 AudioCenter.Update();
@@ -64,6 +69,13 @@ namespace Astral_simulation
             // Unloading
             ShaderCenter.Close();
             Conceptor3D.Close();
+        }
+
+        static void DrawSplash()
+        {
+            BeginDrawing();
+            ClearBackground(Color.Black);
+            EndDrawing();
         }
     }
 }
