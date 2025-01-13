@@ -84,7 +84,7 @@ namespace Astral_simulation
 
             System.ForEach(obj =>
             {
-                if (obj.Name == "Saturn") DrawMesh(_rings, _ringsMat, obj.Transform);
+                //if (obj.Name == "Saturn") DrawMesh(_rings, _ringsMat, obj.Transform);
                 DrawSphere(obj.Position, obj.Radius, Color.White);
             });
 
@@ -112,8 +112,7 @@ namespace Astral_simulation
                 Physics.ComputeRotation(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
-                DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.Red);
-                DrawLine3D(Vector3.Zero, obj.Position, Color.Green);
+                DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
             });
 
             EndMode3D();

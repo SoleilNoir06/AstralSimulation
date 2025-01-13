@@ -31,7 +31,7 @@ namespace Astral_simulation
             objs.ForEach(obj =>
             {
                 obj.Pitch += 90f;
-                obj.Radius *= 20;
+                obj.Radius *= 200;
                 obj.Position *= 20;
             });
 
