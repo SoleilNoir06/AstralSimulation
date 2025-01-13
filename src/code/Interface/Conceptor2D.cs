@@ -41,7 +41,7 @@ namespace Astral_simulation
             Panel p = new Panel(20, 320, 0, 1, HardRessource.Textures[$"{obj.Name}"]);
             p.MaxHeight = 270;
             p.MaxWidth = 480;
-            Components.Add(p); 
+            Components.Add(p);
         }
     }
 }
