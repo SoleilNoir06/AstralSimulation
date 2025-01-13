@@ -27,6 +27,7 @@ namespace Astral_simulation
         private static RenderTexture2D _renderTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         private static Rectangle _srcRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), -GetScreenHeight());
         private static Rectangle _destRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), GetScreenHeight());
+        private static bool TrailsOn = true;
 
         public static Probe Probe = new Probe(); // Init default probe
         public static System System = new System(); // Init default system
@@ -112,7 +113,7 @@ namespace Astral_simulation
                 Physics.ComputeRotation(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
-                DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
+                if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
             });
 
             EndMode3D();
@@ -121,6 +122,8 @@ namespace Astral_simulation
 
             // Update post-pro shader
             UpdatePostProcessingShader();
+
+            if (IsKeyPressed(KeyboardKey.R)) TrailsOn = !TrailsOn;
         }
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
         public static void ClickAstralObject()
