@@ -12,7 +12,7 @@ This project is a school project to prepare to diploma work. Obviously, the dipl
 ## How it works
 
 ### How is calculated data ? ➕➖
-Each planet is based on real data from the [Nasa](https://nssdc.gsfc.nasa.gov/planetary/planetfact.html) site web.
+Each planet is based on real data from the [Nasa](https://nssdc.gsfc.nasa.gov/planetary/planetfact.html) website.
 Every data is scaled to ensure the proper functioning of the simulation (e.g. Every size and distance from sun are divided by 15'000'000).
 
 ### How is the data stored ? 📜
