@@ -7,23 +7,27 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 0.03,
             "Y": 0,
             "Z": 0
         },
         "RotationSpeed": 10.89,
         "Radius": 0.00016,
-        "Mass":0.33,
+        "Mass": 0.33,
         "InitialVelocity": 0.23,
-        "SemiMajorAxis" : 7.72e-5,
+        "SemiMajorAxis": 7.72e-5,
         "SemiMinorAxis": 7.56e-5,
         "OrbitalEccentricity": 0.206,
         "Perihelion": 61.33,
         "Aphelion": 93.09,
         "Tilt": 0.01,
+        "OrbitalInclination": 7.00487,
         "PerihelionLongitude": 77.46,
-        "Revolution": 87.97
+        "Revolution": 87.97,
+        "AscendingNodeLongitude": 48.33167,
+        "MeanLongitude": 252.25084,
+        "MeanAnomaly": 174.79253
     },
     {
         "Name": "Venus",
@@ -33,7 +37,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 177.36,
             "Y": 0,
             "Z": 0
@@ -48,8 +52,12 @@
         "Perihelion": 143.30,
         "Aphelion": 145.26,
         "Tilt": 177.4,
+        "OrbitalInclination": 3.39471,
         "PerihelionLongitude": 131.53,
-        "Revolution": 224.70
+        "Revolution": 224.70,
+        "AscendingNodeLongitude": 76.68069,
+        "MeanLongitude": 181.97973,
+        "MeanAnomaly": 59.37663
     },
     {
         "Name": "Earth",
@@ -59,7 +67,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 23.44,
             "Y": 0,
             "Z": 0
@@ -74,8 +82,12 @@
         "Perihelion": 196.13,
         "Aphelion": 202.80,
         "Tilt": 23.44,
+        "OrbitalInclination": 0.00005,
         "PerihelionLongitude": 102.95,
-        "Revolution": 365.26
+        "Revolution": 365.26,
+        "AscendingNodeLongitude": -11.26064,
+        "MeanLongitude": 100.46435,
+        "MeanAnomaly": 357.51716
     },
     {
         "Name": "Mars",
@@ -85,7 +97,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 25.19,
             "Y": 0,
             "Z": 0
@@ -100,8 +112,12 @@
         "Perihelion": 275.54,
         "Aphelion": 332.31,
         "Tilt": 25.19,
+        "OrbitalInclination": 1.85061,
         "PerihelionLongitude": 336.04,
-        "Revolution": 686.98
+        "Revolution": 686.98,
+        "AscendingNodeLongitude": 49.57854,
+        "MeanLongitude": 355.45332,
+        "MeanAnomaly": 19.39020
     },
     {
         "Name": "Jupiter",
@@ -111,14 +127,14 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 3.12,
             "Y": 0,
             "Z": 0
         },
         "RotationSpeed": 45259.19,
         "Radius": 0.0047,
-        "Mass":1898,
+        "Mass": 1898,
         "InitialVelocity": 0.062,
         "SemiMajorAxis": 1.039e-3,
         "SemiMinorAxis": 1.04e-3,
@@ -126,8 +142,12 @@
         "Perihelion": 987.57,
         "Aphelion": 1088.00,
         "Tilt": 3.13,
+        "OrbitalInclination": 1.30530,
         "PerihelionLongitude": 14.75,
-        "Revolution": 4332.59
+        "Revolution": 4332.59,
+        "AscendingNodeLongitude": 100.55615,
+        "MeanLongitude": 34.40438,
+        "MeanAnomaly": 19.66796
     },
     {
         "Name": "Saturn",
@@ -137,7 +157,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 26.73,
             "Y": 0,
             "Z": 0
@@ -152,8 +172,12 @@
         "Perihelion": 1799.76,
         "Aphelion": 2004.68,
         "Tilt": 26.73,
+        "OrbitalInclination": 2.48446,
         "PerihelionLongitude": 92.43,
-        "Revolution": 10759.24
+        "Revolution": 10759.24,
+        "AscendingNodeLongitude": 113.71504,
+        "MeanLongitude": 49.94432,
+        "MeanAnomaly": 317.35537
     },
     {
         "Name": "Uranus",
@@ -163,7 +187,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 97.8,
             "Y": 0,
             "Z": 0
@@ -178,8 +202,12 @@
         "Perihelion": 3646.66,
         "Aphelion": 4008.42,
         "Tilt": 97.77,
+        "OrbitalInclination": 0.76986,
         "PerihelionLongitude": 170.96,
-        "Revolution": 30686.4
+        "Revolution": 30686.4,
+        "AscendingNodeLongitude": 74.22988,
+        "MeanLongitude": 313.23218,
+        "MeanAnomaly": 142.28383
     },
     {
         "Name": "Neptune",
@@ -189,7 +217,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 29.58,
             "Y": 0,
             "Z": 0
@@ -204,8 +232,12 @@
         "Perihelion": 5946.34,
         "Aphelion": 6049.39,
         "Tilt": 28.32,
+        "OrbitalInclination": 1.76917,
         "PerihelionLongitude": 44.97,
-        "Revolution": 60266
+        "Revolution": 60266,
+        "AscendingNodeLongitude": 131.72169,
+        "MeanLongitude": 304.88003,
+        "MeanAnomaly": 259.91521
     },
     {
         "Name": "Pluto",
@@ -215,7 +247,7 @@
             "Y": 0,
             "Z": 0
         },
-        "Rotation":{
+        "Rotation": {
             "X": 122.53,
             "Y": 0,
             "Z": 0
@@ -230,7 +262,11 @@
         "Perihelion": 5915.68,
         "Aphelion": 9834.83,
         "Tilt": 119.61,
+        "OrbitalInclination": 17.14175,
         "PerihelionLongitude": 224.07,
-        "Revolution": 90588
+        "Revolution": 90588,
+        "AscendingNodeLongitude": 110.30347,
+        "MeanLongitude": 238.92881,
+        "MeanAnomaly": 14.53
     }
 ]

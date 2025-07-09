@@ -18,12 +18,12 @@ namespace Astral_simulation
             /*FileStream stream = new FileStream("external/crypto.env", FileMode.Create);
             using BinaryWriter writer = new BinaryWriter(stream);
             writer.Write(EncryptionKey); // 32-Bytes
-            writer.Write(SymmetricalVector); // 16-Bytes 
-            
+            writer.Write(SymmetricalVector); // 16-Bytes             
+           
             StreamReader stream = new StreamReader("assets/json/solarSystem.json");
             string data = stream.ReadToEnd();
             List<AstralObject>? objects = JsonConvert.DeserializeObject<List<AstralObject>>(data);
-
+           
             DatEncoder.EncodeSystem(new System(objects, "Solar")); 
            */
             List<AstralObject> objs = DatEncoder.DecodeSystem("assets/json/Solar.DAT", EncryptionKey, SymmetricalVector); // Load default solar system from .DAT

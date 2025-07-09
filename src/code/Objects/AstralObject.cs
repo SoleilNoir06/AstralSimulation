@@ -27,7 +27,11 @@ namespace Astral_simulation
         private float _perihelion;
         private float _aphelion;
         private float _tilt;
+        private float _orbitalInclination;
         private float _perihelionLongitude;
+        private float _ascendingNodeLongitude;
+        private float _meanLongitude;
+        private float _meanAnomaly;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -221,6 +225,20 @@ namespace Astral_simulation
             }
         }
 
+        /// <summary>Orbital inclination of the object.</summary>
+        public float OrbitalInclination
+        {
+            get
+            {
+                return _orbitalInclination;
+            }
+            set
+            {
+                _orbitalInclination = value;
+            }
+        }
+
+        /// <summary>Perihelion longitude of the object.</summary>
         public float PerihelionLongitude
         {
             get
@@ -230,6 +248,45 @@ namespace Astral_simulation
             set
             {
                 _perihelionLongitude = value;
+            }
+        }
+
+        /// <summary>Ascending node longitude of the object.</summary>
+        public float AscendingNodeLongitude
+        {
+            get
+            {
+                return _ascendingNodeLongitude;
+            }
+            set
+            {
+                _ascendingNodeLongitude = value;
+            }
+        }
+
+        /// <summary>Mean longitude of the object.</summary>
+        public float MeanLongitude
+        {
+            get
+            {
+                return _meanLongitude;
+            }
+            set
+            {
+                _meanLongitude = value;
+            }
+        }
+
+        /// <summary>Mean anomaly of the object</summary>
+        public float MeanAnomaly
+        {
+            get
+            {
+                return _meanAnomaly;
+            }
+            set
+            {
+                _meanAnomaly = value;
             }
         }
 

@@ -195,7 +195,8 @@ namespace Astral_simulation.DatFiles
                 "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y + ",Z: " + obj.Rotation.Z + "},RotationSpeed: " + obj.RotationSpeed + ",Revolution: " + obj.Revolution + ",Radius: " + obj.Radius +
                 ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity + ",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis +
                 ",OrbitalEccentricity: " + obj.OrbitalEccentricity + ",Perihelion: " + obj.Perihelion + ",Aphelion: " + obj.Aphelion + ",Tilt: " + obj.Tilt +
-                ",PerihelionLongitude: " + obj.PerihelionLongitude + ",Type: \"" + obj.Type + "\"";
+                ",OrbitalInclination: " + obj.OrbitalInclination + ",PerihelionLongitude: " + obj.PerihelionLongitude + ",AscendingNodeLongitude: " + obj.AscendingNodeLongitude + ",MeanLongitude: " + obj.MeanLongitude +
+                ",MeanAnomaly: " + obj.MeanAnomaly + ",Type: \"" + obj.Type + "\"";
                 jsonStream += "}, ";
             });
             
