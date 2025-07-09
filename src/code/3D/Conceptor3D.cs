@@ -103,14 +103,13 @@ namespace Astral_simulation
 
             BeginMode3D(Camera);
 
-            //DrawSkybox(_skybox);
+            DrawSkybox(_skybox);
 
             // System rendering
             System.ForEach(obj =>
             {
-                //Update pos of objects
-                obj.Position = Physics.ComputePositionAtTime(obj);
-                Physics.ComputeRotation(obj);
+                Physics.Update(obj);
+                Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
                 if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
