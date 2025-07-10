@@ -11,7 +11,7 @@ namespace Astral_simulation
     public unsafe static class Conceptor3D
     {
         public const int SCALE = 15000000; // UA
-        public const float VOYAGER_SCALE = 20; // Voyager mode scale
+        public const float VOYAGER_SCALE = 4; // Voyager mode scale
         public const float VOYAGER_DISTANCE_SCALE = 20;
 
         public static readonly Vector4 SUN_COLOR = new Vector4(0.5f, 0.41f, 0.3f, 1.0f); // Normalized
@@ -112,7 +112,7 @@ namespace Astral_simulation
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
 
-                if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
+                //if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
             });
 
             EndMode3D();
@@ -270,7 +270,7 @@ namespace Astral_simulation
         public static void UpdatePostProcessingShader()
         {
             // Draw texture
-            BeginShaderMode(ShaderCenter.SunShader);
+            //BeginShaderMode(ShaderCenter.SunShader);
             // Calculate new values
             // Determine if sun behind or not
             Vector3 camDirection = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));

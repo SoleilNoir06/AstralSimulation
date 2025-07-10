@@ -22,7 +22,6 @@ namespace Astral_simulation
         private string _name;
         private float _initialVelocity;
         private float _semiMajorAxis;
-        private float _semiMinorAxis;
         private float _orbitalEccentricity;
         private float _perihelion;
         private float _aphelion;
@@ -149,7 +148,7 @@ namespace Astral_simulation
             }
         }
 
-        /// <summary>Semi-major axis of orbital ellipse</summary>
+        /// <summary>Semimajor axis of orbital ellipse</summary>
         public float SemiMajorAxis
         {
             get
@@ -159,19 +158,6 @@ namespace Astral_simulation
             set
             {
                 _semiMajorAxis = value;
-            }
-        }
-
-        /// <summary>Semi-minor axis of orbital ellipse</summary>
-        public float SemiMinorAxis
-        {
-            get
-            {
-                return _semiMinorAxis;
-            }
-            set
-            {
-                _semiMinorAxis = value;
             }
         }
 

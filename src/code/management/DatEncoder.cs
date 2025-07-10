@@ -193,15 +193,13 @@ namespace Astral_simulation.DatFiles
             {
                 jsonStream += "{" + "Name: \"" + obj.Name + "\",Position: {X: " + obj.Position.X + ",Y: " + obj.Position.Y + ",Z: " + obj.Position.Z +
                 "}, Rotation: {X: " + obj.Rotation.X + ",Y: " + obj.Rotation.Y + ",Z: " + obj.Rotation.Z + "},RotationSpeed: " + obj.RotationSpeed + ",Revolution: " + obj.Revolution + ",Radius: " + obj.Radius +
-                ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity + ",SemiMajorAxis: " + obj.SemiMajorAxis + ",SemiMinorAxis: " + obj.SemiMinorAxis +
-                ",OrbitalEccentricity: " + obj.OrbitalEccentricity + ",Perihelion: " + obj.Perihelion + ",Aphelion: " + obj.Aphelion + ",Tilt: " + obj.Tilt +
-                ",OrbitalInclination: " + obj.OrbitalInclination + ",PerihelionLongitude: " + obj.PerihelionLongitude + ",AscendingNodeLongitude: " + obj.AscendingNodeLongitude + ",MeanLongitude: " + obj.MeanLongitude +
-                ",MeanAnomaly: " + obj.MeanAnomaly + ",Type: \"" + obj.Type + "\"";
+                ",Mass: " + obj.Mass + ",InitialVelocity: " + obj.InitialVelocity + ",SemiMajorAxis: " + obj.SemiMajorAxis + ",OrbitalEccentricity: " + obj.OrbitalEccentricity + ",Perihelion: " + obj.Perihelion + 
+                ",Aphelion: " + obj.Aphelion + ",Tilt: " + obj.Tilt + ",OrbitalInclination: " + obj.OrbitalInclination + ",PerihelionLongitude: " + obj.PerihelionLongitude +
+                ",AscendingNodeLongitude: " + obj.AscendingNodeLongitude + ",MeanLongitude: " + obj.MeanLongitude + ",MeanAnomaly: " + obj.MeanAnomaly + ",Type: \"" + obj.Type + "\"";
                 jsonStream += "}, ";
             });
             
             // Delete the last comma of the jsons
-
             if (jsonStream != "[") jsonStream = jsonStream.Substring(0, jsonStream.LastIndexOf(','));
 
             // Close the json
