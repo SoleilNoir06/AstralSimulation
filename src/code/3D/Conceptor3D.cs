@@ -15,10 +15,10 @@ namespace Astral_simulation
         public const float VOYAGER_DISTANCE_SCALE = 20;
 
         public static readonly Vector4 SUN_COLOR = new Vector4(0.5f, 0.41f, 0.3f, 1.0f); // Normalized
+
         // -----------------------------------------------------------
         // Private instances
         // -----------------------------------------------------------
-
         private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
         private static Mesh _rings = GenMeshPlane(8, 8, 1, 1);
         private static Material _ringsMat = LoadMaterialDefault();

@@ -7,10 +7,6 @@ namespace Astral_Simulation
 {
     public static class Physics
     {
-        private static Vector3 _sunPosition = Vector3.Zero;
-        private static float _initialAngle = 0.0f;
-        private static float _timeScale = 0.1f;
-
         // Astral Object's properties
         private static float _a; // semi-major axis (big diameter of ellipse)
         private static float _e; // excentricity (orbit flattening)
@@ -21,55 +17,8 @@ namespace Astral_Simulation
         private static float _period; // orbital period 
         private static float _n; // angular velocity
 
-        ///// <summary>
-        ///// Compute distance between Sun and object
-        ///// </summary>
-        ///// <param name="position">Object's position</param>
-        ///// <returns><see langword="float"/>: Radial distance</returns>
-        //public static float ComputeRadialDistance(AstralObject obj)
-        //{
-        //    return Vector3.Distance(_sunPosition, obj.Position);
-        //}
-        
-        ///// <summary>
-        ///// Compute angular velocity of object
-        ///// </summary>
-        ///// <param name="period">Object's revolution period</param>
-        ///// <returns><see langword="float"/>: Angular velocity of object</returns>
-        //public static float ComputeAngularVelocity(AstralObject obj)
-        //{
-        //    return 2 * MathF.PI / obj.Revolution;
-        //}
-
-        ///// <summary>
-        ///// Compute and update position of object at every 0.1f time
-        ///// </summary>
-        ///// <param name="period">Object's period</param>
-        ///// <param name="position">Object's position</param>
-        ///// <returns><see langword="Vector3"/>: The updated position of object</returns>
-        //public static Vector3 ComputePositionAtTime(AstralObject obj)
-        //{
-        //    float r = ComputeRadialDistance(obj);
-
-        //    float angularPos = _initialAngle + ComputeAngularVelocity(obj) * _timeScale;
-
-        //    float x = r * MathF.Cos(angularPos);
-        //    float z = r * MathF.Sin(angularPos);
-
-        //    _timeScale -= 0.01f;
-
-        //    return new Vector3(x, 0, z);
-        //}
-
-        //public static float ComputeRotationPeriod(AstralObject obj)
-        //{
-        //    return (2 * MathF.PI * obj.Radius) / obj.RotationSpeed;
-        //}
-
-        //public static void ComputeRotation(AstralObject obj)
-        //{
-        //    obj.Roll += obj.RotationSpeed * (float)0.00001;
-        //}
+        //Delta time
+        private static float _deltaTime = 0;
 
         /*
          * ===============================================
@@ -90,7 +39,9 @@ namespace Astral_Simulation
             _Omega = MathF.PI / 180 * obj.AscendingNodeLongitude;
             _M0 = MathF.PI / 180 * obj.MeanAnomaly;
             _period = obj.Revolution;
-            _n = 2 * MathF.PI / _period; 
+            _n = 2 * MathF.PI / _period;
+
+            _deltaTime += GetFrameTime();
         }
 
         /// <summary>
@@ -99,8 +50,9 @@ namespace Astral_Simulation
         public static void Update(AstralObject obj)
         {
             UpdateProperties(obj);
+
             // Mean anomaly at frame
-            float M = _M0 + _n * GetFrameTime();
+            float M = _M0 + _n * _deltaTime;
             M %= 2 * MathF.PI;
 
             // Excentric anomaly computed with Kepler equation
@@ -121,9 +73,9 @@ namespace Astral_Simulation
         }
 
         /// <summary>
-        /// Convert orbital plane coordinates to real 3D position
+        /// Convert orbital plane coordinates to real 3D position.
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">Object's position.</param>
         /// <returns></returns>
         public static Vector3 OrbitalTo3D(Vector3 pos)
         {
@@ -135,7 +87,7 @@ namespace Astral_Simulation
         }
 
         /// <summary>
-        /// Rotate object on X axis using rotation matrix
+        /// Rotate object on X axis using rotation matrix.
         /// </summary>
         /// <param name="v"></param>
         /// <param name="angle"></param>
@@ -171,7 +123,7 @@ namespace Astral_Simulation
         }        
 
         /// <summary>
-        /// Solve Kepler equation with Newton-Raphson method
+        /// Solve Kepler equation with Newton-Raphson method.
         /// </summary>
         /// <param name="M">Mean anomaly of the object.</param>
         /// <param name="e">Excentricity of the object.</param>
@@ -190,6 +142,11 @@ namespace Astral_Simulation
             return E;
         }
 
+        /// <summary>
+        /// Draw object's path.
+        /// </summary>
+        /// <param name="obj">Object.</param>
+        /// <param name="segments">Number of segments of ellipse.</param>
         public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
             Vector3[] points = new Vector3[segments];
