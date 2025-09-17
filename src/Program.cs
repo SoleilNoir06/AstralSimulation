@@ -1,5 +1,5 @@
 ﻿using Raylib_cs;
-using RayGUI_cs;
+using static RayGUI_cs.RayGUI;
 using static Raylib_cs.Raylib;
 using Astral_simulation.DatFiles;
 using Astral_Simulation;
@@ -31,7 +31,7 @@ namespace Astral_simulation
             Conceptor3D.Init(); // Inits the 3D environnment
             AudioCenter.Init();
             HardRessource.Init();
-            RayGUI.InitGUI(new Color(75, 79, 87, 255), new Color(31, 33, 36, 255), LoadFont("assets/fonts/Poppins/Poppins-Medium.ttf"));
+            Conceptor2D.Init(); // Load GUI basics
 
 #if DEBUG
             Conceptor3D.System = new System();

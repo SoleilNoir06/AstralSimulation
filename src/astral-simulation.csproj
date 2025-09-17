@@ -11,15 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="RayGUI_cs">
-      <HintPath>external\libraries\RayGUI_cs\RayGUI_cs.dll</HintPath>
-    </Reference>
-    <Reference Include="Raylib-cs">
-      <HintPath>external\libraries\Raylib-cs.dll</HintPath>
-    </Reference>
+    <PackageReference Include="RayGUI-cs" Version="2.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +22,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <None Update="external\crypto.env">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="raylib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

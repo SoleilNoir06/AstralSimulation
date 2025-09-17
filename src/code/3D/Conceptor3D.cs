@@ -131,7 +131,7 @@ namespace Astral_simulation
             {
                 bool click = false;
                 int index = 0;
-                Ray mouse = GetMouseRay(GetMousePosition(), Camera); // Get mouse ray
+                Ray mouse = GetScreenToWorldRay(GetMousePosition(), Camera); // Get mouse ray
                 bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
                 {

@@ -60,9 +60,10 @@ namespace Raylib_cs.Complements
 
             // Setup frame buffer
             uint rbo = Rlgl.LoadTextureDepth(size, size, true);
-            cubemap.Id = Rlgl.LoadTextureCubemap(null, size, format);
+            cubemap.Id = Rlgl.LoadTextureCubemap(null, size, format, 0);
 
-            uint fbo = Rlgl.LoadFramebuffer(size, size);
+            uint fbo = Rlgl.LoadFramebuffer();
+
             Rlgl.FramebufferAttach(fbo, rbo, FramebufferAttachType.Depth, FramebufferAttachTextureType.Renderbuffer, 0);
             Rlgl.FramebufferAttach(fbo, cubemap.Id, FramebufferAttachType.ColorChannel0, FramebufferAttachTextureType.CubemapPositiveX, 0);
 
