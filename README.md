@@ -20,7 +20,7 @@ The data is stored in JSON format. You can find the file in AstralSimulation/src
 
 ## Simulation
 
-### How to use ❓
+### How to use ❓ 
 To open simulation simply open the AstralSimulation/src/astral-simulation.csproj and run the program.
 If you're experimented you can do a :
 ```bash
