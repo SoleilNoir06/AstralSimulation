@@ -23,7 +23,6 @@ namespace Astral_simulation
         private static Mesh _rings = GenMeshPlane(8, 8, 1, 1);
         private static Material _ringsMat = LoadMaterialDefault();
         private static Matrix4x4 saturnRings = Matrix4x4.Identity;
-        private static Skybox _skybox;
         private static RenderTexture2D _renderTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         private static Rectangle _srcRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), -GetScreenHeight());
         private static Rectangle _destRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), GetScreenHeight());
@@ -45,7 +44,6 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
             Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
-            _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
             _ringsMat.Shader = ShaderCenter.LightingShader;
         }
@@ -103,8 +101,6 @@ namespace Astral_simulation
 
             BeginMode3D(Camera);
 
-            DrawSkybox(_skybox);
-
             // System rendering
             System.ForEach(obj =>
             {
@@ -139,7 +135,7 @@ namespace Astral_simulation
                     {
                         //RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
                         bool currentCollision = CheckRaySphereIntersection(mouse, obj.Position, obj.Radius);
-                        if (currentCollision) 
+                        if (currentCollision)
                         {
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
@@ -156,7 +152,6 @@ namespace Astral_simulation
         /// <summary>Closes the conceptor by unloading all its data.</summary>
         public static void Close()
         {
-            UnloadSkybox(_skybox);
         }
 
         /// <summary>Updates the functions of the realstic probe.</summary>
@@ -277,7 +272,7 @@ namespace Astral_simulation
             Vector3 sunDirection = Vector3.Normalize(-Camera.Position);
             float dotProduct = Raymath.Vector3DotProduct(camDirection, sunDirection);
             bool isSunVisible = dotProduct > 0;
-            if (isSunVisible) 
+            if (isSunVisible)
             {
                 float camDist = Raymath.Clamp(25 / MathF.Log(Camera.Position.Length() + 1), 3, 25);
                 ShaderCenter.UpdateShine(Camera, camDist);

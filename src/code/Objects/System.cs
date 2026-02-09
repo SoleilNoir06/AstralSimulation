@@ -16,7 +16,8 @@
         /// <summary>Creates an empty <see cref="System"/>.</summary>
         public System()
         {
-            _objects = RLoading.LoadDefaultSystem();
+            string path = "assets/json/solarSystem.json";
+            _objects = RLoading.LoadDefaultSystem(path);
             _name = "Solar";
         }
 

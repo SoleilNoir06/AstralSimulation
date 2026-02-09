@@ -20,9 +20,6 @@ namespace Astral_simulation
         /// <summary>Cubemap loading shader.</summary>
         public static Shader CubemapShader;
 
-        /// <summary>Skybox rendering shader.</summary>
-        public static Shader SkyboxShader;
-
         /// <summary>Default lighting shader.</summary>
         public static Shader LightingShader;
 
@@ -36,12 +33,6 @@ namespace Astral_simulation
         /// <summary>Inits the shader center by loading the shaders of the application.</summary>
         public static void Init()
         {
-            // Load skybox shader
-            SkyboxShader = LoadShader("assets/shaders/skybox.vs", "assets/shaders/skybox.fs");
-            SetShaderValue(SkyboxShader, GetShaderLocation(SkyboxShader, "environmentMap"), (int)MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
-            SetShaderValue(SkyboxShader, GetShaderLocation(SkyboxShader, "doGamma"), 1, ShaderUniformDataType.Int);
-            SetShaderValue(SkyboxShader, GetShaderLocation(SkyboxShader, "vflipped"), 1, ShaderUniformDataType.Int);
-
             // Load cubemap shader
             CubemapShader = LoadShader("assets/shaders/cubemap.vs", "assets/shaders/cubemap.fs");
             SetShaderValue(CubemapShader, GetShaderLocation(CubemapShader, "equirectangularMap"), 0, ShaderUniformDataType.Int);
@@ -68,7 +59,6 @@ namespace Astral_simulation
         {
             // Unload shader programs from vRAM
             UnloadShader(CubemapShader);
-            UnloadShader(SkyboxShader);
         }
 
         /// <summary>Updates shine texture sampler2D (EndShaderMode() forces batch drawing and consequently resets active textures)</summary>
