@@ -29,37 +29,29 @@ namespace Astral_simulation
         private static Rectangle _destRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), GetScreenHeight());
         private static bool TrailsOn = true;
 
-        public static Probe Probe = new Probe(); // Init default probe
         public static System System = new System(); // Init default system
+        public static CameraMotion CameraMotion = new CameraMotion(); // Init default probe
         public static Camera3D Camera;
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
         {
-            Camera = new Camera3D() // Init 3D camera
+            // Create camera object with base parameters
+            Camera = new Camera3D() 
             {
-                Position = new Vector3(2f, 2f, 2f),
-                Target = Vector3.UnitZ,
+                Position = new Vector3(20f, 0f, 20f),
+                Target = Vector3.Zero,
                 Up = Vector3.UnitY,
                 FovY = 45f,
                 Projection = CameraProjection.Perspective
             };
-            Probe = new Probe(10, (short)GetScreenWidth(), (short)GetScreenHeight());
+
+            // Create additional camera parameters
+            CameraMotion = new CameraMotion();
+
             _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
             _ringsMat.Shader = ShaderCenter.LightingShader;
-        }
-
-        /// <summary>Toggles the conceptor's style.</summary>
-        public static void ToggleConceptorMode()
-        {
-            Probe.SPEED = Probe.VOYAGER_SPEED;
-            //System.ForEach(obj => obj.Radius *= VOYAGER_SCALE);
-            System.ForEach(obj =>
-            {
-                obj.Position /= VOYAGER_DISTANCE_SCALE;
-                Camera.Position = new Vector3(15, 40, 15);
-            });
         }
 
         /// <summary>Draws the 3D environnement of the application.</summary>
@@ -117,6 +109,9 @@ namespace Astral_simulation
 
             EndMode3D();
 
+            DrawText(Camera.Position.ToString(), 40, 100, 20, Color.White);
+            DrawText(CameraMotion.Pitch.ToString(), 40, 140, 20, Color.White);
+
             EndTextureMode();
 
             // Update post-pro shader
@@ -124,6 +119,7 @@ namespace Astral_simulation
 
             if (IsKeyPressed(KeyboardKey.R)) TrailsOn = !TrailsOn;
         }
+
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
         public static void ClickAstralObject()
         {
@@ -143,8 +139,8 @@ namespace Astral_simulation
                         {
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
-                            Probe.TargetId = index;
-                            Probe.DefineTarget();
+                            CameraMotion.TargetId = index;
+                            CameraMotion.DefineTarget();
                             click = true;
                         }
                     }
@@ -164,43 +160,34 @@ namespace Astral_simulation
         {
             if (IsKeyPressed(KeyboardKey.Right))
             {
-                Probe.TargetId++;
-                Probe.DefineTarget();
+                CameraMotion.TargetId++;
+                CameraMotion.DefineTarget();
             }
             if (IsKeyPressed(KeyboardKey.Left))
             {
-                Probe.TargetId--;
-                Probe.DefineTarget();
+                CameraMotion.TargetId--;
+                CameraMotion.DefineTarget();
             }
 
-            if (Probe.InTransit)
+            if (CameraMotion.InTransit)
             {
-                if (Raymath.Vector3Subtract(Camera.Position, Probe.Target.Position).Length() > 0.02f)
+                if (Raymath.Vector3Subtract(Camera.Position, CameraMotion.Target.Position).Length() > 0.02f)
                 {
-                    Camera.Position = Raymath.Vector3Lerp(Camera.Position, Probe.Target.Position + Vector3.UnitY * 0.5f + (Probe.Target.Radius * Vector3.Subtract(Camera.Position, Probe.Target.Position)), (float)GetFrameTime());
-                    Camera.Target = Raymath.Vector3Lerp(Camera.Position, Probe.Target.Position + Vector3.UnitY * 0.05f + (Probe.Target.Radius * Vector3.Subtract(Camera.Position, Probe.Target.Position)), (float)GetFrameTime());
+                    Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraMotion.Target.Position + Vector3.UnitY * 0.5f + (CameraMotion.Target.Radius * Vector3.Subtract(Camera.Position, CameraMotion.Target.Position)), (float)GetFrameTime());
+                    Camera.Target = Raymath.Vector3Lerp(Camera.Position, CameraMotion.Target.Position + Vector3.UnitY * 0.05f + (CameraMotion.Target.Radius * Vector3.Subtract(Camera.Position, CameraMotion.Target.Position)), (float)GetFrameTime());
                 }
                 else
                 {
-                    Probe.InTransit = false;
+                    CameraMotion.InTransit = false;
                 }
             }
 
             // Stop transit option
             if (IsKeyPressed(KeyboardKey.Escape))
             {
-                Probe.InTransit = false;
+                CameraMotion.InTransit = false;
                 Conceptor2D.Components.Clear();
-                PrepareCamera(); // Reset camera angles
             }
-        }
-
-        public static void PrepareCamera()
-        {
-            Vector3 newDir = Vector3.Normalize(Vector3.Subtract(Camera.Target, Camera.Position));
-
-            Probe.Yaw = MathF.Atan2(newDir.X, newDir.Z);
-            Probe.Pitch = MathF.Asin(newDir.Y);
         }
 
         /// <summary>Moves the conceptor's camera.</summary>
@@ -208,62 +195,70 @@ namespace Astral_simulation
         {
             if (IsMouseButtonDown(MouseButton.Left))
             {
-                Vector2 mouse = GetMouseDelta();
-                Probe.Yaw -= mouse.X * 0.003f;
-                Probe.Pitch -= mouse.Y * 0.003f;
+                Vector2 mouseDelta = GetMouseDelta();
 
-                Probe.Pitch = Math.Clamp(Probe.Pitch, -1.5f, 1.5f);
-
-                // Calculate camera direction
-                Vector3 direction;
-                direction.X = (float)(Math.Cos(Probe.Pitch) * Math.Sin(Probe.Yaw));
-                direction.Y = (float)Math.Sin(Probe.Pitch);
-                direction.Z = (float)(Math.Cos(Probe.Pitch) * Math.Cos(Probe.Yaw));
-
-                // Add target
-                Camera.Target = Vector3.Add(Camera.Position, direction);
+                CameraMotion.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
+                CameraMotion.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
             }
 
-            Camera.Position += Probe.Velocity;
-            Camera.Target += Probe.Velocity;
+            // if (IsMouseButtonDown(MouseButton.Left))
+            // {
+            //     Vector2 mouse = GetMouseDelta();
+            //     Probe.Yaw -= mouse.X * 0.003f;
+            //     Probe.Pitch -= mouse.Y * 0.003f;
 
-            Probe.Moving = false;
+            //     Probe.Pitch = Math.Clamp(Probe.Pitch, -1.5f, 1.5f);
 
-            // Keys movement
-            if (IsKeyDown(KeyboardKey.W))
-            {
-                Probe.Velocity += Probe.SPEED * GetCameraForward(ref Camera);
-                Probe.Moving = true;
-            }
-            if (IsKeyDown(KeyboardKey.S))
-            {
-                Probe.Velocity -= Probe.SPEED * GetCameraForward(ref Camera);
-                Probe.Moving = true;
-            }
-            if (IsKeyDown(KeyboardKey.A))
-            {
-                Probe.Velocity -= Probe.SPEED * GetCameraRight(ref Camera);
-                Probe.Moving = true;
-            }
-            if (IsKeyDown(KeyboardKey.D))
-            {
-                Probe.Velocity += Probe.SPEED * GetCameraRight(ref Camera);
-                Probe.Moving = true;
-            }
-            if (IsKeyDown(KeyboardKey.F))
-            {
-                Probe.Velocity -= Probe.SPEED * GetCameraUp(ref Camera);
-                Probe.Moving = true;
-            }
-            if (IsKeyDown(KeyboardKey.Space))
-            {
-                Probe.Velocity += Probe.SPEED * GetCameraUp(ref Camera);
-                Probe.Moving = true;
-            }
-            if (!Probe.Moving)
-            {
-                Probe.Velocity = Vector3.Zero;
-            }
+            //     // Calculate camera direction
+            //     Vector3 direction;
+            //     direction.X = (float)(Math.Cos(Probe.Pitch) * Math.Sin(Probe.Yaw));
+            //     direction.Y = (float)Math.Sin(Probe.Pitch);
+            //     direction.Z = (float)(Math.Cos(Probe.Pitch) * Math.Cos(Probe.Yaw));
+
+            //     // Add target
+            //     Camera.Target = Vector3.Add(Camera.Position, direction);
+            // }
+
+            // Camera.Position += Probe.Velocity;
+            // Camera.Target += Probe.Velocity;
+
+            // Probe.Moving = false;
+
+            // // Keys movement
+            // if (IsKeyDown(KeyboardKey.W))
+            // {
+            //     Probe.Velocity += Probe.SPEED * GetCameraForward(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (IsKeyDown(KeyboardKey.S))
+            // {
+            //     Probe.Velocity -= Probe.SPEED * GetCameraForward(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (IsKeyDown(KeyboardKey.A))
+            // {
+            //     Probe.Velocity -= Probe.SPEED * GetCameraRight(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (IsKeyDown(KeyboardKey.D))
+            // {
+            //     Probe.Velocity += Probe.SPEED * GetCameraRight(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (IsKeyDown(KeyboardKey.F))
+            // {
+            //     Probe.Velocity -= Probe.SPEED * GetCameraUp(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (IsKeyDown(KeyboardKey.Space))
+            // {
+            //     Probe.Velocity += Probe.SPEED * GetCameraUp(ref Camera);
+            //     Probe.Moving = true;
+            // }
+            // if (!Probe.Moving)
+            // {
+            //     Probe.Velocity = Vector3.Zero;
+            // }
         }
 
         /// <summary>Updates the post-processing shader values.</summary>
