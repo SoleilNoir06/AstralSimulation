@@ -15,7 +15,7 @@ namespace Astral_simulation
 
             string jsonStream = File.ReadAllText(path);
 
-            List<AstralObject> objects = JsonConvert.DeserializeObject<List<AstralObject>>(jsonStream);
+            List<AstralObject>? objects = JsonConvert.DeserializeObject<List<AstralObject>>(jsonStream);
 
             return objects ?? new List<AstralObject>();
         }
