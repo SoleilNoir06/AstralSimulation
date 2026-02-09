@@ -8,44 +8,6 @@ namespace Raylib_cs.Complements
     /// <summary>Represents the extended version of <see cref="Raylib_cs.Raylib"/>.</summary>
     public unsafe partial class Raylib
     {
-        /// <summary>Loads a <see cref="Skybox"/> object.</summary>
-        /// <param name="path">Path to the skybox file.</param>
-        public static Skybox LoadSkybox(string path)
-        {
-            Skybox skybox = new Skybox();
-            Texture2D panorama;
-            Texture2D cubemap;
-            switch (path.Split('.').Last())
-            {
-                case "hdr": // Work on HDR files
-                    panorama = LoadTexture(path); // Load HDR texture
-                    cubemap = GenTextureCubemap(panorama, 1024, PixelFormat.UncompressedR8G8B8A8); // Load cubemap texture
-                    SetMaterialTexture(ref skybox.Material, MaterialMapIndex.Cubemap, cubemap); // Set cubemap texture to skybox
-                    UnloadTexture(panorama); // Unload unused texture
-                    skybox.Material.Shader = ShaderCenter.SkyboxShader;
-                    return skybox;
-            }
-            return new Skybox(); // Return empty object
-        }
-
-        /// <summary>Unloads a skybox object from the vRAM.</summary>
-        /// <param name="skybox">Skybox to unload.</param>
-        public static void UnloadSkybox(Skybox skybox) 
-        {
-            UnloadMaterial(skybox.Material);
-        }
-
-        /// <summary>Draws a <see cref="Skybox"/> object. (To call before any other draw call).</summary>
-        /// <param name="skybox">Skybox to draw.</param>
-        public static void DrawSkybox(Skybox skybox)
-        {
-            Rlgl.DisableBackfaceCulling();
-            Rlgl.DisableDepthMask();
-            DrawMesh(Skybox.Mesh, skybox.Material, Raymath.MatrixIdentity());
-            Rlgl.EnableBackfaceCulling();
-            Rlgl.EnableDepthMask();
-        }
-
         /// <summary>Loads a cubemap texture.</summary>
         /// <param name="panorama">Panorama 2D texture to use.</param>
         /// <param name="size">Size of the texture.</param>
