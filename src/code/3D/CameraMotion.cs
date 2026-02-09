@@ -1,20 +1,35 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using Raylib_cs;
 
 namespace Astral_simulation
 {
+    /// <summary>Defines the current movement state of the camera.</summary>
+    public enum CameraState
+    {
+        Free,
+        Focused,
+        Withdrawing
+    }
+
     /// <summary>Represents an instance of <see cref="CameraMotion"/> which mainly contains additonal camera parameters.</summary>
     public class CameraMotion
     {
+        // -----------------------------------------------------------
         // Constants
+        // -----------------------------------------------------------
         public const float SENSITIVITY = 0.003f;
         public const float INITIAL_TILT = -50f;
 
+        // -----------------------------------------------------------
         // Private attributes
+        // -----------------------------------------------------------
         private int _targetId;
         private Vector3 _initialPosition;
 
+        // -----------------------------------------------------------
         // Public attributes
+        // -----------------------------------------------------------
 
         /// <summary>Yaw rotation of the camera.</summary>
         public float Yaw;
@@ -23,16 +38,14 @@ namespace Astral_simulation
         public float Pitch;
 
         /// <summary>Defines if the camera is focused on a single planet.</summary>
-        public bool Focus;
-
-
-        public Vector3 TargetOffset;
-
-        /// <summary>Defines if camera moving</summary>
-        public bool Moving;
-
+        public CameraState State;
+        
         /// <summary>Target object.</summary>
         public AstralObject? Target;
+
+        // -----------------------------------------------------------
+        // Public properties
+        // -----------------------------------------------------------
 
         /// <summary>ID of the target object.</summary>
         public int TargetId { get { return _targetId; } 
@@ -50,7 +63,7 @@ namespace Astral_simulation
         /// <summary>Creates an empty <see cref="CameraMotion"/> instance.</summary>
         public CameraMotion()
         {
-            Focus = false;
+            State = CameraState.Free;
             _targetId = -1;
         }
 
@@ -107,7 +120,7 @@ namespace Astral_simulation
         /// <summary>Defines the target for the probe.</summary>
         public void DefineTarget()
         {
-            Focus = true;
+            State = CameraState.Focused;
             Target = Conceptor3D.System.GetObject(TargetId); // Get next target
             Conceptor2D.DisplayObject(Target);
         }

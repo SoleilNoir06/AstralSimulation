@@ -30,8 +30,8 @@ namespace Astral_simulation
         private static bool TrailsOn = true;
 
         public static System System = new System(); // Init default system
-        public static CameraMotion CameraParams = new CameraMotion(); // Init default probe
-        public static Camera3D Camera;
+        public static CameraMotion CameraParams = new CameraMotion(); // Create additional camera parameters
+        public static Camera3D Camera; // Create an empty instance of a camera
 
         /// <summary>Initializes the 3D environnment of the application.</summary>
         public static void Init()
@@ -46,9 +46,6 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
 
-            // Create additional camera parameters
-            CameraParams = new CameraMotion();
-
             // Set base camera orientation
             CameraParams.UpdatePitch(ref Camera, CameraMotion.INITIAL_TILT*DEG2RAD);
             CameraParams.RegisterInitialPosition(Camera.Position);
@@ -61,7 +58,7 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // Move camera
+            // Update camera movement
             MoveCamera();
 
             // Update planet click
@@ -162,28 +159,44 @@ namespace Astral_simulation
             // -----------------------------------------------------------
             // Constant camera-movement options
             // -----------------------------------------------------------
-            
-            // Allow free movement only when mouse is pressed and when not in focused camera-mode
-            if (IsMouseButtonDown(MouseButton.Left) && !CameraParams.Focus)
-            {
-                Vector2 mouseDelta = GetMouseDelta();
 
-                CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
-                CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
-            }
+            switch (CameraParams.State){
+                // Allow free movement only when mouse is pressed and when not in focused camera-mode
+                case CameraState.Free:
+                    if (IsMouseButtonDown(MouseButton.Left))
+                    {
+                        Vector2 mouseDelta = GetMouseDelta();
+                        CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
+                        CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
+                    }
+                break;
+                
+                // Define movement when in focused camera-mode
+                case CameraState.Focused:
+                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
+                    {
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
+                        Camera.Target = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
+                    }
+                    else
+                    {
+                        CameraParams.State = CameraState.Free;
+                    }
+                break;
 
-            // Define movement when in focused camera-mode
-            if (CameraParams.Focus)
-            {
-                if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
-                {
-                    Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
-                    Camera.Target = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
-                }
-                else
-                {
-                    CameraParams.Focus = false;
-                }
+                // Define movement when the camera is withdrawing to its initial position
+                case CameraState.Withdrawing:
+                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.InitialPosition).Length() > 0.3f)
+                    {
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.InitialPosition, (float)GetFrameTime() * 2);
+                        Camera.Target = Raymath.Vector3Lerp(Camera.Target, Vector3.Zero, (float)GetFrameTime() * 2);
+                    }
+                    else
+                    {
+                        CameraParams.State = CameraState.Free;
+                        Camera.Target = Vector3.Zero;
+                    }
+                break;
             }
 
             // -----------------------------------------------------------
@@ -207,11 +220,8 @@ namespace Astral_simulation
             // Escape focused camera-mode
             if (IsKeyPressed(KeyboardKey.Escape))
             {
-                CameraParams.Focus = false;
+                CameraParams.State = CameraState.Withdrawing;
                 Conceptor2D.Components.Clear();
-                // Set camera-target to point at the sun
-                Camera.Target = Vector3.Zero;
-                Camera.Position = CameraParams.InitialPosition;
             }
         }
 
