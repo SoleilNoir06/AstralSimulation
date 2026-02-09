@@ -1,7 +1,6 @@
 ﻿using Raylib_cs;
 using static RayGUI_cs.RayGUI;
 using static Raylib_cs.Raylib;
-using Astral_simulation.DatFiles;
 using Astral_Simulation;
 using System.Numerics;
 
@@ -26,7 +25,6 @@ namespace Astral_simulation
             DrawSplash();
 
             // DONT CHANGE ORDER
-            RLoading.Init(); // Inits the RLoading instance (loads crypto keys)
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
             AudioCenter.Init();
@@ -63,8 +61,6 @@ namespace Astral_simulation
             }
 
             CloseWindow();
-
-            DatEncoder.EncodeSystem(Conceptor3D.System);
 
             // Unloading
             ShaderCenter.Close();
