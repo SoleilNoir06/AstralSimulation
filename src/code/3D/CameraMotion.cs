@@ -8,9 +8,11 @@ namespace Astral_simulation
     {
         // Constants
         public const float SENSITIVITY = 0.003f;
+        public const float INITIAL_TILT = -50f;
 
         // Private attributes
         private int _targetId;
+        private Vector3 _initialPosition;
 
         // Public attributes
 
@@ -20,18 +22,14 @@ namespace Astral_simulation
         /// <summary>Pitch rotation of the camera.</summary>
         public float Pitch;
 
+        /// <summary>Defines if the camera is focused on a single planet.</summary>
+        public bool Focus;
 
-
-        /// <summary>Velocity of the camera.</summary>
-        public Vector3 Velocity;
 
         public Vector3 TargetOffset;
 
         /// <summary>Defines if camera moving</summary>
         public bool Moving;
-
-        /// <summary>Defines if the camera is in transit.</summary>
-        public bool InTransit;
 
         /// <summary>Target object.</summary>
         public AstralObject? Target;
@@ -46,11 +44,13 @@ namespace Astral_simulation
             } 
         }
 
+        /// <summary>Initial position of the camera used for interpolations.</summary>
+        public Vector3 InitialPosition { get { return _initialPosition; } }
+
         /// <summary>Creates an empty <see cref="CameraMotion"/> instance.</summary>
         public CameraMotion()
         {
-            Velocity = Vector3.Zero;
-            InTransit = false;
+            Focus = false;
             _targetId = -1;
         }
 
@@ -97,12 +97,18 @@ namespace Astral_simulation
             camera.Position = camera.Target - view;
         }
 
+        /// <summary> Registers a position as the initial camera position.</summary>
+        /// <param name="position">Position to register as the initial.</param>
+        public void RegisterInitialPosition(Vector3 position)
+        {
+            _initialPosition = position;
+        }
+
         /// <summary>Defines the target for the probe.</summary>
         public void DefineTarget()
         {
-            InTransit = true;
+            Focus = true;
             Target = Conceptor3D.System.GetObject(TargetId); // Get next target
-            Velocity = Vector3.Zero;
             Conceptor2D.DisplayObject(Target);
         }
     }
