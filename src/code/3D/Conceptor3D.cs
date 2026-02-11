@@ -159,7 +159,7 @@ namespace Astral_simulation
             // -----------------------------------------------------------
             // Constant camera-movement options
             // -----------------------------------------------------------
-
+            
             switch (CameraParams.State){
                 // Allow free movement only when mouse is pressed and when not in focused camera-mode
                 case CameraState.Free:
@@ -169,10 +169,24 @@ namespace Astral_simulation
                         CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
                         CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
                     }
+
+                    // Control camera zoom
+                    float zoom = GetMouseWheelMove();
+                    if (zoom > 0)
+                    {
+                        Vector3 direction = Camera.Target - Camera.Position;
+                        Camera.Position += direction/4;
+                    }
+                    else if (zoom < 0)
+                    {
+                        Vector3 direction = Camera.Target - Camera.Position;
+                        Camera.Position -= direction/4;
+                    }
                 break;
                 
                 // Define movement when in focused camera-mode
                 case CameraState.Focused:
+                    // Constantly interpolate the camera's position to follow the current astral target
                     if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
                     {
                         Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
@@ -181,6 +195,13 @@ namespace Astral_simulation
                     else
                     {
                         CameraParams.State = CameraState.Free;
+                    }
+
+                    // Escape focused camera-mode
+                    if (IsKeyPressed(KeyboardKey.Escape))
+                    {
+                        CameraParams.State = CameraState.Withdrawing;
+                        Conceptor2D.Components.Clear();
                     }
                 break;
 
@@ -215,13 +236,6 @@ namespace Astral_simulation
             {
                 CameraParams.TargetId--;
                 CameraParams.DefineTarget();
-            }
-
-            // Escape focused camera-mode
-            if (IsKeyPressed(KeyboardKey.Escape))
-            {
-                CameraParams.State = CameraState.Withdrawing;
-                Conceptor2D.Components.Clear();
             }
         }
 
