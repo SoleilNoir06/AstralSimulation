@@ -108,7 +108,8 @@ namespace Astral_simulation
             EndMode3D();
 
             DrawText(Camera.Position.ToString(), 40, 100, 20, Color.White);
-            DrawText(CameraParams.Pitch.ToString(), 40, 140, 20, Color.White);
+            DrawText("Yaw : " + CameraParams.Yaw.ToString(), 40, 140, 20, Color.White);
+            DrawText("Pitch : " + CameraParams.Pitch.ToString(), 40, 170, 20, Color.White);
 
             EndTextureMode();
 
@@ -163,12 +164,20 @@ namespace Astral_simulation
             switch (CameraParams.State){
                 // Allow free movement only when mouse is pressed and when not in focused camera-mode
                 case CameraState.Free:
+                    // Set the target speed to whatever values the user inputs (mouse movement)
                     if (IsMouseButtonDown(MouseButton.Left))
                     {
                         Vector2 mouseDelta = GetMouseDelta();
                         CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
                         CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
                     }
+                    // Set the target speed to zero so that the camera slows down smoothly 
+                    else
+                    {
+                        CameraParams.UpdateYaw(ref Camera, 0);
+                        CameraParams.UpdatePitch(ref Camera, 0);
+                    }
+                    
 
                     // Control camera zoom
                     float zoom = GetMouseWheelMove();

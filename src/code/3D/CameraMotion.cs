@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Runtime.CompilerServices;
 using Raylib_cs;
 
 namespace Astral_simulation
@@ -18,7 +17,8 @@ namespace Astral_simulation
         // -----------------------------------------------------------
         // Constants
         // -----------------------------------------------------------
-        public const float SENSITIVITY = 0.003f;
+        public const float SENSITIVITY = 0.005f;
+        public const float SMOOTH_FACTOR = 10.0f;
         public const float INITIAL_TILT = -50f;
 
         // -----------------------------------------------------------
@@ -26,6 +26,11 @@ namespace Astral_simulation
         // -----------------------------------------------------------
         private int _targetId;
         private Vector3 _initialPosition;
+        // Angular movement related attributes
+        private float _yawSpeed;
+        private float _targetYawSpeed;
+        private float _pitchSpeed;
+        private float _targetPitchSpeed;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -72,11 +77,16 @@ namespace Astral_simulation
         /// <param name="angle">The angle to set (in radians).</param>
         public void UpdateYaw(ref Camera3D camera, float angle)
         {
+            // Update yaw speed and value
+            _targetYawSpeed = angle;
+            _yawSpeed = Raymath.Lerp(_yawSpeed, _targetYawSpeed, (float)Raylib.GetFrameTime() * SMOOTH_FACTOR);
+            Yaw += _yawSpeed * Raylib.RAD2DEG;
+
             // View vector
             Vector3 view = camera.Target - camera.Position;
 
             // Rotate view vector around rotation axis
-            view = Raymath.Vector3RotateByAxisAngle(view, camera.Up, angle);
+            view = Raymath.Vector3RotateByAxisAngle(view, camera.Up, _yawSpeed);
 
             // Set updated position
             camera.Position = camera.Target - view;
@@ -87,6 +97,11 @@ namespace Astral_simulation
         /// <param name="angle">The angle to set (in radians).</param>
         public void UpdatePitch(ref Camera3D camera, float angle)
         {   
+            // Update pitch speed and value
+            _targetPitchSpeed = angle;
+            _pitchSpeed = Raymath.Lerp(_pitchSpeed, _targetPitchSpeed, (float)Raylib.GetFrameTime() * SMOOTH_FACTOR);
+            Pitch += _pitchSpeed * Raylib.RAD2DEG;
+
             // View vector 
             Vector3 view = camera.Target - camera.Position;
 
@@ -94,17 +109,25 @@ namespace Astral_simulation
             Vector3 right = Raylib.GetCameraRight(ref camera);
 
             // Rotate view vector around right axis (with clamped angle)
-            // Update current pitch
-            float prevAngle = Pitch;
-            Pitch += angle*Raylib.RAD2DEG;
-            if (angle > 0 && Pitch < 89 || angle < 0 && Pitch > -89)
-            {
-                view = Raymath.Vector3RotateByAxisAngle(view, right, angle);
-            }
-            else
-            {
-                Pitch = prevAngle;
-            }
+            view = Raymath.Vector3RotateByAxisAngle(view, right, _pitchSpeed);
+
+            // Update the camera's up vector to prevent clipping when flipping over 
+            camera.Up = Raymath.Vector3CrossProduct(right, view);
+
+            // Set updated position
+            camera.Position = camera.Target - view;
+        }
+
+        public void UpdateSmoothDownMovement(ref Camera3D camera)
+        {
+            // View vector
+            Vector3 view = camera.Target - camera.Position;
+
+            // Smooth down movement until it reached a speed of zero
+            _yawSpeed = Raymath.Lerp(_yawSpeed, 0, (float)Raylib.GetFrameTime());
+
+            // Rotate view vector around rotation axis
+            view = Raymath.Vector3RotateByAxisAngle(view, camera.Up, _yawSpeed);
 
             // Set updated position
             camera.Position = camera.Target - view;
