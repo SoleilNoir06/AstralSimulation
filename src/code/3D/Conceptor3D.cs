@@ -139,7 +139,7 @@ namespace Astral_simulation
                             collision = currentCollision;
                             Conceptor2D.DisplayObject(obj); // Display object infos
                             CameraParams.TargetId = index;
-                            CameraParams.DefineTarget();
+                            CameraParams.DefineObjectTarget();
                             click = true;
                         }
                     }
@@ -178,19 +178,12 @@ namespace Astral_simulation
                         CameraParams.UpdatePitch(ref Camera, 0);
                     }
                     
+                    // Update linear movements (in this cas only the zoom is affected)
+                    CameraParams.UpdateLinearMovement(ref Camera);
 
                     // Control camera zoom
                     float zoom = GetMouseWheelMove();
-                    if (zoom > 0)
-                    {
-                        Vector3 direction = Camera.Target - Camera.Position;
-                        Camera.Position += direction/4;
-                    }
-                    else if (zoom < 0)
-                    {
-                        Vector3 direction = Camera.Target - Camera.Position;
-                        Camera.Position -= direction/4;
-                    }
+                    if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
                 break;
                 
                 // Define movement when in focused camera-mode
@@ -210,6 +203,7 @@ namespace Astral_simulation
                     if (IsKeyPressed(KeyboardKey.Escape))
                     {
                         CameraParams.State = CameraState.Withdrawing;
+                        CameraParams.ResetCameraTarget();
                         Conceptor2D.Components.Clear();
                     }
                 break;
@@ -237,14 +231,14 @@ namespace Astral_simulation
             if (IsKeyPressed(KeyboardKey.Right))
             {
                 CameraParams.TargetId++;
-                CameraParams.DefineTarget();
+                CameraParams.DefineObjectTarget();
             }
 
             // Enable focused camera-mode with left element
             if (IsKeyPressed(KeyboardKey.Left))
             {
                 CameraParams.TargetId--;
-                CameraParams.DefineTarget();
+                CameraParams.DefineObjectTarget();
             }
         }
 

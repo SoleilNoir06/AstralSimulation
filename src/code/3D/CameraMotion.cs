@@ -31,6 +31,9 @@ namespace Astral_simulation
         private float _targetYawSpeed;
         private float _pitchSpeed;
         private float _targetPitchSpeed;
+        // Linear movement related attributes
+        private Vector3 _targetPosition;
+        private Vector3 _targetView;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -84,12 +87,15 @@ namespace Astral_simulation
 
             // View vector
             Vector3 view = camera.Target - camera.Position;
+            Vector3 _targetViewVector = _targetView - _targetPosition; // used for interpolation
 
             // Rotate view vector around rotation axis
             view = Raymath.Vector3RotateByAxisAngle(view, camera.Up, _yawSpeed);
+            _targetViewVector = Raymath.Vector3RotateByAxisAngle(_targetViewVector, camera.Up, _yawSpeed);
 
             // Set updated position
             camera.Position = camera.Target - view;
+            _targetPosition = _targetView - _targetViewVector;
         }
 
         /// <summary>Rotates a camera around its right vector. Pitch is looking "up" and "down". NOTE : angle must be in radians.</summary>
@@ -104,33 +110,49 @@ namespace Astral_simulation
 
             // View vector 
             Vector3 view = camera.Target - camera.Position;
+            Vector3 _targetViewVector = _targetView - _targetPosition; // used for interpolation
 
             // Rotation axis
             Vector3 right = Raylib.GetCameraRight(ref camera);
 
             // Rotate view vector around right axis (with clamped angle)
             view = Raymath.Vector3RotateByAxisAngle(view, right, _pitchSpeed);
+            _targetViewVector = Raymath.Vector3RotateByAxisAngle(_targetViewVector, right, _pitchSpeed);
 
             // Update the camera's up vector to prevent clipping when flipping over 
             camera.Up = Raymath.Vector3CrossProduct(right, view);
 
             // Set updated position
             camera.Position = camera.Target - view;
+            _targetPosition = _targetView - _targetViewVector;
         }
 
-        public void UpdateSmoothDownMovement(ref Camera3D camera)
+        public void UpdateLinearMovement(ref Camera3D camera)
         {
-            // View vector
-            Vector3 view = camera.Target - camera.Position;
+            // Update linear camera movements using an interpolation
+            // (Linear movements refer to the camera zoom as well as object paths)
+            camera.Position = Raymath.Vector3Lerp(camera.Position, _targetPosition, (float)Raylib.GetFrameTime() * SMOOTH_FACTOR);    
+            camera.Target = Raymath.Vector3Lerp(camera.Target, _targetView, (float)Raylib.GetFrameTime());
+        }
 
-            // Smooth down movement until it reached a speed of zero
-            _yawSpeed = Raymath.Lerp(_yawSpeed, 0, (float)Raylib.GetFrameTime());
+        public void DefineZoomLevel(Camera3D camera, float zoom)
+        {
+            Vector3 direction = camera.Target - camera.Position;
+            _targetPosition = camera.Position + Math.Sign(zoom)*direction/3;
+            _targetView = camera.Target;
+        }
 
-            // Rotate view vector around rotation axis
-            view = Raymath.Vector3RotateByAxisAngle(view, camera.Up, _yawSpeed);
+        /// <summary>Defines the target for the probe.</summary>
+        public void DefineObjectTarget()
+        {
+            State = CameraState.Focused;
+            Target = Conceptor3D.System.GetObject(TargetId); // Get next target
+            Conceptor2D.DisplayObject(Target);
+        }
 
-            // Set updated position
-            camera.Position = camera.Target - view;
+        public void ResetCameraTarget()
+        {
+            _targetPosition = _initialPosition;
         }
 
         /// <summary> Registers a position as the initial camera position.</summary>
@@ -138,14 +160,7 @@ namespace Astral_simulation
         public void RegisterInitialPosition(Vector3 position)
         {
             _initialPosition = position;
-        }
-
-        /// <summary>Defines the target for the probe.</summary>
-        public void DefineTarget()
-        {
-            State = CameraState.Focused;
-            Target = Conceptor3D.System.GetObject(TargetId); // Get next target
-            Conceptor2D.DisplayObject(Target);
+            _targetPosition = position;
         }
     }
 }
