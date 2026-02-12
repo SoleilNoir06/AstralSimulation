@@ -39,7 +39,7 @@ namespace Astral_simulation
             // Create camera object with base parameters
             Camera = new Camera3D() 
             {
-                Position = new Vector3(40f, 40f, 0f),
+                Position = new Vector3(60f, 60f, 0f),
                 Target = Vector3.Zero,
                 Up = Vector3.UnitZ,
                 FovY = 45f,
@@ -47,8 +47,7 @@ namespace Astral_simulation
             };
 
             // Set base camera orientation
-            CameraParams.UpdatePitch(ref Camera, CameraMotion.INITIAL_TILT*DEG2RAD);
-            CameraParams.RegisterInitialPosition(Camera.Position);
+            CameraParams.RegisterInitialPosition(ref Camera);
 
             _skybox = LoadSkybox("assets/shaders/skyboxes/HDR_blue_nebulae-1.hdr");
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
@@ -106,10 +105,6 @@ namespace Astral_simulation
             });
 
             EndMode3D();
-
-            DrawText(Camera.Position.ToString(), 40, 100, 20, Color.White);
-            DrawText("Yaw : " + CameraParams.Yaw.ToString(), 40, 140, 20, Color.White);
-            DrawText("Pitch : " + CameraParams.Pitch.ToString(), 40, 170, 20, Color.White);
 
             EndTextureMode();
 
@@ -178,7 +173,7 @@ namespace Astral_simulation
                         CameraParams.UpdatePitch(ref Camera, 0);
                     }
                     
-                    // Update linear movements (in this cas only the zoom is affected)
+                    // Update linear movements (in this case only the zoom is affected)
                     CameraParams.UpdateLinearMovement(ref Camera);
 
                     // Control camera zoom

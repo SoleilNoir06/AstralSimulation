@@ -68,6 +68,8 @@ namespace Astral_simulation
         /// <summary>Initial position of the camera used for interpolations.</summary>
         public Vector3 InitialPosition { get { return _initialPosition; } }
 
+        internal string Infos { get {return $"Yaw Speed : {_yawSpeed}\nTarget Yaw Speed : {_targetYawSpeed}\nPitch Speed : {_pitchSpeed}\nTarget Pitch Speed : {_targetPitchSpeed}";} }
+
         /// <summary>Creates an empty <see cref="CameraMotion"/> instance.</summary>
         public CameraMotion()
         {
@@ -127,6 +129,8 @@ namespace Astral_simulation
             _targetPosition = _targetView - _targetViewVector;
         }
 
+        /// <summary>Updates the movement of the camera using values intended for linear interpolations only.</summary>
+        /// <param name="camera">The camera to update.</param>
         public void UpdateLinearMovement(ref Camera3D camera)
         {
             // Update linear camera movements using an interpolation
@@ -135,6 +139,9 @@ namespace Astral_simulation
             camera.Target = Raymath.Vector3Lerp(camera.Target, _targetView, (float)Raylib.GetFrameTime());
         }
 
+        /// <summary>Defines the next zoom level to be applied.</summary>
+        /// <param name="camera">The camera to update.</param>
+        /// <param name="zoom">The next zoom level to apply</param>
         public void DefineZoomLevel(Camera3D camera, float zoom)
         {
             Vector3 direction = camera.Target - camera.Position;
@@ -150,17 +157,27 @@ namespace Astral_simulation
             Conceptor2D.DisplayObject(Target);
         }
 
+        /// <summary>Resets the camera target used for interpolation to its initial position.</summary>
         public void ResetCameraTarget()
         {
             _targetPosition = _initialPosition;
         }
 
-        /// <summary> Registers a position as the initial camera position.</summary>
-        /// <param name="position">Position to register as the initial.</param>
-        public void RegisterInitialPosition(Vector3 position)
+        /// <summary> Registers the initial paramters for the camera.</summary>
+        /// <param name="camera">The camera to register.</param>
+        public void RegisterInitialPosition(ref Camera3D camera)
         {
-            _initialPosition = position;
-            _targetPosition = position;
+            // Set initial tilt without implying interpolation
+            Vector3 view = camera.Target - camera.Position;
+            Vector3 right = Raylib.GetCameraRight(ref camera);
+            view = Raymath.Vector3RotateByAxisAngle(view, right, INITIAL_TILT*Raylib.DEG2RAD);
+            // Update the camera's up vector to prevent clipping when flipping over 
+            camera.Up = Raymath.Vector3CrossProduct(right, view);
+            camera.Position = camera.Target - view;
+
+             // Set initial values
+            _initialPosition = camera.Position;
+            _targetPosition = camera.Position;
         }
     }
 }
