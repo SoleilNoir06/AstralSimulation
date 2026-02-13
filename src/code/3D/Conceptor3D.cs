@@ -96,8 +96,6 @@ namespace Astral_simulation
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-
-                //if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
             });
 
             EndMode3D();

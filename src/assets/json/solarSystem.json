@@ -12,6 +12,12 @@
             "Y": 0,
             "Z": 0
         },
+        "AttributeColor": {
+            "R": 93,
+            "G": 63,
+            "B": 106,
+            "A": 255
+        },
         "RotationSpeed": 10.89,
         "Radius": 0.0000163,
         "Mass": 0.33,
@@ -40,6 +46,12 @@
             "X": 177.36,
             "Y": 0,
             "Z": 0
+        },
+        "AttributeColor": {
+            "R": 103,
+            "G": 70,
+            "B": 14,
+            "A": 255
         },
         "RotationSpeed": 6.52,
         "Radius": 0.0000404,
@@ -70,6 +82,12 @@
             "Y": 0,
             "Z": 0
         },
+        "AttributeColor": {
+            "R": 0,
+            "G": 96,
+            "B": 128,
+            "A": 255
+        },
         "RotationSpeed": 1674.39,
         "Radius": 0.0000426,
         "Mass": 5.97,
@@ -98,6 +116,12 @@
             "X": 25.19,
             "Y": 0,
             "Z": 0
+        },
+        "AttributeColor": {
+            "R": 87,
+            "G": 43,
+            "B": 14,
+            "A": 255
         },
         "RotationSpeed": 866.63,
         "Radius": 0.0000227,
@@ -128,6 +152,12 @@
             "Y": 0,
             "Z": 0
         },
+        "AttributeColor": {
+            "R": 127,
+            "G": 81,
+            "B": 66,
+            "A": 255
+        },
         "RotationSpeed": 45259.19,
         "Radius": 0.000477,
         "Mass": 1898,
@@ -156,6 +186,12 @@
             "X": 26.73,
             "Y": 0,
             "Z": 0
+        },
+        "AttributeColor": {
+            "R": 145,
+            "G": 131,
+            "B": 91,
+            "A": 255
         },
         "RotationSpeed": 35536.32,
         "Radius": 0.000403,
@@ -186,6 +222,12 @@
             "Y": 0,
             "Z": 0
         },
+        "AttributeColor": {
+            "R": 63,
+            "G": 124,
+            "B": 132,
+            "A": 255
+        },
         "RotationSpeed": 9315.08,
         "Radius": 0.000171,
         "Mass": 86.8,
@@ -215,6 +257,12 @@
             "Y": 0,
             "Z": 0
         },
+        "AttributeColor": {
+            "R": 65,
+            "G": 81,
+            "B": 132,
+            "A": 255
+        },
         "RotationSpeed": 9658.08,
         "Radius": 0.000166,
         "Mass": 102,
@@ -243,6 +291,12 @@
             "X": 122.53,
             "Y": 0,
             "Z": 0
+        },
+        "AttributeColor": {
+            "R": 112,
+            "G": 97,
+            "B": 85,
+            "A": 255
         },
         "RotationSpeed": 48.71,
         "Radius": 0.00000794,

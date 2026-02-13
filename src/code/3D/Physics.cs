@@ -162,7 +162,9 @@ namespace Astral_Simulation
             }
 
             for (int i = 0; i < segments - 1; i++)
-                DrawLine3D(points[i], points[i + 1], Raylib_cs.Color.RayWhite);
+            {
+                DrawLine3D(points[i], points[i + 1], obj.AttributeColor);
+            }
         }
     }
 }

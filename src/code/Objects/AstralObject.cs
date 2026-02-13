@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Raylib_cs;
+﻿using Raylib_cs;
 using System.Numerics;
 
 namespace Astral_simulation
@@ -18,6 +17,7 @@ namespace Astral_simulation
         private float _revolution;
         private Vector3 _rotation;
         private Vector3 _velocity;
+        private Color _attributeColor;
         private float _rotationSpeed;
         private string _name;
         private float _initialVelocity;
@@ -86,6 +86,19 @@ namespace Astral_simulation
             {
                 _rotation = value;
                 UpdateTransform();
+            }
+        }
+
+        /// <summary>The attribute color stands for the color used in various GUI options related to the object.</summary>
+        public Color AttributeColor
+        {
+            get { return _attributeColor; }
+            set
+            {
+                _attributeColor.R = value.R;
+                _attributeColor.G = value.G;
+                _attributeColor.B = value.B;
+                _attributeColor.A = value.A;
             }
         }
 
