@@ -17,6 +17,12 @@ namespace Astral_simulation
 
             List<AstralObject>? objects = JsonConvert.DeserializeObject<List<AstralObject>>(jsonStream);
 
+            // Fix objects value
+            objects?.ForEach(obj =>
+            {
+                obj.Radius *= 200;
+            });
+
             return objects ?? new List<AstralObject>();
         }
 
