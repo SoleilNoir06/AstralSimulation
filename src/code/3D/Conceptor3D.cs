@@ -113,35 +113,20 @@ namespace Astral_simulation
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
         public static void ClickAstralObject()
         {
-            if (IsMouseButtonPressed(MouseButton.Left))
+            if (IsMouseButtonReleased(MouseButton.Left))
             {
-                bool click = false;
                 int index = 0;
-                Ray mouse = GetScreenToWorldRay(GetMousePosition(), Camera); // Get mouse ray
-                bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
                 {
-                    if (!click)
+                    if (obj.UIActive)
                     {
-                        //RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
-                        bool currentCollision = CheckRaySphereIntersection(mouse, obj.Position, obj.Radius);
-                        if (currentCollision)
-                        {
-                            collision = currentCollision;
-                            Conceptor2D.DisplayObject(obj); // Display object infos
-                            CameraParams.TargetId = index;
-                            CameraParams.DefineObjectTarget();
-                            click = true;
-                        }
+                        Conceptor2D.DisplayObject(obj); // Display object infos
+                        CameraParams.TargetId = index;
+                        CameraParams.DefineObjectTarget();
                     }
                     index++;
                 });
             }
-        }
-
-        /// <summary>Closes the conceptor by unloading all its data.</summary>
-        public static void Close()
-        {
         }
 
         /// <summary>Moves the conceptor's camera.</summary>
@@ -182,7 +167,7 @@ namespace Astral_simulation
                     if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
                     {
                         Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
-                        Camera.Target = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
+                        Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
                     }
                     else
                     {
@@ -211,24 +196,6 @@ namespace Astral_simulation
                         Camera.Target = Vector3.Zero;
                     }
                 break;
-            }
-
-            // -----------------------------------------------------------
-            // Single-time camera events 
-            // -----------------------------------------------------------
-
-            // Enable focused camera-mode with right element
-            if (IsKeyPressed(KeyboardKey.Right))
-            {
-                CameraParams.TargetId++;
-                CameraParams.DefineObjectTarget();
-            }
-
-            // Enable focused camera-mode with left element
-            if (IsKeyPressed(KeyboardKey.Left))
-            {
-                CameraParams.TargetId--;
-                CameraParams.DefineObjectTarget();
             }
         }
 

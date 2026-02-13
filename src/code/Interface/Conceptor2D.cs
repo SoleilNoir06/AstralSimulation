@@ -10,11 +10,20 @@ namespace Astral_simulation
     public static class Conceptor2D
     {
         // Constants
-        const int DEFAULT_FONT_SIZE = 30;
-        const int TARGET_PERIMETER_RADIUS = 10;
+        public const int DEFAULT_FONT_SIZE = 30;
+        public const float COLOR_BRIGTHNESS_OVERLAY = 0.35f;
+        const float TARGET_PERIMETER_RADIUS = 10;
+        const float ACTIVE_TARGET_PERIMTER_RADIUS = 15;
+        const float SMOOTH_FACTOR = 3.5f;
+
+        // Colors definition
+        public static Color PASSIVE_TEXT_COLOR = new Color(191, 191, 191);
+        public static Color ACTIVE_TEXT_COLOR = Color.White;
 
         // Private attributes
         private static Font _topLayerFont;
+        private static AstralObject? _lastActiveObject;
+        private static float _targetCircleOverlayRadius = TARGET_PERIMETER_RADIUS;
 
         // Color A : rgba(75, 79, 87, 255)
         // Color B : rgba(31, 33, 36, 255)
@@ -23,7 +32,7 @@ namespace Astral_simulation
         public static void Init(){
 
             // Font loading
-            _topLayerFont = LoadFont("assets/fonts/Poppins/Poppins-Medium.ttf");
+            _topLayerFont = LoadFontEx("assets/fonts/Poppins/Poppins-SemiBold.ttf", 25, null, 0);
             
             Dictionary<int, Font> fonts = new Dictionary<int, Font>()
             {
@@ -72,20 +81,41 @@ namespace Astral_simulation
         public static void DisplayUITopLayer()
         {
             // GUI-Layer system rendering
+            bool activity = false;
             Conceptor3D.System.ForEach(obj =>
             {
                 Vector2? space = ValidateWorldToScreen(obj.Position, Conceptor3D.Camera);
                 if (space is not null)
                 {
-                    // Apply double layering on planet circles
-                    DrawCircleLinesV(space.Value, TARGET_PERIMETER_RADIUS, obj.AttributeColor);
-                    DrawCircleLinesV(space.Value, TARGET_PERIMETER_RADIUS - 1, obj.AttributeColor);
-
                     // Display object name if near enough
                     Vector2 textPos = new Vector2( (int)space.Value.X + TARGET_PERIMETER_RADIUS*2, (int)space.Value.Y - TARGET_PERIMETER_RADIUS*2);
-                    DrawTextEx(_topLayerFont, obj.Name, textPos, 20, 3f, Color.RayWhite);
+                    Vector2 txtSize = MeasureTextEx(_topLayerFont, obj.Name, 25, 4f);
+
+                    // Define text state to display
+                    if (Hover((int)textPos.X, (int)textPos.Y, (int)txtSize.X, (int)txtSize.Y))
+                    {
+                        // Draw appropriate text
+                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, ACTIVE_TEXT_COLOR);
+                        // Apply double layering on planet circles
+                        _targetCircleOverlayRadius = Raymath.Lerp(_targetCircleOverlayRadius, ACTIVE_TARGET_PERIMTER_RADIUS, (float)GetFrameTime()*SMOOTH_FACTOR);
+                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius, ColorBrightness(obj.AttributeColor, COLOR_BRIGTHNESS_OVERLAY));
+                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius - 1, ColorBrightness(obj.AttributeColor, COLOR_BRIGTHNESS_OVERLAY));
+                        obj.UIActive = true;
+                        activity = true;
+                        _lastActiveObject = obj;
+                    }
+                    else
+                    {
+                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, PASSIVE_TEXT_COLOR);
+                        // Apply double layering on planet circles
+                        float radius = _lastActiveObject == obj ? _targetCircleOverlayRadius : TARGET_PERIMETER_RADIUS;
+                        DrawCircleLinesV(space.Value, radius, obj.AttributeColor);
+                        DrawCircleLinesV(space.Value, radius - 1, obj.AttributeColor);
+                        obj.UIActive = false;
+                    }
                 }
             });
+            if (!activity) _targetCircleOverlayRadius = Raymath.Lerp(_targetCircleOverlayRadius, TARGET_PERIMETER_RADIUS, GetFrameTime()*SMOOTH_FACTOR);
         }
 
         /// <summary>Gets the screen position of a 3D position, according to the camera direction.</summary>

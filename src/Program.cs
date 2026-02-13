@@ -60,7 +60,6 @@ namespace Astral_simulation
 
             // Unloading
             ShaderCenter.Close();
-            Conceptor3D.Close();
         }
 
         static void DrawSplash()

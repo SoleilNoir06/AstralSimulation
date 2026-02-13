@@ -1,7 +1,7 @@
 ﻿using Astral_simulation;
-using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
+using Raylib_cs;
 
 namespace Astral_Simulation
 {
@@ -161,9 +161,11 @@ namespace Astral_Simulation
                 points[i] = OrbitalTo3D(pos);
             }
 
+            // Define orbit color (based on UI activity)
+            Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
             for (int i = 0; i < segments - 1; i++)
             {
-                DrawLine3D(points[i], points[i + 1], obj.AttributeColor);
+                DrawLine3D(points[i], points[i + 1], orbitColor);
             }
         }
     }
