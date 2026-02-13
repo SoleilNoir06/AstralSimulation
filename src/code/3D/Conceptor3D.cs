@@ -100,6 +100,8 @@ namespace Astral_simulation
 
             EndMode3D();
 
+            Conceptor2D.DisplayUITopLayer();
+
             EndTextureMode();
 
             // Update post-pro shader
