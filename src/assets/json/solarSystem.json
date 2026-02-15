@@ -18,6 +18,7 @@
             "B": 106,
             "A": 255
         },
+        "Description":"The smallest planet in our solar \nsystem and nearest to the Sun, \nMercury is only slightly larger \nthan Earth's Moon. From the surface \nof Mercury, the Sun would appear \nmore than three times as large as \nit does when viewed from Earth, \nand the sunlight would be as much \nas seven times brighter.",
         "RotationSpeed": 10.89,
         "Radius": 0.0000163,
         "Mass": 0.33,
@@ -53,6 +54,7 @@
             "B": 14,
             "A": 255
         },
+        "Description":"Similar in size and structure to Earth, \nVenus has been called Earth's twin. \nThese are not identical twins, however \n, there are radical differences between \nthe two worlds. It’s the hottest planet \nin our solar system, even though \nMercury is closer to the Sun. ",
         "RotationSpeed": 6.52,
         "Radius": 0.0000404,
         "Mass": 4.87,
@@ -88,6 +90,7 @@
             "B": 128,
             "A": 255
         },
+        "Description":"Earth, our home planet, is the only place \nwe know of so far that is inhabited by \nliving things. It is also the only \nplanet in our solar system with liquid \nwater on the surface. The creatures \nliving here tend to be pretty stupid.",
         "RotationSpeed": 1674.39,
         "Radius": 0.0000426,
         "Mass": 5.97,
@@ -123,6 +126,7 @@
             "B": 14,
             "A": 255
         },
+        "Description":"The fourth planet from the Sun, Mars \nis a dusty, cold, desert world with \na very thin atmosphere. Mars is home to \nthe largest volcano in the solar system, \nOlympus Mons. It's three times taller than \nEarth's Mt. Everest with a base the size \nof the state of New Mexico.",
         "RotationSpeed": 866.63,
         "Radius": 0.0000227,
         "Mass": 0.642,
@@ -158,6 +162,7 @@
             "B": 66,
             "A": 255
         },
+        "Description":"Jupiter is the fifth planet from the \nSun and is, by far, the largest planet \nin the solar system, more than twice \nas massive as all the other planets \ncombined. Jupiter's iconic Great Red \nSpot is a giant storm bigger than Earth \nthat has raged for hundreds of years.",
         "RotationSpeed": 45259.19,
         "Radius": 0.000477,
         "Mass": 1898,
@@ -193,6 +198,7 @@
             "B": 91,
             "A": 255
         },
+        "Description":"Saturn is the sixth planet from the \nSun and the second largest planet \nin our solar system. Adorned with \nthousands of beautiful ringlets, Saturn \nis unique among the planets. Like \nfellow gas giant Jupiter, Saturn is \na massive ball made mostly of hydrogen \nand helium.",
         "RotationSpeed": 35536.32,
         "Radius": 0.000403,
         "Mass": 568,
@@ -228,6 +234,7 @@
             "B": 132,
             "A": 255
         },
+        "Description":"The seventh planet from the Sun with \nthe third largest diameter in our \nsolar system, Uranus is very cold and \nwindy. The ice giant is surrounded by \n13 faint rings and 27 small moons as \nit rotates at a nearly 90-degree angle \nfrom the plane of its orbit.",
         "RotationSpeed": 9315.08,
         "Radius": 0.000171,
         "Mass": 86.8,
@@ -263,6 +270,7 @@
             "B": 132,
             "A": 255
         },
+        "Description":"Dark, cold and whipped by supersonic \nwinds, ice giant Neptune is the eighth \nand most distant planet in our solar \nsystem. Neptune is the only planet in \nour solar system not visible to the \nnaked eye. In 2011 Neptune completed its \nfirst 165-year orbit since its discovery \nin 1846.",
         "RotationSpeed": 9658.08,
         "Radius": 0.000166,
         "Mass": 102,
@@ -298,6 +306,7 @@
             "B": 85,
             "A": 255
         },
+        "Description":"Pluto, which is smaller than Earth's \nMoon, has a heart-shaped glacier \nthat's the size of Texas and Oklahoma. \nThis fascinating dwarf planet has \nblue skies, spinning moons, mountains \nas high as the Rockies, and it snows, \nbut the snow is red.",
         "RotationSpeed": 48.71,
         "Radius": 0.00000794,
         "Mass": 0.013,

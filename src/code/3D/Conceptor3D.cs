@@ -93,7 +93,6 @@ namespace Astral_simulation
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-                // if (CameraParams.Target is not null ) DrawSphere(System.GetObject(CameraParams.TargetId).Position, System.GetObject(CameraParams.TargetId).Radius, Color.Red);
             });
             MoveCamera();
 

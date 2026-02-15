@@ -18,6 +18,7 @@ namespace Astral_simulation
         private Vector3 _rotation;
         private Vector3 _velocity;
         private Color _attributeColor;
+        private string _description;
         private float _rotationSpeed;
         private string _name;
         private float _initialVelocity;
@@ -102,6 +103,12 @@ namespace Astral_simulation
                 _attributeColor.B = value.B;
                 _attributeColor.A = value.A;
             }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
         }
 
         /// <summary>Time for the objec to revolut</summary>
