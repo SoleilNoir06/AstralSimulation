@@ -32,7 +32,7 @@ namespace Astral_simulation
 
         public static void PlaySound(string name)
         {
-            Raylib.PlaySound(_sounds[name]);
+            if (!Raylib.IsSoundPlaying(_sounds[name])) Raylib.PlaySound(_sounds[name]);
         }
 
         public static void StopSound(string name) 

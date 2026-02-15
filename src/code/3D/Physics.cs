@@ -52,7 +52,7 @@ namespace Astral_Simulation
             UpdateProperties(obj);
 
             // Mean anomaly at frame
-            float M = _M0 + _n * _deltaTime;
+            float M = _M0 + _n * _deltaTime / 1000;
             M %= 2 * MathF.PI;
 
             // Excentric anomaly computed with Kepler equation

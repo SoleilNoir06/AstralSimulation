@@ -106,6 +106,7 @@ namespace Astral_simulation
                     }
                     else
                     {
+                        // Draw appropriate text
                         DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, PASSIVE_TEXT_COLOR);
                         // Apply double layering on planet circles
                         float radius = _lastActiveObject == obj ? _targetCircleOverlayRadius : TARGET_PERIMETER_RADIUS;
@@ -115,6 +116,8 @@ namespace Astral_simulation
                     }
                 }
             });
+
+            // Move back the active circle interpolator if no activity is detected
             if (!activity) _targetCircleOverlayRadius = Raymath.Lerp(_targetCircleOverlayRadius, TARGET_PERIMETER_RADIUS, GetFrameTime()*SMOOTH_FACTOR);
         }
 

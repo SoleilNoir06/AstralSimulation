@@ -45,9 +45,12 @@ namespace Astral_simulation
         /// <summary>Pitch rotation of the camera.</summary>
         public float Pitch;
 
+        /// <summary>Defines whether the camera is locked with the focused object or not.</summary>
+        public bool AstralLock;
+
         /// <summary>Defines if the camera is focused on a single planet.</summary>
         public CameraState State;
-        
+
         /// <summary>Target object.</summary>
         public AstralObject? Target;
 
@@ -74,6 +77,7 @@ namespace Astral_simulation
         public CameraMotion()
         {
             State = CameraState.Free;
+            AstralLock = false;
             _targetId = -1;
         }
 

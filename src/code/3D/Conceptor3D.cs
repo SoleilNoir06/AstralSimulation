@@ -55,9 +55,6 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // Update camera movement
-            MoveCamera();
-
             // Update planet click
             ClickAstralObject();
 
@@ -96,9 +93,13 @@ namespace Astral_simulation
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
+                // if (CameraParams.Target is not null ) DrawSphere(System.GetObject(CameraParams.TargetId).Position, System.GetObject(CameraParams.TargetId).Radius, Color.Red);
             });
+            MoveCamera();
 
             EndMode3D();
+
+            // Update camera movement
 
             Conceptor2D.DisplayUITopLayer();
 
@@ -120,6 +121,10 @@ namespace Astral_simulation
                 {
                     if (obj.UIActive)
                     {
+                        // Play click sound
+                        AudioCenter.PlaySound("button_2");
+                        CameraParams.AstralLock = false;
+
                         Conceptor2D.DisplayObject(obj); // Display object infos
                         CameraParams.TargetId = index;
                         CameraParams.DefineObjectTarget();
@@ -139,45 +144,39 @@ namespace Astral_simulation
             switch (CameraParams.State){
                 // Allow free movement only when mouse is pressed and when not in focused camera-mode
                 case CameraState.Free:
-                    // Set the target speed to whatever values the user inputs (mouse movement)
-                    if (IsMouseButtonDown(MouseButton.Left))
-                    {
-                        Vector2 mouseDelta = GetMouseDelta();
-                        CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
-                        CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
-                    }
-                    // Set the target speed to zero so that the camera slows down smoothly 
-                    else
-                    {
-                        CameraParams.UpdateYaw(ref Camera, 0);
-                        CameraParams.UpdatePitch(ref Camera, 0);
-                    }
-                    
-                    // Update linear movements (in this case only the zoom is affected)
-                    CameraParams.UpdateLinearMovement(ref Camera);
-
-                    // Control camera zoom
-                    float zoom = GetMouseWheelMove();
-                    if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
+                    UpdateCameraFreeMode();
                 break;
                 
                 // Define movement when in focused camera-mode
                 case CameraState.Focused:
-                    // Constantly interpolate the camera's position to follow the current astral target
-                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
+                    float dist = Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length();
+                    
+                    // Compute exponential interpolator
+                    float smoothing = Raymath.Clamp(1/dist, 3, float.PositiveInfinity); // vitesse de rattrapage
+                    float t = 1 - MathF.Exp(-smoothing * GetFrameTime());
+                    
+                    // Constantly lerp camera target
+                    Vector3 targetPosition = CameraParams.Target.Position + Vector3.UnitY * CameraParams.Target.Radius*6;
+                    // Enable free mode when close enough
+                    Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
+                    if (!CameraParams.AstralLock && (targetPosition - Camera.Position).Length() > 0.001)
                     {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
-                        Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, targetPosition, GetFrameTime()*2);
                     }
                     else
                     {
-                        CameraParams.State = CameraState.Free;
+                        // Reset zoom level to state that the new location is base zoom level
+                        if (!CameraParams.AstralLock) CameraParams.DefineZoomLevel(Camera, 0);
+                        CameraParams.AstralLock = true;
+                        // Enable free mode arround the object
+                        UpdateCameraFreeMode();
                     }
 
                     // Escape focused camera-mode
                     if (IsKeyPressed(KeyboardKey.Escape))
                     {
                         CameraParams.State = CameraState.Withdrawing;
+                        CameraParams.AstralLock = false;
                         CameraParams.ResetCameraTarget();
                         Conceptor2D.Components.Clear();
                     }
@@ -197,6 +196,31 @@ namespace Astral_simulation
                     }
                 break;
             }
+        }
+
+        /// <summary>Defines the movement for the free camera-mode. (Used in total freedom and around objects)</summary>
+        private static void UpdateCameraFreeMode()
+        {
+            // Set the target speed to whatever values the user inputs (mouse movement)
+            if (IsMouseButtonDown(MouseButton.Left))
+            {
+                Vector2 mouseDelta = GetMouseDelta();
+                CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
+                CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
+            }
+            // Set the target speed to zero so that the camera slows down smoothly 
+            else
+            {
+                CameraParams.UpdateYaw(ref Camera, 0);
+                CameraParams.UpdatePitch(ref Camera, 0);
+            }
+
+            // Control camera zoom
+            float zoom = GetMouseWheelMove();
+            if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
+            
+            // Update linear movements (in this case only the zoom is affected)
+            CameraParams.UpdateLinearMovement(ref Camera);
         }
 
         /// <summary>Updates the post-processing shader values.</summary>
