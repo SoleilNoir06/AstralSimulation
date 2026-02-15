@@ -91,15 +91,30 @@ namespace Astral_simulation
                     Vector2 textPos = new Vector2( (int)space.Value.X + TARGET_PERIMETER_RADIUS*2, (int)space.Value.Y - TARGET_PERIMETER_RADIUS*2);
                     Vector2 txtSize = MeasureTextEx(_topLayerFont, obj.Name, 25, 4f);
 
+                    // Define colors to use (taking account of selected objects and distance)
+                    Color attributeColor = obj.AttributeColor;
+                    Color passiveTextColor = PASSIVE_TEXT_COLOR;
+                    Color activeTextColor = ACTIVE_TEXT_COLOR;
+
+                    if (Conceptor3D.CameraParams.Target == obj)
+                    {
+                        float dist = Raymath.Vector3Subtract(Conceptor3D.CameraParams.ApprochedTarget, Conceptor3D.Camera.Position).Length() / obj.Radius;
+                        attributeColor = ColorAlpha(obj.AttributeColor, Raymath.Normalize(dist, 150, 300)); // }
+                        passiveTextColor = ColorAlpha(passiveTextColor, Raymath.Normalize(dist, 150, 300)); // <- Don't question theses values, found em while debugging
+                        activeTextColor = ColorAlpha(activeTextColor, Raymath.Normalize(dist, 150, 300)); //   }
+                    }
+
                     // Define text state to display
                     if (Hover((int)textPos.X, (int)textPos.Y, (int)txtSize.X, (int)txtSize.Y))
                     {
                         // Draw appropriate text
-                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, ACTIVE_TEXT_COLOR);
+                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, activeTextColor);
+                        
                         // Apply double layering on planet circles
                         _targetCircleOverlayRadius = Raymath.Lerp(_targetCircleOverlayRadius, ACTIVE_TARGET_PERIMTER_RADIUS, (float)GetFrameTime()*SMOOTH_FACTOR);
-                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius, ColorBrightness(obj.AttributeColor, COLOR_BRIGTHNESS_OVERLAY));
-                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius - 1, ColorBrightness(obj.AttributeColor, COLOR_BRIGTHNESS_OVERLAY));
+                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius, ColorBrightness(attributeColor, COLOR_BRIGTHNESS_OVERLAY));
+                        DrawCircleLinesV(space.Value, _targetCircleOverlayRadius - 1, ColorBrightness(attributeColor, COLOR_BRIGTHNESS_OVERLAY));
+                        
                         obj.UIActive = true;
                         activity = true;
                         _lastActiveObject = obj;
@@ -107,11 +122,14 @@ namespace Astral_simulation
                     else
                     {
                         // Draw appropriate text
-                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, PASSIVE_TEXT_COLOR);
+                        DrawTextEx(_topLayerFont, obj.Name, textPos, 25, 4f, passiveTextColor);
+                        
                         // Apply double layering on planet circles
                         float radius = _lastActiveObject == obj ? _targetCircleOverlayRadius : TARGET_PERIMETER_RADIUS;
-                        DrawCircleLinesV(space.Value, radius, obj.AttributeColor);
-                        DrawCircleLinesV(space.Value, radius - 1, obj.AttributeColor);
+              
+                        DrawCircleLinesV(space.Value, radius, attributeColor);
+                        DrawCircleLinesV(space.Value, radius - 1, attributeColor);
+
                         obj.UIActive = false;
                     }
                 }

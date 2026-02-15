@@ -149,19 +149,19 @@ namespace Astral_simulation
                 
                 // Define movement when in focused camera-mode
                 case CameraState.Focused:
-                    float dist = Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length();
                     
                     // Compute exponential interpolator
+                    float dist = Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length();
                     float smoothing = Raymath.Clamp(1/dist, 3, float.PositiveInfinity); // vitesse de rattrapage
                     float t = 1 - MathF.Exp(-smoothing * GetFrameTime());
                     
                     // Constantly lerp camera target
-                    Vector3 targetPosition = CameraParams.Target.Position + Vector3.UnitY * CameraParams.Target.Radius*6;
+                    CameraParams.ApprochedTarget = CameraParams.Target.Position + Vector3.UnitY * CameraParams.Target.Radius*6;
                     // Enable free mode when close enough
                     Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
-                    if (!CameraParams.AstralLock && (targetPosition - Camera.Position).Length() > 0.001)
+                    if (!CameraParams.AstralLock && (CameraParams.ApprochedTarget - Camera.Position).Length() > 0.001)
                     {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, targetPosition, GetFrameTime()*2);
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.ApprochedTarget, GetFrameTime()*2);
                     }
                     else
                     {
