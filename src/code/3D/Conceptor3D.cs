@@ -171,29 +171,6 @@ namespace Astral_simulation
                         // Enable free mode arround the object
                         UpdateCameraFreeMode();
                     }
-
-                    // Escape focused camera-mode
-                    if (IsKeyPressed(KeyboardKey.Escape))
-                    {
-                        CameraParams.State = CameraState.Withdrawing;
-                        CameraParams.AstralLock = false;
-                        CameraParams.ResetCameraTarget();
-                        Conceptor2D.Components.Clear();
-                    }
-                break;
-
-                // Define movement when the camera is withdrawing to its initial position
-                case CameraState.Withdrawing:
-                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.InitialPosition).Length() > 0.3f)
-                    {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.InitialPosition, (float)GetFrameTime() * 2);
-                        Camera.Target = Raymath.Vector3Lerp(Camera.Target, Vector3.Zero, (float)GetFrameTime() * 2);
-                    }
-                    else
-                    {
-                        CameraParams.State = CameraState.Free;
-                        Camera.Target = Vector3.Zero;
-                    }
                 break;
             }
         }

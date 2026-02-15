@@ -8,7 +8,6 @@ namespace Astral_simulation
     {
         Free,
         Focused,
-        Withdrawing
     }
 
     /// <summary>Represents an instance of <see cref="CameraMotion"/> which mainly contains additonal camera parameters.</summary>
@@ -25,7 +24,6 @@ namespace Astral_simulation
         // Private attributes
         // -----------------------------------------------------------
         private int _targetId;
-        private Vector3 _initialPosition;
         // Angular movement related attributes
         private float _yawSpeed;
         private float _targetYawSpeed;
@@ -67,9 +65,6 @@ namespace Astral_simulation
                 else _targetId = value;
             } 
         }
-
-        /// <summary>Initial position of the camera used for interpolations.</summary>
-        public Vector3 InitialPosition { get { return _initialPosition; } }
 
         internal string Infos { get {return $"Yaw Speed : {_yawSpeed}\nTarget Yaw Speed : {_targetYawSpeed}\nPitch Speed : {_pitchSpeed}\nTarget Pitch Speed : {_targetPitchSpeed}";} }
 
@@ -161,12 +156,6 @@ namespace Astral_simulation
             Conceptor2D.DisplayObject(Target);
         }
 
-        /// <summary>Resets the camera target used for interpolation to its initial position.</summary>
-        public void ResetCameraTarget()
-        {
-            _targetPosition = _initialPosition;
-        }
-
         /// <summary> Registers the initial paramters for the camera.</summary>
         /// <param name="camera">The camera to register.</param>
         public void RegisterInitialPosition(ref Camera3D camera)
@@ -180,7 +169,6 @@ namespace Astral_simulation
             camera.Position = camera.Target - view;
 
              // Set initial values
-            _initialPosition = camera.Position;
             _targetPosition = camera.Position;
         }
     }
