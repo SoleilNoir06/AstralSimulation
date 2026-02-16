@@ -16,8 +16,8 @@ namespace Astral_simulation
         // -----------------------------------------------------------
         // Constants
         // -----------------------------------------------------------
-        public const float SENSITIVITY = 0.005f;
-        public const float SMOOTH_FACTOR = 10.0f;
+        public const float SENSITIVITY = 0.009f;
+        public const float SMOOTH_FACTOR = 7.0f;
         public const float INITIAL_TILT = -50f;
 
         // -----------------------------------------------------------
