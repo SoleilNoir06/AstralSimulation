@@ -123,6 +123,7 @@ namespace Astral_simulation
                         // Play click sound
                         AudioCenter.PlaySound("button_2");
                         CameraParams.AstralLock = false;
+                        CameraParams.ApproachedDirection = GetCameraRight(ref Camera);
 
                         Conceptor2D.DisplayObject(obj); // Display object infos
                         CameraParams.TargetId = index;
@@ -155,7 +156,7 @@ namespace Astral_simulation
                     float t = 1 - MathF.Exp(-smoothing * GetFrameTime());
                     
                     // Constantly lerp camera target
-                    CameraParams.ApprochedTarget = CameraParams.Target.Position + Vector3.UnitY * CameraParams.Target.Radius*6;
+                    CameraParams.ApprochedTarget = CameraParams.Target.Position + CameraParams.ApproachedDirection * CameraParams.Target.Radius*6;
                     // Enable free mode when close enough
                     Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
                     if (!CameraParams.AstralLock && (CameraParams.ApprochedTarget - Camera.Position).Length() > 0.001)

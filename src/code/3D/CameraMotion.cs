@@ -46,7 +46,11 @@ namespace Astral_simulation
         /// <summary>Defines whether the camera is locked with the focused object or not.</summary>
         public bool AstralLock;
 
+        /// <summary>Defines the position at which the camera must tend when approaching an object.</summary>
         public Vector3 ApprochedTarget;
+
+        /// <summary>Defines the direction at which the camera must tend when approaching an object.</summary>
+        public Vector3 ApproachedDirection;
 
         /// <summary>Defines if the camera is focused on a single planet.</summary>
         public CameraState State;
