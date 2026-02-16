@@ -1,7 +1,5 @@
 ﻿using Raylib_cs;
 using static Raylib_cs.Raylib;
-using Raylib_cs.Complements;
-using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
 using Astral_Simulation;
 
@@ -45,8 +43,19 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
 
+            // Update physics engine at launch
+            System.ForEach(Physics.Update);
+            AstralObject _sun = System.GetObject("Sun");
+            Camera.Target = _sun.Position; // Set initial target position
+
             // Set base camera orientation
-            CameraParams.RegisterInitialPosition(ref Camera);
+            CameraParams.RegisterInitialSettings(ref Camera);
+
+            // Enter focused mode
+            CameraParams.State = CameraState.Focused;
+            CameraParams.AstralLock = true;
+            CameraParams.Target = _sun;
+            CameraParams.ApprochedTarget = _sun.Position + GetCameraRight(ref Camera) * _sun.Radius*6;
 
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
             _ringsMat.Shader = ShaderCenter.LightingShader;
@@ -69,7 +78,6 @@ namespace Astral_simulation
 
             System.ForEach(obj =>
             {
-                //if (obj.Name == "Saturn") DrawMesh(_rings, _ringsMat, obj.Transform);
                 DrawSphere(obj.Position, obj.Radius, Color.White);
             });
 
@@ -94,11 +102,11 @@ namespace Astral_simulation
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
             });
+
+            // Update camera movement
             MoveCamera();
 
             EndMode3D();
-
-            // Update camera movement
 
             Conceptor2D.DisplayUITopLayer();
 
@@ -124,10 +132,7 @@ namespace Astral_simulation
                         AudioCenter.PlaySound("button_2");
                         CameraParams.AstralLock = false;
                         CameraParams.ApproachedDirection = GetCameraRight(ref Camera);
-
-                        Conceptor2D.DisplayObject(obj); // Display object infos
-                        CameraParams.TargetId = index;
-                        CameraParams.DefineObjectTarget();
+                        CameraParams.Target = obj;
                     }
                     index++;
                 });

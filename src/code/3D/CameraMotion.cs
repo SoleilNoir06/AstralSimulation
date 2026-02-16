@@ -56,21 +56,7 @@ namespace Astral_simulation
         public CameraState State;
 
         /// <summary>Target object.</summary>
-        public AstralObject? Target;
-
-        // -----------------------------------------------------------
-        // Public properties
-        // -----------------------------------------------------------
-
-        /// <summary>ID of the target object.</summary>
-        public int TargetId { get { return _targetId; } 
-            set 
-            {
-                if (value >= Conceptor3D.System.Count) _targetId = 0;
-                else if (value < 0) _targetId = Conceptor3D.System.Count - 1;
-                else _targetId = value;
-            } 
-        }
+        public AstralObject Target;
 
         internal string Infos { get {return $"Yaw Speed : {_yawSpeed}\nTarget Yaw Speed : {_targetYawSpeed}\nPitch Speed : {_pitchSpeed}\nTarget Pitch Speed : {_targetPitchSpeed}";} }
 
@@ -154,17 +140,9 @@ namespace Astral_simulation
             _targetView = camera.Target;
         }
 
-        /// <summary>Defines the target for the probe.</summary>
-        public void DefineObjectTarget()
-        {
-            State = CameraState.Focused;
-            Target = Conceptor3D.System.GetObject(TargetId); // Get next target
-            Conceptor2D.DisplayObject(Target);
-        }
-
         /// <summary> Registers the initial paramters for the camera.</summary>
         /// <param name="camera">The camera to register.</param>
-        public void RegisterInitialPosition(ref Camera3D camera)
+        public void RegisterInitialSettings(ref Camera3D camera)
         {
             // Set initial tilt without implying interpolation
             Vector3 view = camera.Target - camera.Position;
@@ -176,6 +154,7 @@ namespace Astral_simulation
 
              // Set initial values
             _targetPosition = camera.Position;
+            _targetView = camera.Target;
         }
     }
 }

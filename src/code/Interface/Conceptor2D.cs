@@ -92,7 +92,7 @@ namespace Astral_simulation
                     Color passiveTextColor = PASSIVE_TEXT_COLOR;
                     Color activeTextColor = ACTIVE_TEXT_COLOR;
 
-                    if (Conceptor3D.CameraParams.Target == obj)
+                    if (Conceptor3D.CameraParams.Target.Name == obj.Name)
                     {
                         // Compute transparency factors based on relative distance to the object
                         float dist = Raymath.Vector3Subtract(Conceptor3D.CameraParams.ApprochedTarget, Conceptor3D.Camera.Position).Length() / obj.Radius;

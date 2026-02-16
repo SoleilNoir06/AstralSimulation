@@ -1,9 +1,45 @@
 [
+        {
+        "Name": "Sun",
+        "Type": "Star",
+        "Position": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+        },
+        "Rotation": {
+            "X": 0.03,
+            "Y": 0,
+            "Z": 0
+        },
+        "AttributeColor": {
+            "R": 191,
+            "G": 166,
+            "B": 54,
+            "A": 255
+        },
+        "Description":"The smallest planet in our solar \nsystem and nearest to the Sun, \nMercury is only slightly larger \nthan Earth's Moon. From the surface \nof Mercury, the Sun would appear \nmore than three times as large as \nit does when viewed from Earth, \nand the sunlight would be as much \nas seven times brighter.",
+        "RotationSpeed": 10.89,
+        "Radius": 0.000163,
+        "Mass": 0.33,
+        "InitialVelocity": 0.23,
+        "SemiMajorAxis": 0.00465,
+        "OrbitalEccentricity": 0.0,
+        "Perihelion": 0.0,
+        "Aphelion": 0.0,
+        "Tilt": 0.0,
+        "OrbitalInclination": 0.0,
+        "PerihelionLongitude": 0.0,
+        "Revolution": 4332.59,
+        "AscendingNodeLongitude": 0.0,
+        "MeanLongitude": 0.0,
+        "MeanAnomaly": 0.0
+    },
     {
         "Name": "Mercury",
         "Type": "Terrestrial",
         "Position": {
-            "X": 0.383,
+            "X": 0,
             "Y": 0,
             "Z": 0
         },
