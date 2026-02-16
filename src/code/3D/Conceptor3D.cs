@@ -159,17 +159,26 @@ namespace Astral_simulation
                     CameraParams.ApprochedTarget = CameraParams.Target.Position + CameraParams.ApproachedDirection * CameraParams.Target.Radius*6;
                     // Enable free mode when close enough
                     Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
+
                     if (!CameraParams.AstralLock && (CameraParams.ApprochedTarget - Camera.Position).Length() > 0.001)
                     {
                         Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.ApprochedTarget, GetFrameTime()*2);
                     }
                     else
                     {
+                        // Make the camera position follow the object as weel
                         // Reset zoom level to state that the new location is base zoom level
                         if (!CameraParams.AstralLock) CameraParams.DefineZoomLevel(Camera, 0);
                         CameraParams.AstralLock = true;
                         // Enable free mode arround the object
                         UpdateCameraFreeMode();
+                        // Increment horizontal angle to give an automatic orbital movement (when not moving)
+                        if (IsMouseButtonUp(MouseButton.Left)) 
+                        {
+                            float d = Raymath.Vector3Subtract(CameraParams.ApprochedTarget, Camera.Position).Length() / CameraParams.Target.Radius;
+                            float a = 1 - Raymath.Clamp(Raymath.Normalize(d, 150, 300), 0, 1); // <- Don't question theses values, found em while debugging
+                            CameraParams.UpdateYaw(ref Camera, GetFrameTime()*CameraMotion.SENSITIVITY*10*a);
+                        }
                     }
                 break;
             }
