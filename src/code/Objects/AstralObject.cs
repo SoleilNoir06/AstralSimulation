@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Raylib_cs;
+﻿using Raylib_cs;
 using System.Numerics;
 
 namespace Astral_simulation
@@ -18,6 +17,8 @@ namespace Astral_simulation
         private float _revolution;
         private Vector3 _rotation;
         private Vector3 _velocity;
+        private Color _attributeColor;
+        private string _description;
         private float _rotationSpeed;
         private string _name;
         private float _initialVelocity;
@@ -59,6 +60,8 @@ namespace Astral_simulation
         public float RotationPeriod { get; set; } // On itself
         public float OrbitPeriod { get; set; } // Around parent object
 
+        public bool UIActive { get; set; } = false; // Defines whether the object is active in the UI overlay
+
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
         public Matrix4x4 Transform; // Transform matrix used to define object properties
@@ -87,6 +90,25 @@ namespace Astral_simulation
                 _rotation = value;
                 UpdateTransform();
             }
+        }
+
+        /// <summary>The attribute color stands for the color used in various GUI options related to the object.</summary>
+        public Color AttributeColor
+        {
+            get { return _attributeColor; }
+            set
+            {
+                _attributeColor.R = value.R;
+                _attributeColor.G = value.G;
+                _attributeColor.B = value.B;
+                _attributeColor.A = value.A;
+            }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
         }
 
         /// <summary>Time for the objec to revolut</summary>

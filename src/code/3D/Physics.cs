@@ -1,7 +1,7 @@
 ﻿using Astral_simulation;
-using System;
 using System.Numerics;
 using static Raylib_cs.Raylib;
+using Raylib_cs;
 
 namespace Astral_Simulation
 {
@@ -52,7 +52,7 @@ namespace Astral_Simulation
             UpdateProperties(obj);
 
             // Mean anomaly at frame
-            float M = _M0 + _n * _deltaTime;
+            float M = _M0 + _n * 0;
             M %= 2 * MathF.PI;
 
             // Excentric anomaly computed with Kepler equation
@@ -161,8 +161,12 @@ namespace Astral_Simulation
                 points[i] = OrbitalTo3D(pos);
             }
 
+            // Define orbit color (based on UI activity)
+            Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
             for (int i = 0; i < segments - 1; i++)
-                DrawLine3D(points[i], points[i + 1], Raylib_cs.Color.RayWhite);
+            {
+                DrawLine3D(points[i], points[i + 1], orbitColor);
+            }
         }
     }
 }

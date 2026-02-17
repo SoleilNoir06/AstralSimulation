@@ -8,7 +8,6 @@ namespace Astral_simulation
     {
         Free,
         Focused,
-        Withdrawing
     }
 
     /// <summary>Represents an instance of <see cref="CameraMotion"/> which mainly contains additonal camera parameters.</summary>
@@ -17,15 +16,14 @@ namespace Astral_simulation
         // -----------------------------------------------------------
         // Constants
         // -----------------------------------------------------------
-        public const float SENSITIVITY = 0.005f;
-        public const float SMOOTH_FACTOR = 10.0f;
+        public const float SENSITIVITY = 0.009f;
+        public const float SMOOTH_FACTOR = 7.0f;
         public const float INITIAL_TILT = -50f;
 
         // -----------------------------------------------------------
         // Private attributes
         // -----------------------------------------------------------
         private int _targetId;
-        private Vector3 _initialPosition;
         // Angular movement related attributes
         private float _yawSpeed;
         private float _targetYawSpeed;
@@ -45,28 +43,20 @@ namespace Astral_simulation
         /// <summary>Pitch rotation of the camera.</summary>
         public float Pitch;
 
+        /// <summary>Defines whether the camera is locked with the focused object or not.</summary>
+        public bool AstralLock;
+
+        /// <summary>Defines the position at which the camera must tend when approaching an object.</summary>
+        public Vector3 ApprochedTarget;
+
+        /// <summary>Defines the direction at which the camera must tend when approaching an object.</summary>
+        public Vector3 ApproachedDirection;
+
         /// <summary>Defines if the camera is focused on a single planet.</summary>
         public CameraState State;
-        
+
         /// <summary>Target object.</summary>
-        public AstralObject? Target;
-
-        // -----------------------------------------------------------
-        // Public properties
-        // -----------------------------------------------------------
-
-        /// <summary>ID of the target object.</summary>
-        public int TargetId { get { return _targetId; } 
-            set 
-            {
-                if (value >= Conceptor3D.System.Count) _targetId = 0;
-                else if (value < 0) _targetId = Conceptor3D.System.Count - 1;
-                else _targetId = value;
-            } 
-        }
-
-        /// <summary>Initial position of the camera used for interpolations.</summary>
-        public Vector3 InitialPosition { get { return _initialPosition; } }
+        public AstralObject Target;
 
         internal string Infos { get {return $"Yaw Speed : {_yawSpeed}\nTarget Yaw Speed : {_targetYawSpeed}\nPitch Speed : {_pitchSpeed}\nTarget Pitch Speed : {_targetPitchSpeed}";} }
 
@@ -74,6 +64,7 @@ namespace Astral_simulation
         public CameraMotion()
         {
             State = CameraState.Free;
+            AstralLock = false;
             _targetId = -1;
         }
 
@@ -149,23 +140,9 @@ namespace Astral_simulation
             _targetView = camera.Target;
         }
 
-        /// <summary>Defines the target for the probe.</summary>
-        public void DefineObjectTarget()
-        {
-            State = CameraState.Focused;
-            Target = Conceptor3D.System.GetObject(TargetId); // Get next target
-            Conceptor2D.DisplayObject(Target);
-        }
-
-        /// <summary>Resets the camera target used for interpolation to its initial position.</summary>
-        public void ResetCameraTarget()
-        {
-            _targetPosition = _initialPosition;
-        }
-
         /// <summary> Registers the initial paramters for the camera.</summary>
         /// <param name="camera">The camera to register.</param>
-        public void RegisterInitialPosition(ref Camera3D camera)
+        public void RegisterInitialSettings(ref Camera3D camera)
         {
             // Set initial tilt without implying interpolation
             Vector3 view = camera.Target - camera.Position;
@@ -176,8 +153,8 @@ namespace Astral_simulation
             camera.Position = camera.Target - view;
 
              // Set initial values
-            _initialPosition = camera.Position;
             _targetPosition = camera.Position;
+            _targetView = camera.Target;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Astral_simulation
         {
             Dictionary<string, Music> list = new Dictionary<string, Music>()
             {
-                {"ambient", Raylib.LoadMusicStream("assets/audio/ambient.mp3")},
+                {"ambient", Raylib.LoadMusicStream("assets/audio/musics/ambient.mp3")},
             };
             return list;
         }
@@ -38,7 +38,8 @@ namespace Astral_simulation
         {
             Dictionary<string, Sound> list = new Dictionary<string, Sound>()
             {
-                {"ambient", Raylib.LoadSound("assets/audio/ambient.mp3")},
+                {"button_1", Raylib.LoadSound("assets/audio/sounds/button_1.wav")},
+                {"button_2", Raylib.LoadSound("assets/audio/sounds/button_2.wav")}
             };
             return list;
         }

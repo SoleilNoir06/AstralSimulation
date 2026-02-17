@@ -1,7 +1,5 @@
 ﻿using Raylib_cs;
 using static Raylib_cs.Raylib;
-using Raylib_cs.Complements;
-using static Raylib_cs.Complements.Raylib;
 using System.Numerics;
 using Astral_Simulation;
 
@@ -45,8 +43,19 @@ namespace Astral_simulation
                 Projection = CameraProjection.Perspective
             };
 
+            // Update physics engine at launch
+            System.ForEach(Physics.Update);
+            AstralObject _sun = System.GetObject("Sun");
+            Camera.Target = _sun.Position; // Set initial target position
+
             // Set base camera orientation
-            CameraParams.RegisterInitialPosition(ref Camera);
+            CameraParams.RegisterInitialSettings(ref Camera);
+
+            // Enter focused mode
+            CameraParams.State = CameraState.Focused;
+            CameraParams.AstralLock = true;
+            CameraParams.Target = _sun;
+            CameraParams.ApprochedTarget = _sun.Position + GetCameraRight(ref Camera) * _sun.Radius*6;
 
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
             _ringsMat.Shader = ShaderCenter.LightingShader;
@@ -55,9 +64,6 @@ namespace Astral_simulation
         /// <summary>Draws the 3D environnement of the application.</summary>
         public static void Draw()
         {
-            // Update camera movement
-            MoveCamera();
-
             // Update planet click
             ClickAstralObject();
 
@@ -72,7 +78,6 @@ namespace Astral_simulation
 
             System.ForEach(obj =>
             {
-                //if (obj.Name == "Saturn") DrawMesh(_rings, _ringsMat, obj.Transform);
                 DrawSphere(obj.Position, obj.Radius, Color.White);
             });
 
@@ -96,11 +101,14 @@ namespace Astral_simulation
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
-
-                //if (TrailsOn) DrawCircle3D(Vector3.Zero, obj.Position.Length(), Vector3.UnitX, 90, Color.White);
             });
 
+            // Update camera movement
+            MoveCamera();
+
             EndMode3D();
+
+            Conceptor2D.DisplayUITopLayer();
 
             EndTextureMode();
 
@@ -113,35 +121,22 @@ namespace Astral_simulation
         /// <summary>Checks for a click on astra object and opens modal info if clicked.</summary>
         public static void ClickAstralObject()
         {
-            if (IsMouseButtonPressed(MouseButton.Left))
+            if (IsMouseButtonReleased(MouseButton.Left))
             {
-                bool click = false;
                 int index = 0;
-                Ray mouse = GetScreenToWorldRay(GetMousePosition(), Camera); // Get mouse ray
-                bool collision = false; // Init collision detection object
                 System.ForEach(obj =>
                 {
-                    if (!click)
+                    if (obj.UIActive)
                     {
-                        //RayCollision currentCollision = GetRayCollisionSphere(mouse, obj.Position, obj.Radius);
-                        bool currentCollision = CheckRaySphereIntersection(mouse, obj.Position, obj.Radius);
-                        if (currentCollision)
-                        {
-                            collision = currentCollision;
-                            Conceptor2D.DisplayObject(obj); // Display object infos
-                            CameraParams.TargetId = index;
-                            CameraParams.DefineObjectTarget();
-                            click = true;
-                        }
+                        // Play click sound
+                        AudioCenter.PlaySound("button_2");
+                        CameraParams.AstralLock = false;
+                        CameraParams.ApproachedDirection = GetCameraRight(ref Camera);
+                        CameraParams.Target = obj;
                     }
                     index++;
                 });
             }
-        }
-
-        /// <summary>Closes the conceptor by unloading all its data.</summary>
-        public static void Close()
-        {
         }
 
         /// <summary>Moves the conceptor's camera.</summary>
@@ -154,82 +149,69 @@ namespace Astral_simulation
             switch (CameraParams.State){
                 // Allow free movement only when mouse is pressed and when not in focused camera-mode
                 case CameraState.Free:
-                    // Set the target speed to whatever values the user inputs (mouse movement)
-                    if (IsMouseButtonDown(MouseButton.Left))
-                    {
-                        Vector2 mouseDelta = GetMouseDelta();
-                        CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
-                        CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
-                    }
-                    // Set the target speed to zero so that the camera slows down smoothly 
-                    else
-                    {
-                        CameraParams.UpdateYaw(ref Camera, 0);
-                        CameraParams.UpdatePitch(ref Camera, 0);
-                    }
-                    
-                    // Update linear movements (in this case only the zoom is affected)
-                    CameraParams.UpdateLinearMovement(ref Camera);
-
-                    // Control camera zoom
-                    float zoom = GetMouseWheelMove();
-                    if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
+                    UpdateCameraFreeMode();
                 break;
                 
                 // Define movement when in focused camera-mode
                 case CameraState.Focused:
-                    // Constantly interpolate the camera's position to follow the current astral target
-                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length() > 0.02f)
+                    
+                    // Compute exponential interpolator
+                    float dist = Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length();
+                    float smoothing = Raymath.Clamp(1/dist, 3, float.PositiveInfinity); // vitesse de rattrapage
+                    float t = 1 - MathF.Exp(-smoothing * GetFrameTime());
+                    
+                    // Constantly lerp camera target
+                    CameraParams.ApprochedTarget = CameraParams.Target.Position + CameraParams.ApproachedDirection * CameraParams.Target.Radius*6;
+                    // Enable free mode when close enough
+                    Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
+
+                    if (!CameraParams.AstralLock && (CameraParams.ApprochedTarget - Camera.Position).Length() > 0.001)
                     {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.5f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
-                        Camera.Target = Raymath.Vector3Lerp(Camera.Position, CameraParams.Target.Position + Vector3.UnitY * 0.05f + (CameraParams.Target.Radius * Vector3.Subtract(Camera.Position, CameraParams.Target.Position)), (float)GetFrameTime() * 2);
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.ApprochedTarget, GetFrameTime()*2);
                     }
                     else
                     {
-                        CameraParams.State = CameraState.Free;
-                    }
-
-                    // Escape focused camera-mode
-                    if (IsKeyPressed(KeyboardKey.Escape))
-                    {
-                        CameraParams.State = CameraState.Withdrawing;
-                        CameraParams.ResetCameraTarget();
-                        Conceptor2D.Components.Clear();
-                    }
-                break;
-
-                // Define movement when the camera is withdrawing to its initial position
-                case CameraState.Withdrawing:
-                    if (Raymath.Vector3Subtract(Camera.Position, CameraParams.InitialPosition).Length() > 0.3f)
-                    {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.InitialPosition, (float)GetFrameTime() * 2);
-                        Camera.Target = Raymath.Vector3Lerp(Camera.Target, Vector3.Zero, (float)GetFrameTime() * 2);
-                    }
-                    else
-                    {
-                        CameraParams.State = CameraState.Free;
-                        Camera.Target = Vector3.Zero;
+                        // Make the camera position follow the object as weel
+                        // Reset zoom level to state that the new location is base zoom level
+                        if (!CameraParams.AstralLock) CameraParams.DefineZoomLevel(Camera, 0);
+                        CameraParams.AstralLock = true;
+                        // Enable free mode arround the object
+                        UpdateCameraFreeMode();
+                        // Increment horizontal angle to give an automatic orbital movement (when not moving)
+                        if (IsMouseButtonUp(MouseButton.Left)) 
+                        {
+                            float d = Raymath.Vector3Subtract(CameraParams.ApprochedTarget, Camera.Position).Length() / CameraParams.Target.Radius;
+                            float a = 1 - Raymath.Clamp(Raymath.Normalize(d, 150, 300), 0, 1); // <- Don't question theses values, found em while debugging
+                            CameraParams.UpdateYaw(ref Camera, GetFrameTime()*CameraMotion.SENSITIVITY*10*a);
+                        }
                     }
                 break;
             }
+        }
 
-            // -----------------------------------------------------------
-            // Single-time camera events 
-            // -----------------------------------------------------------
-
-            // Enable focused camera-mode with right element
-            if (IsKeyPressed(KeyboardKey.Right))
+        /// <summary>Defines the movement for the free camera-mode. (Used in total freedom and around objects)</summary>
+        private static void UpdateCameraFreeMode()
+        {
+            // Set the target speed to whatever values the user inputs (mouse movement)
+            if (IsMouseButtonDown(MouseButton.Left))
             {
-                CameraParams.TargetId++;
-                CameraParams.DefineObjectTarget();
+                Vector2 mouseDelta = GetMouseDelta();
+                CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
+                CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
+            }
+            // Set the target speed to zero so that the camera slows down smoothly 
+            else
+            {
+                CameraParams.UpdateYaw(ref Camera, 0);
+                CameraParams.UpdatePitch(ref Camera, 0);
             }
 
-            // Enable focused camera-mode with left element
-            if (IsKeyPressed(KeyboardKey.Left))
-            {
-                CameraParams.TargetId--;
-                CameraParams.DefineObjectTarget();
-            }
+            // Control camera zoom
+            float zoom = GetMouseWheelMove();
+            if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
+            
+            // Update linear movements (in this case only the zoom is affected)
+            CameraParams.UpdateLinearMovement(ref Camera);
         }
 
         /// <summary>Updates the post-processing shader values.</summary>
