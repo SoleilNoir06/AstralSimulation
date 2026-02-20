@@ -150,6 +150,8 @@ namespace Astral_Simulation
         /// <param name="segments">Number of segments of ellipse.</param>
         public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
+            UpdateProperties(obj);
+            
             Vector3[] points = new Vector3[segments];
 
             for (int i = 0; i < segments; i++)
