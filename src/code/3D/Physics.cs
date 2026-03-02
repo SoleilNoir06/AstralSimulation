@@ -168,9 +168,22 @@ namespace Astral_Simulation
         /// Draw object's path.
         /// </summary>
         /// <param name="obj">Object.</param>
-        public static void DrawOrbitPath(AstralObject obj)
+        public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
             if (obj.OrbitPoints.Count == 0) return;
+            UpdateProperties(obj);
+            
+            Vector3[] points = new Vector3[segments];
+
+            for (int i = 0; i < segments; i++)
+            {
+                float M = i / (float)segments * 2 * MathF.PI;
+                float E = SolveKepler(M, _E);
+                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
+                float r = _a * (1 - _E * MathF.Cos(E));
+                Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
+                points[i] = OrbitalTo3D(pos);
+            }
 
             // Define orbit color (based on UI activity)
             Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
