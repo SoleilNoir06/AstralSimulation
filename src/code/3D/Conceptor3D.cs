@@ -34,7 +34,7 @@ namespace Astral_simulation
         public static void Init()
         {
             // Create camera object with base parameters
-            Camera = new Camera3D() 
+            Camera = new Camera3D()
             {
                 Position = new Vector3(60f, 60f, 0f),
                 Target = Vector3.Zero,
@@ -55,7 +55,7 @@ namespace Astral_simulation
             CameraParams.State = CameraState.Focused;
             CameraParams.AstralLock = true;
             CameraParams.Target = _sun;
-            CameraParams.ApprochedTarget = _sun.Position + GetCameraRight(ref Camera) * _sun.Radius*6;
+            CameraParams.ApprochedTarget = _sun.Position + GetCameraRight(ref Camera) * _sun.Radius * 6;
 
             SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
             _ringsMat.Shader = ShaderCenter.LightingShader;
@@ -145,29 +145,30 @@ namespace Astral_simulation
             // -----------------------------------------------------------
             // Constant camera-movement options
             // -----------------------------------------------------------
-            
-            switch (CameraParams.State){
+
+            switch (CameraParams.State)
+            {
                 // Allow free movement only when mouse is pressed and when not in focused camera-mode
                 case CameraState.Free:
                     UpdateCameraFreeMode();
-                break;
-                
+                    break;
+
                 // Define movement when in focused camera-mode
                 case CameraState.Focused:
-                    
+
                     // Compute exponential interpolator
                     float dist = Raymath.Vector3Subtract(Camera.Position, CameraParams.Target.Position).Length();
-                    float smoothing = Raymath.Clamp(1/dist, 3, float.PositiveInfinity); // vitesse de rattrapage
+                    float smoothing = Raymath.Clamp(1 / dist, 3, float.PositiveInfinity); // vitesse de rattrapage
                     float t = 1 - MathF.Exp(-smoothing * GetFrameTime());
-                    
+
                     // Constantly lerp camera target
-                    CameraParams.ApprochedTarget = CameraParams.Target.Position + CameraParams.ApproachedDirection * CameraParams.Target.Radius*6;
+                    CameraParams.ApprochedTarget = CameraParams.Target.Position + CameraParams.ApproachedDirection * CameraParams.Target.Radius * 6;
                     // Enable free mode when close enough
                     Camera.Target = Raymath.Vector3Lerp(Camera.Target, CameraParams.Target.Position, t);
 
                     if (!CameraParams.AstralLock && (CameraParams.ApprochedTarget - Camera.Position).Length() > 0.001)
                     {
-                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.ApprochedTarget, GetFrameTime()*2);
+                        Camera.Position = Raymath.Vector3Lerp(Camera.Position, CameraParams.ApprochedTarget, GetFrameTime() * 2);
                     }
                     else
                     {
@@ -178,14 +179,14 @@ namespace Astral_simulation
                         // Enable free mode arround the object
                         UpdateCameraFreeMode();
                         // Increment horizontal angle to give an automatic orbital movement (when not moving)
-                        if (IsMouseButtonUp(MouseButton.Left)) 
+                        if (IsMouseButtonUp(MouseButton.Left))
                         {
                             float d = Raymath.Vector3Subtract(CameraParams.ApprochedTarget, Camera.Position).Length() / CameraParams.Target.Radius;
                             float a = 1 - Raymath.Clamp(Raymath.Normalize(d, 150, 300), 0, 1); // <- Don't question theses values, found em while debugging
-                            CameraParams.UpdateYaw(ref Camera, GetFrameTime()*CameraMotion.SENSITIVITY*10*a);
+                            CameraParams.UpdateYaw(ref Camera, GetFrameTime() * CameraMotion.SENSITIVITY * 10 * a);
                         }
                     }
-                break;
+                    break;
             }
         }
 
@@ -196,8 +197,8 @@ namespace Astral_simulation
             if (IsMouseButtonDown(MouseButton.Left))
             {
                 Vector2 mouseDelta = GetMouseDelta();
-                CameraParams.UpdateYaw(ref Camera, -mouseDelta.X*CameraMotion.SENSITIVITY);
-                CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y*CameraMotion.SENSITIVITY);   
+                CameraParams.UpdateYaw(ref Camera, -mouseDelta.X * CameraMotion.SENSITIVITY);
+                CameraParams.UpdatePitch(ref Camera, -mouseDelta.Y * CameraMotion.SENSITIVITY);
             }
             // Set the target speed to zero so that the camera slows down smoothly 
             else
@@ -209,7 +210,7 @@ namespace Astral_simulation
             // Control camera zoom
             float zoom = GetMouseWheelMove();
             if (zoom != 0) CameraParams.DefineZoomLevel(Camera, zoom);
-            
+
             // Update linear movements (in this case only the zoom is affected)
             CameraParams.UpdateLinearMovement(ref Camera);
         }

@@ -74,6 +74,27 @@ namespace Astral_Simulation
         }
 
         /// <summary>
+        /// Generate points of astral object's ellipse.
+        /// </summary>
+        /// <param name="obj">Astral object.</param>
+        /// <param name="segments"></param>
+        public static void GenerateOrbitPoints(AstralObject obj, int segments = 360)
+        {
+            UpdateProperties(obj);
+            obj.OrbitPoints.Clear();
+
+            for (int i = 0; i < segments; i++)
+            {
+                float M = i / (float)segments * 2 * MathF.PI;
+                float E = SolveKepler(M, _E);
+                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
+                float r = _a * (1 - _E * MathF.Cos(E));
+                Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
+                obj.OrbitPoints.Add(OrbitalTo3D(pos));
+            }
+        }
+
+        /// <summary>
         /// Convert orbital plane coordinates to real 3D position.
         /// </summary>
         /// <param name="pos">Object's position.</param>
@@ -121,7 +142,7 @@ namespace Astral_Simulation
                 v.X * sina + v.Y * cosa,
                 v.Z
             );
-        }        
+        }
 
         /// <summary>
         /// Solve Kepler equation with Newton-Raphson method.
@@ -132,7 +153,7 @@ namespace Astral_Simulation
         public static float SolveKepler(float M, float e)
         {
             float E = M;
-            
+
             for (int i = 0; i < 10; i++)
             {
                 float f = E - e * MathF.Sin(E) - M;
@@ -147,9 +168,9 @@ namespace Astral_Simulation
         /// Draw object's path.
         /// </summary>
         /// <param name="obj">Object.</param>
-        /// <param name="segments">Number of segments of ellipse.</param>
         public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
+            if (obj.OrbitPoints.Count == 0) return;
             UpdateProperties(obj);
             
             Vector3[] points = new Vector3[segments];
@@ -166,9 +187,13 @@ namespace Astral_Simulation
 
             // Define orbit color (based on UI activity)
             Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
-            for (int i = 0; i < segments - 1; i++)
+
+            for (int i = 0; i < obj.OrbitPoints.Count; i++)
             {
-                DrawLine3D(points[i], points[i + 1], orbitColor);
+                Vector3 current = obj.OrbitPoints[i];
+                Vector3 next = obj.OrbitPoints[(i + 1) % obj.OrbitPoints.Count];
+
+                DrawLine3D(current, next, orbitColor);
             }
         }
     }

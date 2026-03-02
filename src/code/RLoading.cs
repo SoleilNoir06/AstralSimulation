@@ -1,5 +1,6 @@
 ﻿using Raylib_cs;
 using Newtonsoft.Json;
+using Astral_Simulation;
 
 namespace Astral_simulation
 {
@@ -21,6 +22,8 @@ namespace Astral_simulation
             objects?.ForEach(obj =>
             {
                 obj.Radius *= 200;
+
+                if (obj.Name != "Sun") Physics.GenerateOrbitPoints(obj);
             });
 
             return objects ?? new List<AstralObject>();
