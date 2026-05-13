@@ -143,7 +143,7 @@ namespace Astral_Simulation
                 v.X * sina + v.Y * cosa,
                 v.Z
             );
-        }        
+        }
 
         /// <summary>
         /// Solve Kepler equation with Newton-Raphson method.
@@ -154,7 +154,7 @@ namespace Astral_Simulation
         public static float SolveKepler(float M, float e)
         {
             float E = M;
-            
+
             for (int i = 0; i < 10; i++)
             {
                 float f = E - e * MathF.Sin(E) - M;
