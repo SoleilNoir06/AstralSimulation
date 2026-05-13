@@ -32,6 +32,7 @@ namespace Astral_simulation
         private float _ascendingNodeLongitude;
         private float _meanLongitude;
         private float _meanAnomaly;
+        private List<Vector3> _orbitPoints;
 
         // -----------------------------------------------------------
         // Public attributes
@@ -61,6 +62,8 @@ namespace Astral_simulation
         public float OrbitPeriod { get; set; } // Around parent object
 
         public bool UIActive { get; set; } = false; // Defines whether the object is active in the UI overlay
+        
+        public List<Vector3> OrbitPoints {get; set; }
 
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
