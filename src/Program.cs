@@ -19,7 +19,7 @@ namespace Astral_simulation
 
             // Fullscreen window
             SetWindowState(ConfigFlags.ResizableWindow);
-            SetWindowState(ConfigFlags.MaximizedWindow);
+            SetWindowState(ConfigFlags.FullscreenMode);
 
             // Draw Splash
             DrawSplash();
