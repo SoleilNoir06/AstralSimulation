@@ -163,10 +163,17 @@ namespace Astral_Simulation
 
             // Define orbit color (based on UI activity)
             Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
-            for (int i = 0; i < segments - 1; i++)
+            
+            // Display orbits using tiny segments
+            int index = 0;
+            while (index < segments - 1)
             {
-                DrawLine3D(points[i], points[i + 1], orbitColor);
+                DrawLine3D(points[index], points[index + 1], orbitColor);
+                index++;            
             }
+
+            // Close orbit with a final segment
+            DrawLine3D(points[index], points[0], orbitColor);
         }
     }
 }
