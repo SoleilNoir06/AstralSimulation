@@ -126,8 +126,9 @@ namespace Astral_simulation
                 int index = 0;
                 System.ForEach(obj =>
                 {
-                    if (obj.UIActive)
+                    if (obj.UIActive && obj.AlphaDistance > 0f)
                     {
+                        Console.WriteLine(obj.AlphaDistance);
                         // Play click sound
                         AudioCenter.PlaySound("button_2");
                         CameraParams.AstralLock = false;

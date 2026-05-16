@@ -98,6 +98,7 @@ namespace Astral_simulation
                         float dist = Raymath.Vector3Subtract(Conceptor3D.CameraParams.ApprochedTarget, Conceptor3D.Camera.Position).Length() / obj.Radius;
                         float a = Raymath.Normalize(dist, 150, 300); // <- Don't question theses values, found em while debugging
                         float _a = 1 - a; // Inverse transparency factor
+                        obj.AlphaDistance = a;
                         attributeColor = ColorAlpha(obj.AttributeColor, a); 
                         passiveTextColor = ColorAlpha(PASSIVE_TEXT_COLOR, a); 
                         activeTextColor = ColorAlpha(ACTIVE_TEXT_COLOR, a);

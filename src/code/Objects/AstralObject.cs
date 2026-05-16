@@ -61,6 +61,7 @@ namespace Astral_simulation
         public float OrbitPeriod { get; set; } // Around parent object
 
         public bool UIActive { get; set; } = false; // Defines whether the object is active in the UI overlay
+        public float AlphaDistance { get; set; } = 1f; // This property is only used for UI purposes
 
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
