@@ -1,4 +1,4 @@
-﻿using Astral_simulation;
+﻿﻿using Astral_simulation;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 using Raylib_cs;
@@ -53,7 +53,7 @@ namespace Astral_Simulation
             UpdateProperties(obj);
 
             // Mean anomaly at frame
-            float M = _n * _deltaTime;
+            float M = _M0 + _n * 0;
             M %= 2 * MathF.PI;
 
             // Excentric anomaly computed with Kepler equation
@@ -74,15 +74,14 @@ namespace Astral_Simulation
         }
 
         /// <summary>
-        /// Generate orbit points for each astral object's ellipse
+        /// Generate points of astral object's ellipse.
         /// </summary>
-        /// <param name="obj">Astral object</param>
-        /// <param name="segments">
+        /// <param name="obj">Astral object.</param>
+        /// <param name="segments"></param>
         public static void GenerateOrbitPoints(AstralObject obj, int segments = 360)
         {
             UpdateProperties(obj);
-            
-            Vector3[] points = new Vector3[segments];
+            obj.OrbitPoints.Clear();
 
             for (int i = 0; i < segments; i++)
             {
@@ -91,7 +90,7 @@ namespace Astral_Simulation
                 float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
                 float r = _a * (1 - _E * MathF.Cos(E));
                 Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
-                points[i] = OrbitalTo3D(pos);
+                obj.OrbitPoints.Add(OrbitalTo3D(pos));
             }
         }
 
@@ -169,18 +168,32 @@ namespace Astral_Simulation
         /// Draw object's path.
         /// </summary>
         /// <param name="obj">Object.</param>
-        public static void DrawOrbitPath(AstralObject obj)
+        public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
             if (obj.OrbitPoints.Count == 0) return;
+            UpdateProperties(obj);
+            
+            Vector3[] points = new Vector3[segments];
 
+            for (int i = 0; i < segments; i++)
+            {
+                float M = i / (float)segments * 2 * MathF.PI;
+                float E = SolveKepler(M, _E);
+                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
+                float r = _a * (1 - _E * MathF.Cos(E));
+                Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
+                points[i] = OrbitalTo3D(pos);
+            }
+
+            // Define orbit color (based on UI activity)
             Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
 
             for (int i = 0; i < obj.OrbitPoints.Count; i++)
             {
                 Vector3 current = obj.OrbitPoints[i];
                 Vector3 next = obj.OrbitPoints[(i + 1) % obj.OrbitPoints.Count];
-                DrawLine3D(current, next, orbitColor);
 
+                DrawLine3D(current, next, orbitColor);
             }
         }
     }
