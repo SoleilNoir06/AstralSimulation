@@ -70,6 +70,7 @@ namespace Astral_simulation
         public Material Material2; // Material used for external rings mesh
         public Matrix4x4 Transform; // Transform matrix used to define object properties
 
+        public Vector3 Acceleration { get; set; } // Acceleration of the object
         /// <summary>Spatial position.</summary>
         public Vector3 Position
         {
@@ -348,7 +349,7 @@ namespace Astral_simulation
         public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius * 150000, 3) / 3); } }
 
         /// <summary>Vectorial speed of the object.</summary>
-        public Vector3 Velocity { get { return _velocity; } }
+        public Vector3 Velocity { get; set; }
 
         /// <summary>Gravition pull</summary>
         public float GravitationPull { get { return _gravitationPull; } }

@@ -94,10 +94,10 @@ namespace Astral_simulation
             ClearBackground(Color.Black);
 
             BeginMode3D(Camera);
-
+            
             // System rendering
             System.ForEach(obj =>
-            {
+            {  
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
