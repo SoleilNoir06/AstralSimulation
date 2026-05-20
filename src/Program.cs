@@ -29,7 +29,6 @@ namespace Astral_simulation
             ShaderCenter.Init(); // Load shader programs
             Conceptor3D.Init(); // Inits the 3D environnment
             AudioCenter.Init();
-            HardRessource.Init();
             Conceptor2D.Init(); // Load GUI basics
 
 #if DEBUG

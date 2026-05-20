@@ -11,6 +11,7 @@ namespace Astral_simulation
         // -----------------------------------------------------------
 
         private float _mass;
+        private bool _rings;
         private float _radius;
         private string _type;
         private float _gravitationPull;
@@ -49,6 +50,24 @@ namespace Astral_simulation
             }
         }
 
+        // Defines whether the objects possesses rings to be displayed
+        public bool Rings {
+            get { return _rings; } 
+            set 
+            { 
+                _rings = value; 
+
+                // Load corresponding rings texture (if existing)
+                // Initializing Material2 only when rings are used saves memory and time
+                Console.WriteLine(Rings);
+                 if (_rings) {
+                    Material2 = Raylib.LoadMaterialDefault();
+                    Material2.Shader = ShaderCenter.LightingShader;
+                    Raylib.SetMaterialTexture(ref Material2, MaterialMapIndex.Diffuse, Raylib.LoadTexture($"assets/textures/rings/{Name}.png"));
+                }
+            } 
+        } 
+        
         public string Name
         {
             get { return _name; }
@@ -371,8 +390,6 @@ namespace Astral_simulation
             Transform = Raymath.MatrixRotateX(90 * Raylib.DEG2RAD); // Set default transform
             Material1 = Raylib.LoadMaterialDefault(); // Load default materials and set default shader
             Material1.Shader = ShaderCenter.LightingShader;
-            Material2 = Raylib.LoadMaterialDefault();
-            Material2.Shader = ShaderCenter.LightingShader;
         }
 
         protected void UpdateGravitationPull()

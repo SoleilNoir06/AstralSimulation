@@ -18,9 +18,7 @@ namespace Astral_simulation
         // Private instances
         // -----------------------------------------------------------
         private static Mesh _sphereMesh = GenMeshSphere(1f, 50, 50); // Default planet mesh
-        private static Mesh _rings = GenMeshPlane(8, 8, 1, 1);
-        private static Material _ringsMat = LoadMaterialDefault();
-        private static Matrix4x4 saturnRings = Matrix4x4.Identity;
+        private static Mesh _ringsMesh = GenMeshPlane(8, 8, 1, 1);
         private static RenderTexture2D _renderTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
         private static Rectangle _srcRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), -GetScreenHeight());
         private static Rectangle _destRectangle = new Rectangle(Vector2.Zero, GetScreenWidth(), GetScreenHeight());
@@ -56,9 +54,6 @@ namespace Astral_simulation
             CameraParams.AstralLock = true;
             CameraParams.Target = _sun;
             CameraParams.ApprochedTarget = _sun.Position + GetCameraRight(ref Camera) * _sun.Radius * 6;
-
-            SetMaterialTexture(ref _ringsMat, MaterialMapIndex.Diffuse, LoadTexture("assets/textures/saturn_ring.png"));
-            _ringsMat.Shader = ShaderCenter.LightingShader;
         }
 
         /// <summary>Draws the 3D environnement of the application.</summary>
@@ -100,7 +95,8 @@ namespace Astral_simulation
             {  
                 Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
-                DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
+                DrawMesh(_sphereMesh, obj.Material1, obj.Transform);         
+                if (obj.Rings) DrawMesh(_ringsMesh, obj.Material2, obj.Transform);
             });
 
             // Update camera movement
