@@ -1,4 +1,4 @@
-﻿﻿using Astral_simulation;
+﻿using Astral_simulation;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 using Raylib_cs;
