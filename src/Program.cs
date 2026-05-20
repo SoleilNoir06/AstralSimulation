@@ -1,8 +1,6 @@
 ﻿using Raylib_cs;
-using static RayGUI_cs.RayGUI;
 using static Raylib_cs.Raylib;
 using Astral_Simulation;
-using System.Numerics;
 
 namespace Astral_simulation
 {
@@ -13,7 +11,10 @@ namespace Astral_simulation
         /// <param name="args">Arguments passed from outside the program.</param>
         public static void Main(string[] args)
         {
-            InitWindow(0, 0, "Astral Simulation");
+            int s_width = GetMonitorWidth(GetCurrentMonitor());
+            int s_height = GetMonitorHeight(GetCurrentMonitor());
+
+            InitWindow(s_width, s_height, "Astral Simulation");
             InitAudioDevice();
             SetWindowState(ConfigFlags.UndecoratedWindow);
 
