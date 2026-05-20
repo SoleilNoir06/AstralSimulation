@@ -49,24 +49,29 @@ namespace Astral_simulation
             }
         }
 
-        public string Name { get { return _name; } 
-            set 
+        public string Name
+        {
+            get { return _name; }
+            set
             {
                 _name = value;
+
                 // Load corresponding texture
                 Raylib.SetMaterialTexture(ref Material1, MaterialMapIndex.Diffuse, Raylib.LoadTexture($"assets/textures/{Name}.png"));
-            } 
+            }
         }
         public float RotationPeriod { get; set; } // On itself
         public float OrbitPeriod { get; set; } // Around parent object
-
         public bool UIActive { get; set; } = false; // Defines whether the object is active in the UI overlay
         public float AlphaDistance { get; set; } = 1f; // This property is only used for UI purposes
+        
+        public List<Vector3> OrbitPoints = new List<Vector3>(); // List of points used to draw the orbital path of the object
 
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
         public Matrix4x4 Transform; // Transform matrix used to define object properties
 
+        public Vector3 Acceleration { get; set; } // Acceleration of the object
         /// <summary>Spatial position.</summary>
         public Vector3 Position
         {
@@ -221,7 +226,7 @@ namespace Astral_simulation
                 _aphelion = value;
             }
         }
-         /// <summary>Tilt of the object</summary>
+        /// <summary>Tilt of the object</summary>
         public float Tilt
         {
             get
@@ -328,24 +333,24 @@ namespace Astral_simulation
         }
 
         /// <summary>Mass of the object.</summary>
-        public float Mass 
-        { 
+        public float Mass
+        {
             get
-            { 
-                return _mass; 
-            } 
-            set 
+            {
+                return _mass;
+            }
+            set
             {
                 _mass = value;
                 UpdateGravitationPull();
-            } 
+            }
         }
 
         /// <summary>Gets the volume of the object.</summary>
         public long Volume { get { return (long)(4 * Math.PI * Math.Pow(_radius * 150000, 3) / 3); } }
 
         /// <summary>Vectorial speed of the object.</summary>
-        public Vector3 Velocity { get {  return _velocity; } }
+        public Vector3 Velocity { get; set; }
 
         /// <summary>Gravition pull</summary>
         public float GravitationPull { get { return _gravitationPull; } }
@@ -383,7 +388,7 @@ namespace Astral_simulation
         protected void UpdateSize()
         {
             // Update
-             
+
         }
 
         protected void UpdateTransform()

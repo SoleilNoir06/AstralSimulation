@@ -7,18 +7,19 @@ namespace Astral_Simulation
 {
     public static class Physics
     {
-        // Astral Object's properties
+        // Keplerian elements (Orbital elements)
+        // Used same var names as the originals equations
         private static float _a; // semi-major axis (big diameter of ellipse)
-        private static float _e; // excentricity (orbit flattening)
+        private static float _E; // excentricity (orbit flattening)
         private static float _i; // tilt (orbital plane angle)
         private static float _omega; // perihelion argument - rotation in the orbital plane
         private static float _Omega; // longitude of ascending node - rotation of orbital plane in space
         private static float _M0; // mean anomalia
+
+        // Other necessary vars
         private static float _period; // orbital period 
         private static float _n; // angular velocity
-
-        //Delta time
-        private static float _deltaTime = 0;
+        private static float _deltaTime = 0; // delta time
 
         /*
          * ===============================================
@@ -33,7 +34,7 @@ namespace Astral_Simulation
         public static void UpdateProperties(AstralObject obj)
         {
             _a = obj.SemiMajorAxis;
-            _e = obj.OrbitalEccentricity;
+            _E = obj.OrbitalEccentricity;
             _i = MathF.PI / 180 * obj.OrbitalInclination; //Convert deg into rad
             _omega = MathF.PI / 180 * obj.PerihelionLongitude;
             _Omega = MathF.PI / 180 * obj.AscendingNodeLongitude;
@@ -56,13 +57,13 @@ namespace Astral_Simulation
             M %= 2 * MathF.PI;
 
             // Excentric anomaly computed with Kepler equation
-            float E = SolveKepler(M, _e);
+            float E = SolveKepler(M, _E);
 
             // Real anomaly, real angle between the object and the sun
-            float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _e) * MathF.Sin(E / 2), MathF.Sqrt(1 - _e) * MathF.Cos(E / 2));
+            float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
 
             // Distance object-Sun
-            float r = _a * (1 - _e * MathF.Cos(E));
+            float r = _a * (1 - _E * MathF.Cos(E));
 
             // Position in orbital plane
             float x_orb = r * MathF.Cos(v);
@@ -70,6 +71,27 @@ namespace Astral_Simulation
             float z_orb = 0;
 
             obj.Position = OrbitalTo3D(new Vector3(x_orb, y_orb, z_orb));
+        }
+
+        /// <summary>
+        /// Generate points of astral object's ellipse.
+        /// </summary>
+        /// <param name="obj">Astral object.</param>
+        /// <param name="segments"></param>
+        public static void GenerateOrbitPoints(AstralObject obj, int segments = 360)
+        {
+            UpdateProperties(obj);
+            obj.OrbitPoints.Clear();
+
+            for (int i = 0; i < segments; i++)
+            {
+                float M = i / (float)segments * 2 * MathF.PI;
+                float E = SolveKepler(M, _E);
+                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
+                float r = _a * (1 - _E * MathF.Cos(E));
+                Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
+                obj.OrbitPoints.Add(OrbitalTo3D(pos));
+            }
         }
 
         /// <summary>
@@ -100,7 +122,7 @@ namespace Astral_Simulation
             return new Vector3(
                 v.X,
                 v.Y * cosa - v.Z * sina,
-                v.Y * sina + v.Z + cosa
+                v.Y * sina + v.Z * cosa
             );
         }
 
@@ -120,7 +142,7 @@ namespace Astral_Simulation
                 v.X * sina + v.Y * cosa,
                 v.Z
             );
-        }        
+        }
 
         /// <summary>
         /// Solve Kepler equation with Newton-Raphson method.
@@ -131,7 +153,7 @@ namespace Astral_Simulation
         public static float SolveKepler(float M, float e)
         {
             float E = M;
-            
+
             for (int i = 0; i < 10; i++)
             {
                 float f = E - e * MathF.Sin(E) - M;
@@ -146,34 +168,33 @@ namespace Astral_Simulation
         /// Draw object's path.
         /// </summary>
         /// <param name="obj">Object.</param>
-        /// <param name="segments">Number of segments of ellipse.</param>
         public static void DrawOrbitPath(AstralObject obj, int segments = 360)
         {
+            if (obj.OrbitPoints.Count == 0) return;
+            UpdateProperties(obj);
+            
             Vector3[] points = new Vector3[segments];
 
             for (int i = 0; i < segments; i++)
             {
                 float M = i / (float)segments * 2 * MathF.PI;
-                float E = SolveKepler(M, _e);
-                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _e) * MathF.Sin(E / 2), MathF.Sqrt(1 - _e) * MathF.Cos(E / 2));
-                float r = _a * (1 - _e * MathF.Cos(E));
+                float E = SolveKepler(M, _E);
+                float v = 2 * MathF.Atan2(MathF.Sqrt(1 + _E) * MathF.Sin(E / 2), MathF.Sqrt(1 - _E) * MathF.Cos(E / 2));
+                float r = _a * (1 - _E * MathF.Cos(E));
                 Vector3 pos = new Vector3(r * MathF.Cos(v), r * MathF.Sin(v), 0);
                 points[i] = OrbitalTo3D(pos);
             }
 
             // Define orbit color (based on UI activity)
             Color orbitColor = obj.UIActive ? ColorBrightness(obj.AttributeColor, Conceptor2D.COLOR_BRIGTHNESS_OVERLAY) : obj.AttributeColor;
-            
-            // Display orbits using tiny segments
-            int index = 0;
-            while (index < segments - 1)
-            {
-                DrawLine3D(points[index], points[index + 1], orbitColor);
-                index++;            
-            }
 
-            // Close orbit with a final segment
-            DrawLine3D(points[index], points[0], orbitColor);
+            for (int i = 0; i < obj.OrbitPoints.Count; i++)
+            {
+                Vector3 current = obj.OrbitPoints[i];
+                Vector3 next = obj.OrbitPoints[(i + 1) % obj.OrbitPoints.Count];
+
+                DrawLine3D(current, next, orbitColor);
+            }
         }
     }
 }
