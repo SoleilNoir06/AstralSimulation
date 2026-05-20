@@ -63,7 +63,7 @@ namespace Astral_simulation
         public float RotationPeriod { get; set; } // On itself
         public float OrbitPeriod { get; set; } // Around parent object
         public bool UIActive { get; set; } = false; // Defines whether the object is active in the UI overlay
-
+        
         public List<Vector3> OrbitPoints = new List<Vector3>(); // List of points used to draw the orbital path of the object
 
         public Material Material1; // Generic material used for planet mesh
