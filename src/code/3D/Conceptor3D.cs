@@ -44,7 +44,7 @@ namespace Astral_simulation
             };
 
             // Update physics engine at launch
-            System.ForEach(Physics.Update);
+            VelocityVerlet.Init(System);
             AstralObject _sun = System.GetObject("Sun");
             Camera.Target = _sun.Position; // Set initial target position
 
@@ -94,11 +94,12 @@ namespace Astral_simulation
             ClearBackground(Color.Black);
 
             BeginMode3D(Camera);
+
+            VelocityVerlet.Update();
             
             // System rendering
             System.ForEach(obj =>
             {  
-                Physics.Update(obj);
                 Physics.DrawOrbitPath(obj);
                 DrawMesh(_sphereMesh, obj.Material1, obj.Transform);
             });

@@ -8,7 +8,8 @@ namespace Astral_simulation
 {
     public static class VelocityVerlet
     {
-        private const float _G = 6.67430e-11f; // Gravitational constant
+        //private const float _G = 6.67430e-11f; // Gravitational constant
+        private const float _G = 1f; // Gravitational constant test value
         // Vars used for Velocity Verlet algorythm.
 
         private static int _iCpt = 0;
@@ -29,13 +30,19 @@ namespace Astral_simulation
             // Clearing and filling astral objects list
             _astralObjects.Clear();
             _astralObjectCount = system.Count;
-            system.ForEach(obj => { _astralObjects.Add(obj); });
-            _gravitationnalForces = new Vector3[_astralObjectCount, _astralObjectCount];      
+            system.ForEach(obj =>
+            {
+                _astralObjects.Add(obj);
+                obj.Velocity = new Vector3(0, obj.InitialVelocity, 0);
+                obj.OrbitPoints.Clear();
+            });
+
+            _gravitationnalForces = new Vector3[_astralObjectCount, _astralObjectCount];
 
             //Compute initial acceleration
-            ComputeAcceleration();      
-        } 
-        
+            ComputeAcceleration();
+        }
+
         public static void Update()
         {
             _previousAcceleration.Clear();
@@ -43,11 +50,26 @@ namespace Astral_simulation
             _dt = GetFrameTime();
 
             //Verlet formulas, 1st equation
-            for(int i = 0; i < _astralObjectCount; i++)
+            for (int i = 0; i < _astralObjectCount; i++)
             {
                 AstralObject obj = _astralObjects[i];
                 //Compute new position of object
                 obj.Position = obj.Position + obj.Velocity * _dt + 0.5f * obj.Acceleration * _dt * _dt;
+
+                //Keeping trail of object
+                if (obj.OrbitPoints.Count == 0) obj.OrbitPoints.Add(obj.Position);
+                else
+                {
+                    Vector3 lastPoint = obj.OrbitPoints[obj.OrbitPoints.Count - 1];
+                    float distance = Vector3.Distance(obj.Position, lastPoint);
+
+                    if (distance > 0.01f)
+                    {
+                        obj.OrbitPoints.Add(obj.Position);
+                        if (obj.OrbitPoints.Count > 1000) obj.OrbitPoints.RemoveAt(0);
+                    }
+                }
+
 
                 //Save acceleration for 3rd equation
                 _previousAcceleration.Add(obj.Acceleration);
@@ -57,11 +79,11 @@ namespace Astral_simulation
             ComputeAcceleration();
 
             //3rd equation
-            for(int i = 0; i < _astralObjectCount; i++)
+            for (int i = 0; i < _astralObjectCount; i++)
             {
                 AstralObject obj = _astralObjects[i];
                 //Compute new velocity of object
-                obj.Velocity = obj.Velocity + 0.5f *(_previousAcceleration[i] + obj.Acceleration) * _dt;
+                obj.Velocity = obj.Velocity + 0.5f * (_previousAcceleration[i] + obj.Acceleration) * _dt;
             }
         }
 
@@ -70,7 +92,7 @@ namespace Astral_simulation
         /// </summary>
         /// <param name="system">System.</param>
         public static void ComputeGravitationnalForce()
-        {            
+        {
             // Filling matrice of forces
             Parallel.For(0, _astralObjectCount, i =>
             {
@@ -92,7 +114,7 @@ namespace Astral_simulation
                     Vector3 force = forceMagnitude * direction;
                     _gravitationnalForces[i, j] = force;
                     _gravitationnalForces[j, i] = -force;
-                }                
+                }
             });
         }
 
@@ -107,9 +129,9 @@ namespace Astral_simulation
             {
                 AstralObject obj = _astralObjects[i];
                 Vector3 totalForce = Vector3.Zero;
-                for (int j = 0; j < _astralObjectCount; j ++)
+                for (int j = 0; j < _astralObjectCount; j++)
                     totalForce += _gravitationnalForces[i, j];
-                
+
                 obj.Acceleration = totalForce / obj.Mass;
             }
         }

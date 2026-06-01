@@ -20,10 +20,10 @@
         },
         "Description":"The smallest planet in our solar \nsystem and nearest to the Sun, \nMercury is only slightly larger \nthan Earth's Moon. From the surface \nof Mercury, the Sun would appear \nmore than three times as large as \nit does when viewed from Earth, \nand the sunlight would be as much \nas seven times brighter.",
         "RotationSpeed": 10.89,
-        "Radius": 0.000163,
-        "Mass": 0.33,
-        "InitialVelocity": 0.23,
-        "SemiMajorAxis": 0.00465,
+        "Radius": 0.00465,
+        "Mass": 1989000,
+        "InitialVelocity": 0,
+        "SemiMajorAxis": 0,
         "OrbitalEccentricity": 0.0,
         "Perihelion": 0.0,
         "Aphelion": 0.0,
@@ -39,7 +39,7 @@
         "Name": "Mercury",
         "Type": "Terrestrial",
         "Position": {
-            "X": 0,
+            "X": 0.387,
             "Y": 0,
             "Z": 0
         },

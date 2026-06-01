@@ -69,23 +69,22 @@ namespace Astral_simulation
 
         public Material Material1; // Generic material used for planet mesh
         public Material Material2; // Material used for external rings mesh
-        public Matrix4x4 Transform; // Transform matrix used to define object properties
 
-        public Vector3 Acceleration { get; set; } // Acceleration of the object
-        /// <summary>Spatial position.</summary>
-        public Vector3 Position
+        /// <summary>Transform matrix used to define object properties</summary>
+        public Matrix4x4 Transform
         {
             get
             {
-                return new Vector3(Transform.M14, Transform.M24, Transform.M34);
-            }
-            set
-            {
-                Transform.M14 = value.X;
-                Transform.M24 = value.Y;
-                Transform.M34 = value.Z;
+                return Matrix4x4.CreateScale(_radius * Conceptor3D.SCALE) *
+                       Matrix4x4.CreateRotationX(90 * MathF.PI / 180) *
+                       Matrix4x4.CreateRotationZ(_rotation.Z) *
+                       Matrix4x4.CreateTranslation(Position * Conceptor3D.SCALE);
             }
         }
+
+        public Vector3 Acceleration { get; set; } // Acceleration of the object
+        /// <summary>Spatial position.</summary>
+        public Vector3 Position { get; set; }
 
         /// <summary>Vectorial rotation of the object.</summary>
         public Vector3 Rotation
@@ -94,7 +93,6 @@ namespace Astral_simulation
             set
             {
                 _rotation = value;
-                UpdateTransform();
             }
         }
 
@@ -137,7 +135,6 @@ namespace Astral_simulation
             set
             {
                 _rotation.X = value;
-                UpdateTransform();
             }
         }
 
@@ -148,7 +145,6 @@ namespace Astral_simulation
             set
             {
                 _rotation.Y = value;
-                UpdateTransform();
             }
         }
 
@@ -159,7 +155,6 @@ namespace Astral_simulation
             set
             {
                 _rotation.Z = value;
-                UpdateTransform();
             }
         }
 
@@ -314,7 +309,6 @@ namespace Astral_simulation
             set
             {
                 _radius = value / 2;
-                UpdateTransform();
                 UpdateGravitationPull();
             }
         }
@@ -368,7 +362,6 @@ namespace Astral_simulation
             RotationPeriod = rotationPeriod;
             _name = "";
 
-            Transform = Raymath.MatrixRotateX(90 * Raylib.DEG2RAD); // Set default transform
             Material1 = Raylib.LoadMaterialDefault(); // Load default materials and set default shader
             Material1.Shader = ShaderCenter.LightingShader;
             Material2 = Raylib.LoadMaterialDefault();
@@ -389,15 +382,6 @@ namespace Astral_simulation
         {
             // Update
 
-        }
-
-        protected void UpdateTransform()
-        {
-            Matrix4x4 rm = Raymath.MatrixRotateXYZ(_rotation / Raylib.RAD2DEG);
-            Matrix4x4 sm = Raymath.MatrixScale(_radius, _radius, _radius);
-            Matrix4x4 pm = Raymath.MatrixTranslate(Transform.M14, Transform.M24, Transform.M34);
-            // Multiply matrices in order
-            Transform = pm * sm * rm;
         }
     }
 }

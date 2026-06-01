@@ -14,13 +14,14 @@ namespace Astral_simulation
             int s_width = GetMonitorWidth(GetCurrentMonitor());
             int s_height = GetMonitorHeight(GetCurrentMonitor());
 
-            InitWindow(s_width, s_height, "Astral Simulation");
+            //InitWindow(s_width, s_height, "Astral Simulation");
+            InitWindow(1280, 720, "Astral Simulation");
             InitAudioDevice();
-            SetWindowState(ConfigFlags.UndecoratedWindow);
+            //SetWindowState(ConfigFlags.UndecoratedWindow);
 
             // Fullscreen window
-            SetWindowState(ConfigFlags.ResizableWindow);
-            SetWindowState(ConfigFlags.FullscreenMode);
+            //SetWindowState(ConfigFlags.ResizableWindow);
+            //SetWindowState(ConfigFlags.FullscreenMode);
 
             // Draw Splash
             DrawSplash();
